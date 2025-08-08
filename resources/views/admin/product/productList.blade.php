@@ -68,16 +68,20 @@
                                     <td>{{ $items->category_name }}</td>
                                     <td>
 
-                                        <a href="" class="btn btn-sm btn-outline-primary"> <i
-                                                class="fa-solid fa-eye"></i>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary openDetail"
+                                            data-name="{{ $items->name }}" data-cost="{{ $items->cost_price }}"
+                                            data-sale="{{ $items->sale_price }}" data-stock="{{ $items->stock }}"
+                                            data-category="{{ $items->category_name }}"
+                                            data-description="{{ $items->description ?? 'No description' }}">
+                                            <i class="fa-solid fa-eye"></i>
                                         </a>
-                                        <a href="" class="btn btn-sm btn-outline-secondary"> <i
+                                        <a href="{{ route('product#edit', $items->id) }}"
+                                            class="btn btn-sm btn-outline-secondary"> <i
                                                 class="fa-solid fa-pen-to-square"></i> </a>
                                         <button type="button" onclick="deleteButton({{ $items->id }})"
                                             class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
 
                                     </td>
-
                                 </tr>
                             @endforeach
                         @else
@@ -92,36 +96,67 @@
                 </table>
                 <span class=" d-flex justify-content-end">{{ $products->links() }}</span>
 
-
             </div>
         </div>
     </div>
+
 @endsection
 
 
 @section('js-sweetalert')
     <script>
         function deleteButton($id) {
-             Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
-                setInterval(() => {
-                    location.href = '/admin/product/delete/' + $id
-                }, 1000);
-            }
-        });
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                draggable: true,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    setInterval(() => {
+                        location.href = '/admin/product/delete/' + $id
+                    }, 1000);
+                }
+            });
         }
+
+
+
+
+        document.querySelectorAll('.openDetail').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // e.preventDefault();
+                const name = this.getAttribute('data-name');
+                const cost = this.getAttribute('data-cost');
+                const sale = this.getAttribute('data-sale');
+                const stock = this.getAttribute('data-stock');
+                const category = this.getAttribute('data-category');
+                const description = this.getAttribute('data-description');
+
+                Swal.fire({
+                    title: `<strong>Product Details</strong>`,
+                    icon: 'info',
+                    draggable: true,
+                    html: `<p><strong>Name:</strong> ${name}</p>` +
+                        `<p><strong>Cost Price:</strong> ${cost} mmk</p>` +
+                        `<p><strong>Sale Price:</strong> ${sale} mmk</p>` +
+                        `<p><strong>Stock:</strong> ${stock}</p>` +
+                        `<p><strong>Category:</strong> ${category}</p>` +
+                        `<p><strong>Description:</strong> ${description}</p>`,
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    confirmButtonText: 'Close',
+                });
+            });
+        });
     </script>
 @endsection
