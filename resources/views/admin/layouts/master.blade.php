@@ -21,7 +21,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -74,7 +73,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href=""><i class="fa-solid fa-lock"></i></i></i><span>Change Password </span></a>
+                <a class="nav-link" href="{{route('profile#changePassword')}}"><i class="fa-solid fa-lock"></i></i></i><span>Change Password </span></a>
             </li>
 
             <li class="nav-item">
@@ -136,7 +135,7 @@
                                 </a>
 
 
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{{route('profile#changePassword')}}">
                                     <i class="fa-solid fa-lock fa-sm fa-fw mr-2 text-gray-400"></i></i></i>
                                     Change Password
                                 </a>
@@ -192,7 +191,7 @@
 
 
                     {{-- image display after choosen --}}
-                    {{-- for productCreate.blade.php --}}
+                    {{-- for productCreate.blade.php & productEdit.php --}}
                     <Script>
                         function loadFile(event) {
                             var read = new FileReader()
