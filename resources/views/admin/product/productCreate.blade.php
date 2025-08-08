@@ -39,7 +39,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Category Name</label>
                                     <select name="categoryId" id=""
-                                        class="form-control @error('categoryid') is-invalid @enderror ">
+                                        class="form-control @error('categoryId') is-invalid @enderror ">
                                         <option value="">Choose Category...</option>
 
                                         @foreach ($categories as $items)
