@@ -48,26 +48,28 @@ class ProductController extends Controller
         $this->validationCheck($request, 'update');
         $data = $this->getData($request);
 
-        if ($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $oldImageName = $request->oldImage;
 
-            if(file_exists(public_path('productImage/'.$oldImageName))){
-                unlink(public_path('productImage/'.$oldImageName));
+            if (file_exists(public_path('productImage/' . $oldImageName))) {
+                unlink(public_path('productImage/' . $oldImageName));
             }
+
             $fileName = uniqid() . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path(). '/productImage/', $fileName);
+            $request->file('image')->move(public_path() . '/productImage/', $fileName);
             $data['image'] = $fileName;
-        }else{
+
+        } else {
             $data['image'] = $request->oldImage;
         }
 
-        Product::where('id',$request->productId)->update($data);
+        Product::where('id', $request->productId)->update($data);
         Alert::success('Success Title', 'Created Product Successfully');
         return to_route('product#list');
     }
 
     //get product data to use in create product && update product "upper functions")
-    public function getData($request)
+    private function getData($request)
     {
         return [
             'name'        => $request->name,
@@ -85,7 +87,7 @@ class ProductController extends Controller
     {
         //action = null is necessary for dynamic//
         $products = Product::select('products.id', 'products.name', 'products.image', 'products.cost_price',
-            'products.sale_price', 'products.stock', 'products.category_id','products.description',
+            'products.sale_price', 'products.stock', 'products.category_id', 'products.description',
             'categories.name as category_name')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
         //this query works only when $action is lowAmt
@@ -125,13 +127,11 @@ class ProductController extends Controller
         return view('admin.product.productEdit', compact('categories', 'editProduct'));
     }
 
-
-
     //validation check
     private function validationCheck($request, $action)
     {
         $rule = [
-            'name'        => 'required|min:2|max:20|unique:products,name,'. $request->productId,
+            'name'        => 'required|min:2|max:20|unique:products,name,' . $request->productId,
             'categoryId'  => 'required',
             'cost_price'  => 'required|numeric|min:3',
             'sale_price'  => 'required|numeric|min:3',
