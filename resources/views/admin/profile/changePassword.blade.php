@@ -10,6 +10,7 @@
 
                     <div class="card">
                         <div class="card-body shadow">
+                            {{-- <a href="{{route('profile#edit')}}" class="btn btn-dark text-white"><i class="fa-solid fa-angles-left" style="margin-right: 8px;"></i>Back</a> --}}
                             <form action="" method="post" class="p-3 rounded">
                                 @csrf
                                 <div class="mb-3">
@@ -38,7 +39,7 @@
                                         <small class="invalid-feedback">{{$message}}</small>
                                     @enderror
                                 </div>
-                               <input type="submit" value="Change" class="btn bg-dark text-white">
+                               <input type="submit" value="Change" class="btn bg-primary text-white">
                                 </div>
                             </form>
                         </div>
