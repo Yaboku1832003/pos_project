@@ -44,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href=""><i class="fas fa-fw fa-table"></i><span>Dashboard </span></a>
+                <a class="nav-link" href="{{route('admin#dashboard')}}"><i class="fas fa-fw fa-table"></i><span>Dashboard </span></a>
             </li>
 
             <li class="nav-item">
@@ -60,9 +60,11 @@
             </li>
 
 
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-credit-card"></i></i><span>Payment Method </span></a>
+            @if (Auth::check() && Auth::user()->role === 'superadmin')
+                <li class="nav-item">
+                <a class="nav-link" href="{{route('payment#paymentMethod')}}"><i class="fa-solid fa-credit-card"></i></i><span>Payment Method </span></a>
             </li>
+            @endif
 
             <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fa-solid fa-list"></i><span>Sale Information </span></a>
@@ -110,30 +112,33 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     {{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname}}
                                 </span>
-                                <img class="img-profile rounded-circle" src="{{ Auth::user()->profile == null ? asset('') : asset(''.Auth::user()->profile) }}">
+                                <img class="img-profile rounded-circle" src="{{ Auth::user()->profile == null ? asset('default/default-profile.png') : asset('profileImage/'.Auth::user()->profile) }}" style="width: 45px; height: 45px; object-fit: cover;">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{{route('profile#edit')}}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
 
-                                <a class="dropdown-item" href="">
+                                {{-- superAdmin part start --}}
+                                @if (Auth::check() && Auth::user()->role === 'superadmin')
+                                    <a class="dropdown-item" href="{{route('account#newAdmin')}}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Add New Admin Account
                                 </a>
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{{route('account#adminList')}}">
                                     <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Admin List
                                 </a>
 
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{{route('account#userList')}}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     User List
                                 </a>
-
+                                @endif
+                                {{-- superAdmin part end --}}
 
                                 <a class="dropdown-item" href="{{route('profile#changePassword')}}">
                                     <i class="fa-solid fa-lock fa-sm fa-fw mr-2 text-gray-400"></i></i></i>
