@@ -41,16 +41,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminMiddleware'], function 
         Route::post('update', [ProfileController::class, 'updateProfile'])->name('profile#update');
     });
 
+
+    //superadmin only start (protected with middleWare)
     Route::middleware('superAdminMiddleware')->group(function () {
         //one
         Route::prefix('payment')->group(function () {
             Route::get('createPage', [AdminController::class, 'createPaymentMethodPage'])->name('payment#paymentMethod');
             Route::post('create/method', [AdminController::class, 'createMethod'])->name('payment#storeMethod');
 
-            Route::get('delete/{id}',[AdminController::class,'deleteMethod'])->name('payment#delete');
+            Route::get('delete/{id}', [AdminController::class, 'deleteMethod'])->name('payment#delete');
 
-            Route::get('edit/{id}',[AdminController::class,'editMethod'])->name('payment#edit');
-            Route::post('update/{id}',[AdminController::class,'updateMethod'])->name('payment#update');
+            Route::get('edit/{id}', [AdminController::class, 'editMethod'])->name('payment#edit');
+            Route::post('update/{id}', [AdminController::class, 'updateMethod'])->name('payment#update');
 
         });
 
@@ -58,11 +60,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminMiddleware'], function 
         //one and two are the same with different writing style
 
         Route::group(['prefix' => 'account'], function () {
-            Route::get('create/newAdmin', [AdminController::class, 'createAdminPage'])->name('account#newAdmin');
+            Route::get('create/newAdmin', [AdminController::class, 'createAdminPage'])->name('account#newAdminPage');
+            Route::post('create/newAdmin', [AdminController::class, 'createAdmin'])->name('account#createNewAdmin');
+
+            Route::get('delete/admin/{id}',[AdminController::class, 'deleteAdmin'])->name('account#deleteAdmin');
+            Route::get('delete/user/{id}',[AdminController::class, 'deleteUser'])->name('account#deleteUser');
+
             Route::get('admin/list', [AdminController::class, 'adminList'])->name('account#adminList');
             Route::get('user/list', [AdminController::class, 'userList'])->name('account#userList');
 
         });
 
     });
+     //superadmin only end (protected with middleWare)
 });
