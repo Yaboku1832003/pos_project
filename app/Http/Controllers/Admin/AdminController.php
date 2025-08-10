@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Payment;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminController extends Controller
@@ -14,6 +16,8 @@ class AdminController extends Controller
     {
         return view('admin.dashboard.mainDashboard');
     }
+
+    //create payment method page start
     public function createPaymentMethodPage()
     {
         //payment lists data conpact start
@@ -21,6 +25,7 @@ class AdminController extends Controller
         return view('admin.payment.paymentMehod', compact('payments'));
         //payment lists data conpact end
     }
+    //create payment method page end
 
     //payment create start
     public function createMethod(Request $request)
@@ -37,7 +42,7 @@ class AdminController extends Controller
     }
     //payment create end
 
-    //input validationCheck for payment method start
+    //(private)  input validationCheck for payment method start
     private function validationCheck(Request $request, $action, $currentId = null)
     {
         $rules = [
@@ -74,7 +79,7 @@ class AdminController extends Controller
         $request->validate($rules);
     }
 
-    //input validationCheck for payment method end
+    //(private)  input validationCheck for payment method end
 
     //delete payment method start
     public function deleteMethod($id)
@@ -123,18 +128,87 @@ class AdminController extends Controller
 
     //update payment method end
 
+    //route to create new admin page start
     public function createAdminPage()
     {
-        dd('the is create Admin Page');
+        return view('admin.admin_userAccount.addNewAdmin');
     }
+    //route to create new admin page end
 
+    //create new admin acc start
+    public function createAdmin(Request $request)
+    {
+        $this->newAdminValidation($request);
+
+        User::create([
+            "name"     => $request->name,
+            "email"    => $request->email,
+            "phone"    => $request->phone,
+            "password" => Hash::make($request->password),
+            'role'     => 'admin',
+        ]);
+        Alert::success('Success Title', 'Create New Admin Account Successfully');
+        return back();
+    }
+    //create new admin acc end
+
+    //validation for new admin start(private)
+    private function newAdminValidation($request)
+    {
+        $request->validate([
+            'name'            => 'required',
+            'email'           => 'required|email|unique:users,email,',
+            'phone'           => 'required|numeric|digits_between:6,15',
+            'password'        => 'required|min:6|max:12',
+            'confirmPassword' => 'required|min:6|max:12|same:password',
+        ]);
+    }
+    //validation for new admin end(private)
+
+    //admin list page and searchKey start
     public function adminList()
     {
-        dd('the is admin list');
-    }
+        $admins = User::select('id', 'profile', 'name', 'email',
+            'address', 'phone', 'role', 'created_at', 'provider','nickname')
+            ->whereIn('role', ['admin', 'superadmin'])
+            //this query add only when searchKey is entered//
+            ->when(request('searchKey'), function ($upperQuery) {
+                $upperQuery->whereAny(['name', 'address', 'phone', 'email','nickname'],
+                    'like', '%' . request('searchKey') . '%');
+            })->paginate(5);
 
+        // Pass data to the view
+        return view('admin.admin_userAccount.adminList', compact('admins'));
+    }
+    //admin list page and searchKey end
+
+
+    //delete admin start
+    public function deleteAdmin($id){
+        $admin = User::find($id);
+        if($admin){
+            $admin->delete();
+        }
+        return back();
+    }
+    //delete admin end
+
+
+    //user list page and searchKey start
     public function userList()
     {
-        dd('the is user list');
+       $users = User::select('id', 'profile', 'name', 'email',
+            'address', 'phone', 'role', 'created_at', 'provider','nickname')
+            ->where('role', 'user')
+            //this query add only when searchKey is entered start//
+            ->when(request('searchKey'), function ($upperQuery) {
+                $upperQuery->whereAny(['name', 'address', 'phone', 'email','nickname'],
+                    'like', '%' . request('searchKey') . '%');
+            //this query add only when searchKey is entered end//
+            })->paginate(5);
+
+        // Pass data to the view
+        return view('admin.admin_userAccount.userList', compact('users'));
     }
+    //user list page and searchKey end
 }
