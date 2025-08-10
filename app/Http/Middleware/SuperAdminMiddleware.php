@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -16,10 +15,10 @@ class SuperAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role == 'superadmin'){
+        if(Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin' ){
             return $next($request);
         }else{
-            return back();
+            return abort(404);
         }
     }
 }
