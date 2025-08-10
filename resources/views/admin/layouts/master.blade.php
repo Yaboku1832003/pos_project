@@ -3,11 +3,11 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
     <title>POS Admin Dashboard</title>
 
@@ -17,10 +17,54 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+        rel="stylesheet" />
 
     <!-- Custom styles for this template-->
-    <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet" />
+
+    <style>
+        /* Hide sidebar by default on small screens */
+        @media (max-width: 992px) {
+            #accordionSidebar {
+                display: none;
+                position: fixed;
+                z-index: 1030;
+                height: 100vh;
+                overflow-y: auto;
+                background: #4e73df;
+                width: 250px;
+                top: 0;
+                left: 0;
+                transition: all 0.3s ease;
+            }
+
+            #accordionSidebar.show-sidebar {
+                display: block !important;
+            }
+
+            /* Show close button inside sidebar */
+            #sidebarCloseBtn {
+                display: block;
+                color: white;
+                font-size: 1.5rem;
+                padding: 0.75rem 1rem;
+                cursor: pointer;
+                text-align: right;
+            }
+        }
+
+        /* Hide toggle button on screens wider than 992px */
+        @media (min-width: 992px) {
+            #sidebarToggleTop {
+                display: none;
+            }
+
+            /* Hide close button on large screens */
+            #sidebarCloseBtn {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -31,6 +75,9 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
+            <!-- Close button visible only on small screens -->
+            <li id="sidebarCloseBtn" title="Close sidebar"><i class="fas fa-times"></i></li>
+
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -40,30 +87,34 @@
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+            <hr class="sidebar-divider my-0" />
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{route('admin#dashboard')}}"><i class="fas fa-fw fa-table"></i><span>Dashboard </span></a>
+                <a class="nav-link" href="{{ route('admin#dashboard') }}"><i
+                        class="fas fa-fw fa-table"></i><span>Dashboard </span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('category#list')}}"><i class="fa-solid fa-circle-plus"></i></i><span>Category </span></a>
+                <a class="nav-link" href="{{ route('category#list') }}"><i
+                        class="fa-solid fa-circle-plus"></i><span>Category </span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('product#createPage')}}"><i class="fa-solid fa-plus"></i></i><span>Add Products </span></a>
+                <a class="nav-link" href="{{ route('product#createPage') }}"><i class="fa-solid fa-plus"></i><span>Add
+                        Products </span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('product#list')}}"><i class="fa-solid fa-layer-group"></i><span>Product List </span></a>
+                <a class="nav-link" href="{{ route('product#list') }}"><i
+                        class="fa-solid fa-layer-group"></i><span>Product List </span></a>
             </li>
-
 
             @if (Auth::check() && Auth::user()->role === 'superadmin')
                 <li class="nav-item">
-                <a class="nav-link" href="{{route('payment#paymentMethod')}}"><i class="fa-solid fa-credit-card"></i></i><span>Payment Method </span></a>
-            </li>
+                    <a class="nav-link" href="{{ route('payment#paymentMethod') }}"><i
+                            class="fa-solid fa-credit-card"></i><span>Payment Method </span></a>
+                </li>
             @endif
 
             <li class="nav-item">
@@ -71,15 +122,18 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i><span>Order Board </span></a>
+                <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i><span>Order Board
+                    </span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('profile#changePassword')}}"><i class="fa-solid fa-lock"></i></i></i><span>Change Password </span></a>
+                <a class="nav-link" href="{{ route('profile#changePassword') }}"><i
+                        class="fa-solid fa-lock"></i><span>Change
+                        Password </span></a>
             </li>
 
             <li class="nav-item">
-                <form action="{{ route('logout')}}" method="post">
+                <form action="{{ route('logout') }}" method="post">
                     @csrf
                     <span class="nav-link">
                         <button type="submit" class="btn bg-dark text-white"><i
@@ -99,56 +153,60 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-
+                    <!-- Hamburger Toggle Button for Mobile -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-lg-none rounded-circle mr-3"
+                        aria-label="Toggle sidebar">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    {{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname}}
+                                    {{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}
                                 </span>
-                                <img class="img-profile rounded-circle" src="{{ Auth::user()->profile == null ? asset('default/default-profile.png') : asset('profileImage/'.Auth::user()->profile) }}" style="width: 45px; height: 45px; object-fit: cover;">
+                                <img class="img-profile rounded-circle"
+                                    src="{{ Auth::user()->profile == null ? asset('default/default-profile.png') : asset('profileImage/' . Auth::user()->profile) }}"
+                                    style="width: 45px; height: 45px; object-fit: cover;" />
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{route('profile#edit')}}">
+                                <a class="dropdown-item" href="{{ route('profile#edit') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
 
                                 {{-- superAdmin part start --}}
                                 @if (Auth::check() && Auth::user()->role === 'superadmin')
-                                    <a class="dropdown-item" href="{{route('account#newAdmin')}}">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Add New Admin Account
-                                </a>
-                                <a class="dropdown-item" href="{{route('account#adminList')}}">
-                                    <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Admin List
-                                </a>
+                                    <a class="dropdown-item" href="{{ route('account#newAdminPage') }}">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Add New Admin Account
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('account#adminList') }}">
+                                        <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Admin List
+                                    </a>
 
-                                <a class="dropdown-item" href="{{route('account#userList')}}">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    User List
-                                </a>
+                                    <a class="dropdown-item" href="{{ route('account#userList') }}">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        User List
+                                    </a>
                                 @endif
                                 {{-- superAdmin part end --}}
 
-                                <a class="dropdown-item" href="{{route('profile#changePassword')}}">
-                                    <i class="fa-solid fa-lock fa-sm fa-fw mr-2 text-gray-400"></i></i></i>
-                                    Change Password
+                                <a class="dropdown-item" href="{{ route('profile#changePassword') }}">
+                                    <i class="fa-solid fa-lock fa-sm fa-fw mr-2 text-gray-400"></i> Change Password
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <span class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
-                                    <form action="{{ route('logout')}}" method="post">
+                                    <form action="{{ route('logout') }}" method="post">
                                         @csrf
-                                        <input type="submit" class="btn btn-dark text-white w-100" value="Logout">
+                                        <input type="submit" class="btn btn-dark text-white w-100" value="Logout" />
                                     </form>
                                 </span>
                             </div>
@@ -162,52 +220,78 @@
                 {{-- customized parts --}}
                 @yield('content')
 
-
                 {{-- sweet alert laravel configuration --}}
                 @include('sweetalert::alert')
 
-                                   <!-- Bootstrap core JavaScript-->
-                    <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-                        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-                        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-                    <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+            </div>
+            <!-- End of Main Content -->
 
-                    <!-- Core plugin JavaScript-->
-                    <script src="{{asset('admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+        </div>
+        <!-- End of Content Wrapper -->
 
-                    <!-- Custom scripts for all pages-->
-                    <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
+    </div>
+    <!-- End of Page Wrapper -->
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-                    <script src="{{asset('admin/vendor/chart.js/Chart.min.js')}}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-                    <!-- Page level custom scripts -->
-                    <script src="{{asset('admin/js/demo/chart-area-demo.js')}}"></script>
-                    <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
 
-                    {{-- sweet alert cdn --}}
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('admin/vendor/chart.js/Chart.min.js') }}"></script>
 
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('admin/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('admin/js/demo/chart-pie-demo.js') }}"></script>
 
-                    {{-- this js is in list.blade.php --}}
-                    @yield('js-sweetalert')
+    {{-- sweet alert cdn --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- this js is in list.blade.php --}}
+    @yield('js-sweetalert')
 
+    {{-- password toggle js --}}
+    @yield('passwordToggle')
 
-                    {{-- image display after choosen --}}
-                    {{-- for productCreate.blade.php & productEdit.php --}}
-                    <Script>
-                        function loadFile(event) {
-                            var read = new FileReader()
+    {{-- image display after choosen --}}
+    {{-- for productCreate.blade.php & productEdit.php --}}
+    <script>
+        function loadFile(event) {
+            var read = new FileReader();
 
-                            read.onload = function(){
-                                var output = document.getElementById('output')
-                                output.src = read.result;
-                            }
-                            read.readAsDataURL(event.target.files[0])
-                        }
-                    </Script>
+            read.onload = function() {
+                var output = document.getElementById('output');
+                output.src = read.result;
+            };
+            read.readAsDataURL(event.target.files[0]);
+        }
+
+        // Sidebar toggle for screens smaller than 992px
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('sidebarToggleTop');
+            const sidebar = document.getElementById('accordionSidebar');
+            const closeBtn = document.getElementById('sidebarCloseBtn');
+
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.add('show-sidebar');
+                    }
+                });
+            }
+
+            if (closeBtn && sidebar) {
+                closeBtn.addEventListener('click', function() {
+                    sidebar.classList.remove('show-sidebar');
+                });
+            }
+        });
+    </script>
+
 </body>
 
 </html>
