@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
+    <title>IT Mart- Home Page</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -22,17 +22,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="{{ asset('user/lib/lightbox/css/lightbox.min.css') }} " rel="stylesheet">
+    <link href="{{ asset('user/lib/owlcarousel/assets/owl.carousel.min.css') }} " rel="stylesheet">
 
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('user/css/bootstrap.min.css') }} " rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('user/css/style.css') }} " rel="stylesheet">
 
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="'user/stylesheet'" href="{{ asset('user/css/custom.css') }}">
+
 
 </head>
 
@@ -48,7 +49,7 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="index.html" class="navbar-brand">
-                    <h1 class="text-primary display-6">Fruitables</h1>
+                    <h1 class="text-primary display-6">IT Mart</h1>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
@@ -71,15 +72,31 @@
                         </a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle my-auto mt-2" data-bs-toggle="dropdown">
-                                <img src=" " style="width: 50px" class="img-profile  rounded-circle" alt="">
-                                <span></span>
+                                @php
+                                        $profile = Auth::user()->profile;
+                                        if ($profile) {
+                                            // Check if it's a valid URL
+                                            if (filter_var($profile, FILTER_VALIDATE_URL)) {
+                                                $imgSrc = $profile; // use URL directly
+                                            } else {
+                                                $imgSrc = asset('profileImage/' . $profile); // local image file
+                                            }
+                                        } else {
+                                            $imgSrc = asset('default/default-profile.png'); // fallback default
+                                        }
+                                    @endphp
+
+                                <img src="{{ $imgSrc }}" style="width: 45px; height: 45px; object-fit: cover;"
+                                    class="img-profile rounded-circle" alt="">
+
+                                <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="#" class="dropdown-item my-2">Edit Profile</a>
                                 <a href="#" class="dropdown-item my-2">Change Password</a>
                                 <a href="#" class="dropdown-item my-2">
-                                    <form action="" method="post">
-
+                                    <form action="{{ route('logout') }}" method="post">
+                                        @csrf
                                         <input type="submit" value="Logout"
                                             class="btn btn-outline-success rounded w-100 mb-3">
                                     </form>
@@ -104,8 +121,8 @@
                 <div class="row g-4">
                     <div class="col-lg-3">
                         <a href="#">
-                            <h1 class="text-primary mb-0">Fruitables</h1>
-                            <p class="text-secondary mb-0">Fresh products</p>
+                            <h1 class="text-primary mb-0">IT Marts</h1>
+                            <p class="text-secondary mb-0">Latest products</p>
                         </a>
                     </div>
                     <div class="col-lg-6">
@@ -137,7 +154,8 @@
                         <h4 class="text-light mb-3">Why People Like us!</h4>
                         <p class="mb-4">typesetting, remaining essentially unchanged. It was
                             popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
-                        <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
+                        <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read
+                            More</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -182,15 +200,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your
+                            Site
                             Name</a>, All right reserved.</span>
                 </div>
                 <div class="col-md-6 my-auto text-center text-md-end text-white">
                     <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                     <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                     <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a
-                        class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+                    {{-- Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a
+                        class="border-bottom" href="https://themewagon.com">ThemeWagon</a> --}}
                 </div>
             </div>
         </div>
@@ -210,10 +229,10 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="{{ asset('user/lib/easing/easing.min.js') }} "></script>
+    <script src="{{ asset('user/lib/waypoints/waypoints.min.js') }} "></script>
+    <script src="{{ asset('user/lib/lightbox/js/lightbox.min.js') }} "></script>
+    <script src="{{ asset('user/lib/owlcarousel/owl.carousel.min.js') }} "></script>
 
 
 </html>
