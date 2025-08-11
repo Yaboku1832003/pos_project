@@ -169,9 +169,22 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     {{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ Auth::user()->profile == null ? asset('default/default-profile.png') : asset('profileImage/' . Auth::user()->profile) }}"
-                                    style="width: 45px; height: 45px; object-fit: cover;" />
+                                    @php
+                                        $profile = Auth::user()->profile;
+                                        if ($profile) {
+                                            // Check if it's a valid URL
+                                            if (filter_var($profile, FILTER_VALIDATE_URL)) {
+                                                $imgSrc = $profile; // use URL directly
+                                            } else {
+                                                $imgSrc = asset('profileImage/' . $profile); // local image file
+                                            }
+                                        } else {
+                                            $imgSrc = asset('default/default-profile.png'); // fallback default
+                                        }
+                                    @endphp
+
+                                <img src="{{ $imgSrc }}" style="width: 45px; height: 45px; object-fit: cover;"
+                                    class="img-profile rounded-circle" alt="">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
