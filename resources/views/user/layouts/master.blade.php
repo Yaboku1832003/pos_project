@@ -39,10 +39,6 @@
 
 <body>
 
-
-
-
-
     <!-- Navbar start -->
     <div class="container-fluid fixed-top">
 

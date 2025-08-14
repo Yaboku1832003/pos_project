@@ -27,7 +27,7 @@ class SocialLoginController extends Controller
             'email' => $socialLoginData->email,
             'nickname' => $socialLoginData->nickname,
             'profile' => $socialLoginData->avatar,
-            'provider' => $provider,
+            'provider' => $provider, //google or github
             'provider_id' => $socialLoginData->id,
             'provider_token' => $socialLoginData->token,
             'role' => 'user'
