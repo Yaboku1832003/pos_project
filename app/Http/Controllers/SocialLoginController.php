@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\SocialLoginController;
+// use App\Http\Controllers\SocialLoginController;
 
 class SocialLoginController extends Controller
 {
