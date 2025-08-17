@@ -37,25 +37,26 @@
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 align-content-center">
-                                        <form>
+
+                                        <form action="{{route('user#category')}}" method="GET">
                                             <div class="form-row">
-                                                <div class="form-group col-xl-4 col-lg-3 col-md-6">
-                                                    <input type="text" class="form-control my-2 my-lg-1" id="inputtext4"
+                                                <div class="form-group col-xl-5 col-lg-4 col-md-6">
+                                                    <input type="text" name="search" class="form-control my-2 my-lg-1" id=""
                                                         placeholder="What are you looking for">
                                                 </div>
-                                                <div class="form-group col-lg-3 col-md-6">
-                                                    <select class="w-100 form-control mt-lg-1 mt-md-2">
-                                                        <option>Category</option>
-                                                        <option value="1">Top rated</option>
-                                                        <option value="2">Lowest Price</option>
-                                                        <option value="4">Highest Price</option>
+                                                <div class="form-group col-lg-4 col-md-6">
+                                                    <select class="form-control w-100 mt-lg-1 mt-md-2" name="category_id">
+                                                        <option value="">Category</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-lg-3 col-md-6">
+                                                {{-- <div class="form-group col-lg-3 col-md-6">
                                                     <input type="text" class="form-control my-2 my-lg-1" id="inputLocation4"
-                                                        placeholder="Location">
-                                                </div>
-                                                <div class="form-group col-xl-2 col-lg-3 col-md-6 align-self-center">
+                                                        placeholder="Price">
+                                                </div> --}}
+                                                <div class="form-group col-xl-3 col-lg-4 col-md-6 align-self-center">
                                                     <button type="submit" class="btn btn-primary active w-100">Search
                                                         Now</button>
                                                 </div>
@@ -109,7 +110,7 @@
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <a href="category.html"><i
-                                                                class="fa fa-calendar"></i>{{ $product->created_at->format('jS F') }}</a>
+                                                                class="fa fa-calendar"></i>{{ $product->created_at->format('Y-m-d') }}</a>
                                                     </li>
                                                 </ul>
                                                 <p class="card-text flex-grow-1">

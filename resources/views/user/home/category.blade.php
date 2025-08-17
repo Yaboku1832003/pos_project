@@ -1,0 +1,285 @@
+@extends('user.layouts.master')
+
+@section('content')
+    <section class="section-sm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search-result bg-gray">
+                        <h2>Results For "{{ $categoryName }}"</h2>
+                        <p>{{ $productCount }} Results on {{ now()->format('d F, Y') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {{-- sidebar column start --}}
+                <div class="col-lg-3 col-md-4">
+                    {{-- sidebar start --}}
+                    <div class="category-sidebar">
+                        {{-- <div class="widget category-list">
+                            <h4 class="widget-header">All Category</h4>
+                            <ul class="category-list">
+                                <li><a href="category.html">Laptops <span>93</span></a></li>
+                                <li><a href="category.html">Iphone <span>233</span></a></li>
+                                <li><a href="category.html">Microsoft <span>183</span></a></li>
+                                <li><a href="category.html">Monitors <span>343</span></a></li>
+                            </ul>
+                        </div> --}}
+                        <div class="widget filter">
+                            <h4 class="widget-header">Show Produts</h4>
+                            <select>
+                                <option>Popularity</option>
+                                <option value="1">Top rated</option>
+                                <option value="2">Lowest Price</option>
+                                <option value="4">Highest Price</option>
+                            </select>
+                        </div>
+                        <div class="widget price-range w-100">
+                            <h4 class="widget-header">Price Range</h4>
+                            <form method="GET" action="{{ route('user#category') }}">
+                            @csrf
+                            <div class="block">
+                                <input id="price_range" type="text"/>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <span class="value" id="price_value">10,000 - 150,000 MMK</span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Form -->
+                                <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                                <input type="hidden" name="search" value="{{ request('search') }}">
+                                <input type="hidden" name="min_price" id="min_price" value="10000">
+                                <input type="hidden" name="max_price" id="max_price" value="150000">
+                                <button type="submit" class="btn btn-primary mt-2">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{-- sidebar end --}}
+                </div>
+                {{-- sidebar column end --}}
+                <div class="col-lg-9 col-md-8">
+                    <div class="category-search-filter">
+                        <div class="row">
+                            <div class="col-md-6 d-flex align-items-center justify-content-center justify-content-md-start">
+                                <strong>Short</strong>
+                                <form id="sortForm" action="{{ route('user#category') }}" method="GET">
+                                @csrf
+                                    <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                                    <input type="hidden" name="search" value="{{ request('search') }}">
+
+                                    <select name="sort" onchange="this.form.submit()">
+                                        <option value="most_recent" selected>Most Recent</option>
+                                        <option value="lowest_price" {{ request('sort') == 'lowest_price' ? 'selected' : '' }}>Lowest Price</option>
+                                        <option value="highest_price" {{ request('sort') == 'highest_price' ? 'selected' : '' }}>Highest Price</option>
+                                        <option value="top_rated" {{ request('sort') == 'top_rated' ? 'selected' : '' }}>Top Rated</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center text-md-right mt-2 mt-md-0">
+                                <div class="view">
+                                    <strong>Views</strong>
+                                    <ul class="list-inline view-switcher">
+                                        <li class="list-inline-item">
+                                            <a href="#" onclick="default_listing()" class="text-info"><i
+                                                    class="fa fa-th-large"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="#" onclick="ad_listing()"><i class="fa fa-reorder"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if ($products->count() > 0)
+                    {{-- default view start--}}
+                    <div class="product-grid-list" id="default_view">
+                        <div class="row mt-30">
+                                @foreach ($products as $product)
+                                    <div class="col-lg-4 col-md-6">
+                                        <!-- product card -->
+                                        <div class="product-item bg-light">
+                                            <div class="card">
+                                                <div class="thumb-content">
+                                                    <!-- <div class="price">$200</div> -->
+                                                    <a href="#">
+                                                        <img class="card-img-top img-fluid"
+                                                            src="{{ asset('productImage/'.$product->image) }}" alt="Card image cap"
+                                                            style="height: 220px; object-fit: cover;" >
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h4 class="card-title"><a href="single.html">{{ $product->name }}</a>
+                                                    </h4>
+                                                    <ul class="list-inline product-meta">
+                                                        <li class="list-inline-item">
+                                                            <a href="single.html"><i class="fa-solid fa-sack-dollar"></i>{{ $product->sale_price }} mmk</a>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a href="category.html"><i
+                                                                    class="fa fa-calendar"></i>{{ $product->updated_at->format('Y-m-d') }}</a>
+                                                        </li>
+                                                    </ul>
+                                                    <p class="card-text" style="max-height: 80px; overflow: auto;">
+                                                        {{ $product->description }}
+                                                    </p>
+                                                    <div class="product-ratings">
+                                                        <ul class="list-inline">
+                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
+                                                            </li>
+                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
+                                                            </li>
+                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
+                                                            </li>
+                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
+                                                            </li>
+                                                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                        </div>
+                    </div>
+                    {{-- default view end--}}
+
+                    {{-- changed view start--}}
+                <div id="ad_listing_view" class="d-none">
+                    @foreach ($products as $product)
+                    <div class="ad-listing-list mt-20 " >
+                         <div class="row p-lg-3 p-sm-5 p-4">
+                            <div class="col-lg-4 align-self-center">
+
+                                <a href="#">
+                                    <img src="{{asset('productImage/'.$product->image)}}" class="img-fluid" alt="">
+                                </a>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-10">
+                                        <div class="ad-listing-content">
+                                            <div>
+                                                <a href="single.html" class="font-weight-bold">{{$product->name}}</a>
+                                            </div>
+                                            <ul class="list-inline mt-2 mb-3">
+                                                <li class="list-inline-item"><a href="category.html"> <i class="fa-solid fa-sack-dollar"></i>
+                                                    {{$product->sale_price}} mmk</a>
+                                                </li>
+                                                <li class="list-inline-item"><a href="category.htm"><i
+                                                            class="fa fa-calendar"></i>{{ $product->updated_at->format('Y-m-d') }}</a></li>
+                                            </ul>
+                                            <p class="pr-5">{{$product->description}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 align-self-center">
+                                        <div class="product-ratings float-lg-right pb-3">
+                                            <ul class="list-inline">
+                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                    {{-- changed view end --}}
+                    @else
+                         <section class="section bg-gray">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6 text-center mx-auto">
+                                        <div class="404-content">
+                                            <h1 class="display-1 pt-1 pb-2">Oops</h1>
+                                                <p class="px-3 pb-2 text-dark">Sorry, we couldn’t find any products
+                                                        matching your search
+                                                        in the <strong class="text-danger">"{{ $categoryName }}"</strong>
+                                                        category.
+                                                        Please try a different search or check back later. </p>
+                                                <a href="{{ route('user#homePage') }}" class="btn btn-info">GO HOME</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    @endif
+
+                    <div class="pagination justify-content-center">
+                        {{ $products->links('vendor.pagination.bootstrap-4') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        // sorting style change
+        function default_listing(){
+           const default_view = document.getElementById('default_view');
+           const ad_listing_view = document.getElementById('ad_listing_view');
+
+           default_view.classList.remove('d-none');
+           ad_listing_view.classList.add('d-none')
+        }
+
+
+        function ad_listing(){
+           const default_view = document.getElementById('default_view');
+           const ad_listing_view = document.getElementById('ad_listing_view');
+
+           default_view.classList.add('d-none');
+           ad_listing_view.classList.remove('d-none')
+        }
+        // Initialize slider
+            var slider = new Slider("#price_range", {
+                min: 10000,
+                max: 150000,
+                step: 5000,
+                value: [10000, 150000],
+                tooltip_split: true,
+                formatter: function(value) {
+                    if (Array.isArray(value)) {
+                        return value[0].toLocaleString() + " - " + value[1].toLocaleString() + " MMK";
+                    }
+                    return value.toLocaleString() + " MMK";
+                }
+            });
+
+            // Update UI + hidden inputs on slide
+            slider.on("slide", function(value) {
+                document.getElementById("price_value").textContent =
+                    value[0].toLocaleString() + " - " + value[1].toLocaleString() + " MMK";
+
+                document.getElementById("min_price").value = value[0];
+                document.getElementById("max_price").value = value[1];
+            });
+
+
+            // dropdown select sorting
+            document.getElementById('sort_dropdown').addEventListener('change', function() {
+                var sort = this.value;
+                var category = document.getElementById('current_category').value;
+                var minPrice = document.getElementById('current_min_price').value;
+                var maxPrice = document.getElementById('current_max_price').value;
+                var search = document.getElementById('current_search').value;
+
+                var url = "{{ route('user#category') }}?";
+                    if(category) url += "category_id=" + category + "&";
+                    if(minPrice) url += "min_price=" + minPrice + "&";
+                    if(maxPrice) url += "max_price=" + maxPrice + "&";
+                    if(search) url += "search=" + search + "&";
+                    if(sort) url += "sort=" + sort;
+
+                    // Go to the URL
+                    window.location.href = url;
+            });
+
+    </script>
+@endsection

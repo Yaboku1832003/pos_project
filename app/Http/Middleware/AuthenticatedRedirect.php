@@ -21,12 +21,11 @@ class AuthenticatedRedirect
 
             // if the route url from searchBar are login or register
             if ($request->route()->getName() == 'login' || $request->route()->getName() == 'register'){
-                return redirect()->back();
+                return to_route('user#homePage');
             }else{
                 return $next($request);
             }
-        }else{
-             return $next($request);
         }
+        return $next($request);
     }
 }
