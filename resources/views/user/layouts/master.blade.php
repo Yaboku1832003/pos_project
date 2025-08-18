@@ -33,10 +33,10 @@
 
 
     <!-- CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
 
-<!-- JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 </head>
 
 <body>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
                         <a href="" class="position-relative me-4">
-                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
 
                         <div class="nav-item dropdown d-flex align-items-center">
@@ -237,5 +237,5 @@
     <script src="{{ asset('plugins/slick/slick.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-
+        @yield('js')
 </html>

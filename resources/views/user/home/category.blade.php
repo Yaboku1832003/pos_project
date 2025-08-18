@@ -95,14 +95,14 @@
                     {{-- default view start--}}
                     <div class="product-grid-list" id="default_view">
                         <div class="row mt-30">
-                                @foreach ($products as $product)
+                            @foreach ($products as $product)
                                     <div class="col-lg-4 col-md-6">
                                         <!-- product card -->
                                         <div class="product-item bg-light">
                                             <div class="card">
                                                 <div class="thumb-content">
                                                     <!-- <div class="price">$200</div> -->
-                                                    <a href="#">
+                                                    <a href="{{route('user#productDetail',$product->id)}}">
                                                         <img class="card-img-top img-fluid"
                                                             src="{{ asset('productImage/'.$product->image) }}" alt="Card image cap"
                                                             style="height: 220px; object-fit: cover;" >
@@ -140,7 +140,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                            @endforeach
                         </div>
                     </div>
                     {{-- default view end--}}
@@ -152,7 +152,7 @@
                          <div class="row p-lg-3 p-sm-5 p-4">
                             <div class="col-lg-4 align-self-center">
 
-                                <a href="#">
+                                <a href="{{route('user#productDetail',$product->id)}}">
                                     <img src="{{asset('productImage/'.$product->image)}}" class="img-fluid" alt="">
                                 </a>
                             </div>
@@ -198,6 +198,9 @@
                                 <div class="row">
                                     <div class="col-md-6 text-center mx-auto">
                                         <div class="404-content">
+                                            <div class="404-img">
+                                            <img src="{{asset('images/404/404.png')}}" class="img-fluid" alt="404">
+                                            </div>
                                             <h1 class="display-1 pt-1 pb-2">Oops</h1>
                                                 <p class="px-3 pb-2 text-dark">Sorry, we couldn’t find any products
                                                         matching your search
@@ -219,16 +222,39 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('js')
+
     <script>
         // sorting style change
+        const savedView = sessionStorage.getItem("viewMode");
+            if(savedView === "list"){
+                const default_view = document.getElementById('default_view');
+                const ad_listing_view = document.getElementById('ad_listing_view');
+
+                if(default_view && ad_listing_view){
+                    default_view.classList.add('d-none');
+                    ad_listing_view.classList.remove('d-none');
+                }
+            } else {
+                const default_view = document.getElementById('default_view');
+                const ad_listing_view = document.getElementById('ad_listing_view');
+
+                if(default_view && ad_listing_view){
+                    default_view.classList.remove('d-none');
+                    ad_listing_view.classList.add('d-none');
+                }
+            }
+
         function default_listing(){
            const default_view = document.getElementById('default_view');
            const ad_listing_view = document.getElementById('ad_listing_view');
 
            default_view.classList.remove('d-none');
-           ad_listing_view.classList.add('d-none')
+           ad_listing_view.classList.add('d-none');
+           sessionStorage.setItem("viewMode", "grid");
         }
-
 
         function ad_listing(){
            const default_view = document.getElementById('default_view');
@@ -236,7 +262,9 @@
 
            default_view.classList.add('d-none');
            ad_listing_view.classList.remove('d-none')
+           sessionStorage.setItem("viewMode", "list");
         }
+
         // Initialize slider
             var slider = new Slider("#price_range", {
                 min: 10000,

@@ -67,10 +67,31 @@ class UserController extends Controller
             $category     = Category::find($categoryId);
             $categoryName = $category ? $category->name : null;
         }
+
         $productCount = $products->count();
 
-        $categories = Category::all();
 
-        return view('user.home.category', compact('products','categoryName','productCount','categories'));
+        return view('user.home.category', compact('products','categoryName','productCount'));
+    }
+
+    public function detail($id){
+        $product = Product::select('products.*', 'categories.id as category_id', 'categories.name as category_name')
+                            ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
+                            ->where('products.id',$id)
+                            ->first();
+
+        $relatedProducts = Product::select('products.*', 'categories.id as category_id', 'categories.name as category_name')
+                                    ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
+                                    ->where('category_id', $product->category_id)
+                                    ->where('products.id', '!=', $product->id)
+                                    ->take(2)
+                                    ->get();
+
+
+        return view('user.home.productDetail',compact('product','relatedProducts'));
+    }
+
+    public function comment(Request $request){
+        dd($request->toArray());
     }
 }
