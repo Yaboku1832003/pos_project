@@ -1,4 +1,17 @@
     @extends('user.layouts.master')
+    @section('css')
+    <style>
+        .star {
+            font-size: 40px;
+            color: gray;
+            cursor: pointer;
+            }
+
+        .star.selected {
+            color: #0d6efd;
+            }
+    </style>
+    @endsection
 
     @section('content')
     <section class="section bg-gray">
@@ -11,17 +24,17 @@
                         <h1 class="product-title">{{$product->name}}</h1>
                         <div class="product-meta">
                             <ul class="list-inline">
-                                <li class="list-inline-item"><a href="javascript:history.back()"><i class="fas fa-sign-out-alt  fs-5 mt-1"></i> Back</a></li>
+                                <li class="list-inline-item"><a href="{{route('user#homePage')}}"><i class="fas fa-home  fs-5 mt-1"></i> Back</a></li>
                                 <li class="list-inline-item">
-                                    <form id="homeForm" action="{{ route('user#category') }}" method="GET" class="d-none">
+                                    <form id="categoryForm" action="{{ route('user#category') }}" method="GET" class="d-none">
                                         @csrf
                                         <input type="hidden" name="category_id" value="{{ $product->category_id }}">
                                     </form>
-                                    <a href="javascript:void(0)" onclick="document.getElementById('homeForm').submit()">
+                                    <a href="javascript:void(0)" onclick="document.getElementById('categoryForm').submit()">
                                         <i class="fa-solid fa-folder-open fs-5"></i> Category: {{$product->category_name}}
                                     </a>
                                 </li>
-                                <li class="list-inline-item"><a href="#"><i class="fa-solid fa-calendar-days  fs-5 mt-1"></i> {{$product->updated_at->format('Y-m-d')}}</a></li>
+                                <li class="list-inline-item"><a href="#"><i class="fa-solid fa-calendar-days  fs-5 mt-1"></i> {{$product->updated_at->format('F d, Y')}}</a></li>
                             </ul>
                         </div>
 
@@ -30,28 +43,31 @@
                                 <img class="img-fluid w-100" src="{{asset('productImage/'.$product->image)}}" alt="">
                         </div>
                         <!-- product slider -->
+                        <div class="rating">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span class="star {{ $i <= $rating ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                            @endfor
+                        </div>
 
-                        <div class="content mt-5 pt-5">
-                            <ul class="nav nav-pills  justify-content-center" id="pills-tab" role="tablist">
+                        <div class="content mt-3 pt-5">
+                            <ul class="nav nav-pills  justify-content-start" id="pills-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
                                     aria-selected="true">Product Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile"
-                                    aria-selected="false">Specifications</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact"
-                                    aria-selected="false">Reviews</a>
+                                    aria-selected="false">Reviews
+                                        <span class="mx-3 px-3 py-1 rounded-1" style="border: 1px solid #679d06;">
+                                            {{ count($comments) }}
+                                        </span>
+                                    </a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <h3 class="tab-title">Product Description</h3>
                                     <p>{{$product->description}}</p>
-                                </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                                     <h3 class="tab-title">Product Specifications</h3>
                                     <table class="table table-bordered product-table">
                                         <tbody>
@@ -65,7 +81,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Added</td>
-                                                <td>{{$product->updated_at->format('Y-m-d')}}</td>
+                                                <td>{{$product->updated_at->format('F d, Y')}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Stock</td>
@@ -83,68 +99,150 @@
                                                 <td>Category</td>
                                                 <td>{{$product->category_name}}</td>
                                             </tr>
+                                            <tr>
+                                                <td>Rating</td>
+                                                <td>{{$rating}}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
                                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <h3 class="tab-title">Product Review</h3>
-                                    <div class="product-review">
-                                        <div class="media">
-                                            <!-- Avater -->
-                                            <img src="images/user/user-thumb.jpg" alt="avater">
-                                            <div class="media-body">
-                                                <!-- Ratings -->
-                                                <div class="ratings">
-                                                    <ul class="list-inline">
-                                                        <li class="list-inline-item">
-                                                            <i class="fa fa-star"></i>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <i class="fa fa-star"></i>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <i class="fa fa-star"></i>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <i class="fa fa-star"></i>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <i class="fa fa-star"></i>
-                                                        </li>
-                                                    </ul>
+                                <div class="review-submission">
+                                    <h3 class="tab-title">Submit your review</h3>
+                                    {{-- if loop start --}}
+                                    {{-- this will show the Auth::user() comment start--}}
+                                    @if ($userComment)
+                                        <div class="user_review">
+                                            @php
+                                                $profile = $userComment->profile;
+                                                if ($profile) {
+                                                    if (filter_var($profile, FILTER_VALIDATE_URL)) {
+                                                        $imgSrc = $profile;
+                                                    } else {
+                                                        $imgSrc = asset('profileImage/' . $profile);
+                                                    }
+                                                } else {
+                                                    $imgSrc = asset('default/default-profile.png');
+                                                }
+                                            @endphp
+                                                <img src="{{$imgSrc}}" alt="avater" style="width: 45px; height: 45px; object-fit: cover;"
+                                                class="img-profile rounded-circle me-2">
+                                                <div class="rate">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <span class="star {{ $i <= $userComment->count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                    @endfor
                                                 </div>
-                                                <div class="name">
-                                                    <h5>Jessica Brown</h5>
+                                                <p>{{ $userComment->comment }}</p>
+                                                <button class="btn btn-sm btn-outline-primary" id="editReviewBtn">Edit Review</button>
+
+                                                <div class="edit_review d-none">
+                                                    <form id="" action="{{ route('user#comment') }}" method="POST" class="row">
+                                                        @csrf
+                                                        <input type="hidden" name="productId" value="{{ $product->id }}">
+                                                        <input type="hidden" name="rating" id="rating" value="{{ $userComment->count }}">
+
+                                                        <div class="col-12 mb-3">
+                                                            <textarea name="review" rows="6" class="form-control" placeholder="Comment" required>{{ $userComment->comment }}</textarea>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <button type="submit" class="btn btn-outline-primary">Submit</button>
+                                                        </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                    @else
+                                    {{-- this will show the Auth::user() comment end--}}
+                                        <div class="rate">
+                                            <span class="star" data-value="1">★</span>
+                                            <span class="star" data-value="2">★</span>
+                                            <span class="star" data-value="3">★</span>
+                                            <span class="star" data-value="4">★</span>
+                                            <span class="star" data-value="5">★</span>
+                                        </div>
+
+                                        <form id="reviewForm" action="{{ route('user#comment') }}" method="POST" class="row">
+                                            @csrf
+                                            <input type="hidden" name="productId" value="{{ $product->id }}">
+                                            <input type="hidden" name="rating" id="rating">
+
+                                            <div class="col-12 mb-3">
+                                                <textarea name="review" id="review" rows="6" class="form-control" placeholder="Comment" required>{{ $existingReview ?? '' }}</textarea>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-outline-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    @endif
+                                    {{-- end if --}}
+                                </div>
+                                    <br>
+                                    <h3 class="tab-title mt-2">Product Reviews</h3>
+                                    <div class="product-review">
+                                        {{-- for each loop for comment display start --}}
+                                        @foreach ($comments as $comment )
+                                            <div class="media">
+                                            <!-- Avater  start-->
+                                             @php
+                                                $profile = $comment->profile;
+                                                if ($profile) {
+                                                    if (filter_var($profile, FILTER_VALIDATE_URL)) {
+                                                        $imgSrc = $profile;
+                                                    } else {
+                                                        $imgSrc = asset('profileImage/' . $profile);
+                                                    }
+                                                } else {
+                                                    $imgSrc = asset('default/default-profile.png');
+                                                }
+                                            @endphp
+                                            <img src="{{$imgSrc}}" alt="avater" style="width: 45px; height: 45px; object-fit: cover;"
+                                            class="img-profile rounded-circle me-2">
+                                            {{-- Avatar end --}}
+                                            <div class="media-body">
+                                                @for ($i=1; $i<=5; $i++)
+                                                    <span class="star {{ $i <= $comment->count ? 'selected' : '' }}" style="font-size: 20px;">★</span>
+                                                @endfor
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div class="name">
+                                                        <h5>{{$comment->name}}</h5>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm text-muted p-0" type="button"
+                                                            id="dropdownMenuButton{{ $comment->comment_id }}"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $comment->comment_id }}">
+                                                            <li><a class="dropdown-item" href="#">Report</a></li>
+                                                            {{-- shown Delete_Btn only for Auth::user() comment start--}}
+                                                            @if(Auth::id() === $comment->user_id)
+                                                            <li>
+                                                                <form action="{{route('user#commentDelete')}}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="currentComment" value="{{$comment->comment_id}}">
+                                                                    <button class="dropdown-item text-danger" type="submit">Delete</button>
+                                                                </form>
+                                                            </li>
+                                                            @endif
+                                                            {{-- shown Delete_Btn only for Auth::user() comment end--}}
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                                 <div class="date">
-                                                    <p>Mar 20, 2018</p>
+                                                    <p>{{$comment->created_at->format('F d, Y')}}</p>
                                                 </div>
                                                 <div class="review-comment">
-                                                    <p>
-                                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremqe laudant tota rem ape
-                                                        riamipsa eaque.
+                                                    <p class="fs-5">
+                                                        {{$comment->comment}}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="review-submission">
-                                            <h3 class="tab-title">Submit your review</h3>
-                                            <!-- Rate -->
-                                            <div class="rate">
-                                                <div class="starrr"></div>
-                                            </div>
-                                            <div class="review-submit">
-                                                <form id="reviewForm" action="{{route('user#comment')}}" method="POST" class="row">
-                                                    @csrf
-                                                    <div class="col-12 mb-3">
-                                                        <textarea name="review" id="review" rows="6" class="form-control" placeholder="Comment" required></textarea>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <button type="submit" class="btn btn-main">Sumbit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
+                                        @endforeach
+                                        {{-- for each loop for comment display end --}}
                                     </div>
                                 </div>
                             </div>
@@ -156,8 +254,9 @@
                     <div class="sidebar">
                         <div class="widget price text-center">
                             <h4>Price</h4>
-                            <p>$230</p>
+                            <p>{{$product->sale_price}} MMK</p>
                         </div>
+                        @if (Auth::user())
                         <div class="widget">
                             <!-- Quantity Selector -->
                             <div class="mb-3">
@@ -178,7 +277,9 @@
                                 <button type="button" class="btn btn-outline-primary flex-fill">Add to Cart</button>
                             </div>
                         </div>
-                            @foreach ($relatedProducts as $item)
+                        @endif
+
+                        @foreach ($relatedProducts as $item)
                                 <div class="row mb-3">
                                     <div class="card h-100 border border-secondary">
                                         <a href="{{ route('user#productDetail', $item->id) }}">
@@ -204,7 +305,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
+
+                        @endforeach
                     </div>
                 </div>
 
@@ -216,6 +318,7 @@
 
     @section('js')
     <script>
+        //Quantity + - start
         const btnMinus = document.getElementById('btn-minus');
         const btnPlus = document.getElementById('btn-plus');
         const quantityInput = document.getElementById('quantity');
@@ -229,5 +332,41 @@
             let val = parseInt(quantityInput.value);
             quantityInput.value = val + 1;
         });
+        //Quantity + - end
+        //Star rating start
+        document.addEventListener('DOMContentLoaded', function() {
+            // edit btn JS start
+            const editBtn = document.getElementById('editReviewBtn');
+                if(editBtn){
+                    editBtn.addEventListener('click', () => {
+                        editBtn.classList.add('d-none');
+                        document.querySelector('.edit_review').classList.remove('d-none');
+                    });
+                }
+            //edit btn JS end
+
+            let stars = document.querySelectorAll('.star');
+            let ratingInput = document.getElementById('rating');
+
+            //for each stars get their data-values and put them in input hidden start
+            stars.forEach(function(star) {
+                star.addEventListener('click', function() {
+                let rating = this.getAttribute('data-value');
+                ratingInput.value = rating;
+            //for each stars get their data-values and put them in input hidden end
+
+                    // Highlight selected stars start
+                    stars.forEach(function(s, index) {
+                        if (index < rating) {
+                        s.classList.add('selected');
+                        } else {
+                        s.classList.remove('selected');
+                        }
+                    });
+                    // Highlight selected stars end
+                });
+            });
+        });
+        //Star rating end
     </script>
     @endsection

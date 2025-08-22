@@ -50,19 +50,6 @@
                 <button type="submit" class="btn btn-primary w-100 rounded-pill py-2">SIGN UP</button>
             </form>
 
-            <!-- Social Sign Up -->
-            {{-- <div class="text-center my-3">
-                <small>or sign up using</small>
-                <div class="mt-2">
-                    <a href="{{ route('socialLogin', 'google') }}" class="btn btn-outline-danger rounded-circle mx-1">
-                        <i class="fab fa-google"></i>
-                    </a>
-                    <a href="{{ route('socialLogin', 'github') }}" class="btn btn-outline-dark rounded-circle mx-1">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div> --}}
-
             <div class="text-center mt-3">
                 <small>Already have an account? <a href="{{ route('login') }}" class="text-decoration-none">Sign in</a></small>
             </div>

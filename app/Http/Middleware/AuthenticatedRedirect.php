@@ -21,7 +21,15 @@ class AuthenticatedRedirect
 
             // if the route url from searchBar are login or register
             if ($request->route()->getName() == 'login' || $request->route()->getName() == 'register'){
-                return to_route('user#homePage');
+                if (Auth::user()->role === 'admin')
+                {
+                    return to_route('admin#dashboard');
+                }elseif (Auth::user()->role === 'superadmin') {
+                    return to_route('admin#dashboard');
+                }
+                 else {
+                    return to_route('user#homePage');
+                }
             }else{
                 return $next($request);
             }

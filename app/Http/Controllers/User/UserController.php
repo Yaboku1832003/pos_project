@@ -1,10 +1,14 @@
 <?php
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Rating;
+use App\Models\Comment;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -87,11 +91,63 @@ class UserController extends Controller
                                     ->take(2)
                                     ->get();
 
+        $comments = Comment::select('comments.id as comment_id','comments.comment','comments.created_at',
+                                    'users.id as user_id','users.profile','users.name','ratings.count')
+                            ->where('comments.product_id',$id)
+                            ->leftJoin('users','comments.user_id','users.id')
+                            ->leftJoin('ratings', function($join) use ($id) {
+                                $join->on('ratings.user_id', '=', 'comments.user_id')
+                                    ->where('ratings.product_id', '=', $id);
+                                })
+                            ->orderBy('created_at','desc')->get();
 
-        return view('user.home.productDetail',compact('product','relatedProducts'));
+        $userComment = $comments->where('user_id', Auth::id())
+                                ->first();
+                                // dd($comments->toArray());
+                                // dd($userComment->toArray());
+
+        $rating = number_format(Rating::where('product_id',$id)->avg('count'));
+
+        return view('user.home.productDetail',compact('product','relatedProducts','comments','userComment','rating'));
     }
 
     public function comment(Request $request){
-        dd($request->toArray());
+
+        $comment=Comment::updateOrCreate([
+            'product_id'=>$request->productId,
+            'user_id'=>Auth::user()->id
+        ],
+        [
+            'comment'=>$request->review
+        ]);
+
+        Rating::updateOrCreate([
+            'product_id'=>$request->productId,
+            'user_id'=>Auth::user()->id
+        ],
+        [
+            'comment_id'=>$comment->id,
+            'count'=>$request->rating
+        ]);
+        Alert::success('Thank You', 'Your Review has been submitted!');
+        return back();
+    }
+
+    public function deleteComment(Request $request){
+        // dd($request->currentComment);
+        // $comment =Comment::select('comments.*')
+        //                 ->where('id',$request->currentComment)
+        //                 ->first();
+        // $rating=Rating::select('ratings.*')
+        //                 ->where('comment_id',$comment->id)
+        //                 ->first();
+        // dd($rating->toArray());
+
+        $comment =  Comment::where('id',$request->currentComment)->first();
+
+                    Rating::where('comment_id',$comment->id)
+                        ->delete();
+                    $comment->delete();
+        return back();
     }
 }

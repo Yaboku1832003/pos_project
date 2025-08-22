@@ -153,7 +153,7 @@
                         </div>
                         <div class="row">
                             @foreach ($products as $item)
-                                <div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 mb-4">
+                                <div class="col-lg-4 offset-lg-0 col-md-5 offset-md-1 col-sm-6 mb-4">
                                     <div class="card h-100 border border-secondary">
                                         <a href="{{route('user#productDetail',$item->id)}}">
                                             <img src="{{ asset('productImage/' . $item->image) }}"
@@ -165,15 +165,21 @@
                                         </div>
                                         <div class="card-body d-flex flex-column">
                                             <h4 class="card-title">{{ $item->name }}</h4>
-                                            <p class="card-text" style="max-height: 80px;">
+                                            <p class="card-text mb-1" style="max-height: 80px;">
                                                 {{Str::words($item->description, 15, '...')  }}
                                             </p>
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <h5 class="text-primary mb-0">{{ $item->sale_price }} MMK</h5>
+                                                @if (Auth::user())
                                                 <a href="#" class="btn btn-primary btn-sm d-inline-flex align-items-center">
                                                     <i class="fa-solid fa-cart-shopping me-2"></i>
                                                     Add to Cart
                                                 </a>
+                                                @else
+                                                    <small class="text-muted">
+                                                        Need to Sign In/Up
+                                                    </small>
+                                                @endif
 
                                             </div>
                                         </div>

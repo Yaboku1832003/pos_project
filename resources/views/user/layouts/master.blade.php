@@ -31,7 +31,7 @@
     <link href="{{ asset('plugins/slick/slick-theme.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
 
-
+    @yield('css')
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
 
@@ -59,10 +59,12 @@
                         <a href="#" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
+
+
+                        @if (Auth::user())
                         <a href="" class="position-relative me-4">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
-
                         <div class="nav-item dropdown d-flex align-items-center">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
                                 data-bs-toggle="dropdown">
@@ -96,6 +98,11 @@
                                 </div>
                             </div>
                         </div>
+                        @else
+
+                            <a href="{{ route('login') }}" class="btn btn-primary mx-1">Sign In/Up</a>
+
+                        @endif
                     </div>
                 </div>
             </nav>
@@ -105,6 +112,9 @@
 
 
     @yield('content')
+
+    {{-- sweet alert laravel configuration --}}
+    @include('sweetalert::alert')
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5">

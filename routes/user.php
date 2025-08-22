@@ -9,4 +9,5 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
 
         Route::get('product/detail/{id}',[UserController::class,'detail'])->name('user#productDetail');
         Route::post('product/review/',[UserController::class,'comment'])->name('user#comment');
+        Route::post('product/review/delete',[UserController::class,'deleteComment'])->name('user#commentDelete');
 });

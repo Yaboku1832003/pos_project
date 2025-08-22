@@ -98,7 +98,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto text-center">
                     <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="#">Explore</a>
+                        <a class="nav-link active fw-semibold" href="{{route('user#homePage')}}">Explore</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-semibold" href="#">About</a>
