@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\User;
 
+use App\Models\Cart;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Product;
@@ -149,5 +150,38 @@ class UserController extends Controller
                         ->delete();
                     $comment->delete();
         return back();
+    }
+
+    public function addToCart(Request $request){
+        $userId = Auth::user()->id;
+        $productId = $request->productId;
+        $quantity = $request->quantity;
+        // Check if cart already has this product
+        $cart = Cart::where('user_id', $userId)
+                    ->where('product_id', $productId)
+                    ->first();
+        if ($cart) {
+            // Increase existing quantity
+            $cart->qty += $quantity;
+            $cart->save();
+        } else {
+            // Create a new cart item
+            Cart::create([
+                'user_id'    => $userId,
+                'product_id' => $productId,
+                'qty'   => $quantity
+            ]);
+        }
+        return redirect()->back();
+    }
+
+    public function goToCart(Request $request){
+
+        $cartData = Cart::select('carts.id as cart_id','carts.qty','products.id as product_id','products.image','products.name','products.sale_price','products.stock')
+                        ->leftJoin('products','carts.product_id','products.id')
+                        ->where('carts.user_id',Auth::user()->id)
+                        ->get();
+                        // dd($cartData->toArray());
+        return view('user.home.cart',compact('cartData'));
     }
 }

@@ -62,7 +62,7 @@
 
 
                         @if (Auth::user())
-                        <a href="" class="position-relative me-4">
+                        <a href="{{route('user#cart')}}" class="position-relative me-4">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
                         <div class="nav-item dropdown d-flex align-items-center">

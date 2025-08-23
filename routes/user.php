@@ -10,4 +10,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::get('product/detail/{id}',[UserController::class,'detail'])->name('user#productDetail');
         Route::post('product/review/',[UserController::class,'comment'])->name('user#comment');
         Route::post('product/review/delete',[UserController::class,'deleteComment'])->name('user#commentDelete');
+
+        Route::post('product/cart/addToCart',[UserController::class,'addToCart'])->name('user#addToCart');
+        Route::get('product/cart',[UserController::class,'goToCart'])->name('user#cart');
 });

@@ -10,6 +10,14 @@
         .star.selected {
             color: #0d6efd;
             }
+        .ratedStar {
+            font-size: 40px;
+            color: gray;
+            cursor: pointer;
+            }
+        .ratedStar.selected{
+            color: #0d6efd;
+        }
     </style>
     @endsection
 
@@ -45,7 +53,7 @@
                         <!-- product slider -->
                         <div class="rating">
                             @for ($i = 1; $i <= 5; $i++)
-                                <span class="star {{ $i <= $rating ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                <span class="ratedStar {{ $i <= $rating ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
                             @endfor
                         </div>
 
@@ -83,25 +91,18 @@
                                                 <td>Added</td>
                                                 <td>{{$product->updated_at->format('F d, Y')}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Stock</td>
-                                                <td>
-                                                    {{$product->stock}}
-                                                        @if ($product->stock<=5)
-                                                    <span
-                                                        class="badge bg-danger text-white ms-2">
-                                                        Low stock
-                                                    </span>
-                                                        @endif
-                                                </td>
-                                            </tr>
+
                                             <tr>
                                                 <td>Category</td>
                                                 <td>{{$product->category_name}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Rating</td>
-                                                <td>{{$rating}}</td>
+                                                <td>{{$rating}}
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <span class="ratedStar {{ $i <= $rating ? 'selected' : '' }}" data-value="{{ $i }}" style="font-size:14px;">★</span>
+                                                @endfor
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -128,15 +129,18 @@
                                             @endphp
                                                 <img src="{{$imgSrc}}" alt="avater" style="width: 45px; height: 45px; object-fit: cover;"
                                                 class="img-profile rounded-circle me-2">
-                                                <div class="rate">
+                                                <div class="rate" id="authUserRating">
                                                     @for ($i = 1; $i <= 5; $i++)
-                                                        <span class="star {{ $i <= $userComment->count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                        <span class="ratedStar {{ $i <= $userComment->count ? 'selected' : '' }}" data-value="{{ $i }}" >★</span>
                                                     @endfor
-                                                </div>
                                                 <p>{{ $userComment->comment }}</p>
+                                                </div>
                                                 <button class="btn btn-sm btn-outline-primary" id="editReviewBtn">Edit Review</button>
 
                                                 <div class="edit_review d-none">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <span class="star {{ $i <= $userComment->count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                    @endfor
                                                     <form id="" action="{{ route('user#comment') }}" method="POST" class="row">
                                                         @csrf
                                                         <input type="hidden" name="productId" value="{{ $product->id }}">
@@ -154,14 +158,14 @@
                                             </div>
                                     @else
                                     {{-- this will show the Auth::user() comment end--}}
+                                    {{-- rating start --}}
                                         <div class="rate">
-                                            <span class="star" data-value="1">★</span>
-                                            <span class="star" data-value="2">★</span>
-                                            <span class="star" data-value="3">★</span>
-                                            <span class="star" data-value="4">★</span>
-                                            <span class="star" data-value="5">★</span>
+                                            @for($i=1; $i<=5; $i++)
+                                                <span class="star" data-value="{{$i}}">★</span>
+                                            @endfor
                                         </div>
-
+                                    {{-- rating end --}}
+                                    {{-- form for comment + rating stars start --}}
                                         <form id="reviewForm" action="{{ route('user#comment') }}" method="POST" class="row">
                                             @csrf
                                             <input type="hidden" name="productId" value="{{ $product->id }}">
@@ -175,6 +179,7 @@
                                                 <button type="submit" class="btn btn-outline-primary">Submit</button>
                                             </div>
                                         </form>
+                                    {{-- form for comment + rating stars start --}}
                                     @endif
                                     {{-- end if --}}
                                 </div>
@@ -202,7 +207,7 @@
                                             {{-- Avatar end --}}
                                             <div class="media-body">
                                                 @for ($i=1; $i<=5; $i++)
-                                                    <span class="star {{ $i <= $comment->count ? 'selected' : '' }}" style="font-size: 20px;">★</span>
+                                                    <span class="ratedStar {{ $i <= $comment->count ? 'selected' : '' }}" style="font-size: 20px;">★</span>
                                                 @endfor
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <div class="name">
@@ -256,31 +261,35 @@
                             <h4>Price</h4>
                             <p>{{$product->sale_price}} MMK</p>
                         </div>
+                        <h6 class="text-danger @if ($product->stock>5) text-muted @endif">Stock: {{$product->stock}} item(s) left</h6>
+                        {{-- Add to Cart start --}}
                         @if (Auth::user())
-                        <div class="widget">
-                            <!-- Quantity Selector -->
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label fw-bold">Quantity</label>
-                                <div class="input-group" style="max-width: 150px;">
-                                    <button class="btn btn-outline-primary" type="button" id="btn-minus">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1">
-                                    <button class="btn btn-outline-primary" type="button" id="btn-plus">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Buttons -->
-                            <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-primary flex-fill">Buy Now</button>
-                                <button type="button" class="btn btn-outline-primary flex-fill">Add to Cart</button>
-                            </div>
-                        </div>
-                        @endif
+                        <form id="cartForm" method="POST" action="{{route('user#addToCart')}}">
+                            @csrf
+                            <input type="hidden" name="productId" value="{{$product->id}}">
 
+                            {{-- Quantity + - start --}}
+                            <label for="quantity" class="form-label fw-bold">Quantity</label>
+                            <div class="input-group" style="max-width: 150px;">
+                                <button class="btn btn-outline-primary rounded-pill" type="button" id="btn-minus">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="" id="quantity" name="quantity" class="form-control text-center border-0" value="1" min="1" style="background-color:rgba(240, 255, 255, 0.921);">
+                                <button class="btn btn-outline-primary rounded-pill" type="button" id="btn-plus">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            {{-- Quantity + - end --}}
+                            <div class="d-flex gap-2 mt-3">
+                                <button type="submit" name="action" value="buyNow" class="btn btn-primary flex-fill"><i class="fa-solid fa-wallet p-2 fs-5"></i>Buy Now</button>
+                                <button type="submit" name="action" value="addToCart" class="btn btn-outline-primary flex-fill "><i class="fa-solid fa-cart-plus p-2 fs-5"></i>Add to Cart</button>
+                            </div>
+                        </form>
+                        @endif
+                        {{-- Add to Cart end --}}
+                        {{-- get releated products with foreach loop start --}}
                         @foreach ($relatedProducts as $item)
-                                <div class="row mb-3">
+                                <div class="row my-3">
                                     <div class="card h-100 border border-secondary">
                                         <a href="{{ route('user#productDetail', $item->id) }}">
                                             <img src="{{ asset('productImage/' . $item->image) }}"
@@ -305,8 +314,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                         @endforeach
+                        {{-- get releated products with foreach loop end --}}
                     </div>
                 </div>
 
@@ -333,17 +342,19 @@
             quantityInput.value = val + 1;
         });
         //Quantity + - end
+
         //Star rating start
         document.addEventListener('DOMContentLoaded', function() {
-            // edit btn JS start
+            //if press edit btn the comment box will appear nd btn disappear start
             const editBtn = document.getElementById('editReviewBtn');
                 if(editBtn){
                     editBtn.addEventListener('click', () => {
                         editBtn.classList.add('d-none');
+                        document.getElementById('authUserRating').classList.add('d-none');
                         document.querySelector('.edit_review').classList.remove('d-none');
                     });
                 }
-            //edit btn JS end
+           //if press edit btn the comment box will appear nd btn disappear end
 
             let stars = document.querySelectorAll('.star');
             let ratingInput = document.getElementById('rating');
