@@ -13,4 +13,5 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
 
         Route::post('product/cart/addToCart',[UserController::class,'addToCart'])->name('user#addToCart');
         Route::get('product/cart',[UserController::class,'goToCart'])->name('user#cart');
+        Route::post('product/update/cart',[UserController::class,'cartUpdate'])->name('user#updateCart');
 });

@@ -143,7 +143,6 @@ class UserController extends Controller
         //                 ->where('comment_id',$comment->id)
         //                 ->first();
         // dd($rating->toArray());
-
         $comment =  Comment::where('id',$request->currentComment)->first();
 
                     Rating::where('comment_id',$comment->id)
@@ -177,11 +176,48 @@ class UserController extends Controller
 
     public function goToCart(Request $request){
 
-        $cartData = Cart::select('carts.id as cart_id','carts.qty','products.id as product_id','products.image','products.name','products.sale_price','products.stock')
+        $cartData = Cart::select('carts.id as cart_id','carts.qty',
+                                'products.id as product_id','products.image','products.name','products.sale_price','products.stock')
                         ->leftJoin('products','carts.product_id','products.id')
                         ->where('carts.user_id',Auth::user()->id)
-                        ->get();
+                        ->paginate(3);
                         // dd($cartData->toArray());
         return view('user.home.cart',compact('cartData'));
+    }
+
+    public function cartUpdate(Request $request){
+        // dd($request->toArray());
+            $cart = Cart::select('carts.*', 'products.stock')
+                        ->join('products', 'carts.product_id', '=', 'products.id')
+                        ->where('carts.id', $request->cart_id)
+                        ->first();
+            if (!$cart){
+                return redirect()->back()->with('error', 'Cart item not found');
+            }
+
+            $stock = $cart->stock;
+            // dd($stock);
+            $qty = $cart->qty;
+            if ($request->action == 'plus') {
+                if($qty < $stock){
+                    $qty = $qty + 1;
+                }else{
+                Alert::error('Oops...', 'You have reached the maximum stock available!');
+                return back();
+                }
+
+            }elseif ($request->action == 'minus' && $qty > 1){
+                $qty = $qty - 1;
+            }
+            elseif($request->action == 'delete'){
+                Cart::where('id',$request->cart_id)
+                    ->delete();
+            }
+
+            $cart->qty = $qty;
+            $cart->save();
+
+            return back();
+
     }
 }

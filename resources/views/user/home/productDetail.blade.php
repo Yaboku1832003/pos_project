@@ -37,10 +37,10 @@
                                     <form id="categoryForm" action="{{ route('user#category') }}" method="GET" class="d-none">
                                         @csrf
                                         <input type="hidden" name="category_id" value="{{ $product->category_id }}">
-                                    </form>
                                     <a href="javascript:void(0)" onclick="document.getElementById('categoryForm').submit()">
                                         <i class="fa-solid fa-folder-open fs-5"></i> Category: {{$product->category_name}}
                                     </a>
+                                    </form>
                                 </li>
                                 <li class="list-inline-item"><a href="#"><i class="fa-solid fa-calendar-days  fs-5 mt-1"></i> {{$product->updated_at->format('F d, Y')}}</a></li>
                             </ul>
@@ -274,6 +274,9 @@
                                 <button class="btn btn-outline-primary rounded-pill" type="button" id="btn-minus">
                                     <i class="fas fa-minus"></i>
                                 </button>
+                                {{-- Max Stock --}}
+                                <input type="hidden" name="" id="maxStock" value="{{$product->stock}}">
+                                {{-- Current Stock before Add To Cart --}}
                                 <input type="" id="quantity" name="quantity" class="form-control text-center border-0" value="1" min="1" style="background-color:rgba(240, 255, 255, 0.921);">
                                 <button class="btn btn-outline-primary rounded-pill" type="button" id="btn-plus">
                                     <i class="fas fa-plus"></i>
@@ -331,6 +334,7 @@
         const btnMinus = document.getElementById('btn-minus');
         const btnPlus = document.getElementById('btn-plus');
         const quantityInput = document.getElementById('quantity');
+        const maxStock = document.getElementById('maxStock');
 
         btnMinus.addEventListener('click', () => {
             let val = parseInt(quantityInput.value);
@@ -338,8 +342,9 @@
         });
 
         btnPlus.addEventListener('click', () => {
+            let maximum = parseInt(maxStock.value);
             let val = parseInt(quantityInput.value);
-            quantityInput.value = val + 1;
+            if (val < maximum )quantityInput.value = val + 1;
         });
         //Quantity + - end
 
