@@ -1,5 +1,18 @@
 @extends('user.layouts.master')
 
+@section('css')
+    <style>
+        .ratedStar {
+            font-size: 20px;
+            color: gray;
+            cursor: pointer;
+            }
+        .ratedStar.selected{
+            color: #0d6efd;
+        }
+    </style>
+@endsection
+
 @section('content')
     <section class="section-sm">
         <div class="container">
@@ -16,23 +29,21 @@
                 <div class="col-lg-3 col-md-4">
                     {{-- sidebar start --}}
                     <div class="category-sidebar">
-                        {{-- <div class="widget category-list">
-                            <h4 class="widget-header">All Category</h4>
-                            <ul class="category-list">
-                                <li><a href="category.html">Laptops <span>93</span></a></li>
-                                <li><a href="category.html">Iphone <span>233</span></a></li>
-                                <li><a href="category.html">Microsoft <span>183</span></a></li>
-                                <li><a href="category.html">Monitors <span>343</span></a></li>
-                            </ul>
-                        </div> --}}
                         <div class="widget filter">
                             <h4 class="widget-header">Show Produts</h4>
-                            <select>
-                                <option>Popularity</option>
-                                <option value="1">Top rated</option>
-                                <option value="2">Lowest Price</option>
-                                <option value="4">Highest Price</option>
-                            </select>
+                                <form id="sortForm" action="{{ route('user#category') }}" method="GET">
+                                @csrf
+                                    <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                                    <input type="hidden" name="search" value="{{ request('search') }}">
+
+                                    <select name="sort" onchange="this.form.submit()">
+                                        <option>Popularity</option>
+                                        <option value="most_recent" {{ request('sort') == 'most_recent' ? 'selected' : '' }}>Most Recent</option>
+                                        <option value="lowest_price" {{ request('sort') == 'lowest_price' ? 'selected' : '' }}>Lowest Price</option>
+                                        <option value="highest_price" {{ request('sort') == 'highest_price' ? 'selected' : '' }}>Highest Price</option>
+                                        <option value="top_rated" {{ request('sort') == 'top_rated' ? 'selected' : '' }}>Top Rated</option>
+                                    </select>
+                                </form>
                         </div>
                         <div class="widget price-range w-100">
                             <h4 class="widget-header">Price Range</h4>
@@ -60,22 +71,8 @@
                 <div class="col-lg-9 col-md-8">
                     <div class="category-search-filter">
                         <div class="row">
-                            <div class="col-md-6 d-flex align-items-center justify-content-center justify-content-md-start">
-                                <strong>Short</strong>
-                                <form id="sortForm" action="{{ route('user#category') }}" method="GET">
-                                @csrf
-                                    <input type="hidden" name="category_id" value="{{ request('category_id') }}">
-                                    <input type="hidden" name="search" value="{{ request('search') }}">
 
-                                    <select name="sort" onchange="this.form.submit()">
-                                        <option value="most_recent" selected>Most Recent</option>
-                                        <option value="lowest_price" {{ request('sort') == 'lowest_price' ? 'selected' : '' }}>Lowest Price</option>
-                                        <option value="highest_price" {{ request('sort') == 'highest_price' ? 'selected' : '' }}>Highest Price</option>
-                                        <option value="top_rated" {{ request('sort') == 'top_rated' ? 'selected' : '' }}>Top Rated</option>
-                                    </select>
-                                </form>
-                            </div>
-                            <div class="col-md-6 text-center text-md-right mt-2 mt-md-0">
+                            <div class="col d-flex  justify-content-end">
                                 <div class="view">
                                     <strong>Views</strong>
                                     <ul class="list-inline view-switcher">
@@ -91,6 +88,7 @@
                             </div>
                         </div>
                     </div>
+                    {{-- show products in that category start--}}
                     @if ($products->count() > 0)
                     {{-- default view start--}}
                     <div class="product-grid-list" id="default_view">
@@ -123,18 +121,10 @@
                                                     <p class="card-text" style="max-height: 80px; overflow: auto;">
                                                         {{ $product->description }}
                                                     </p>
-                                                    <div class="product-ratings">
-                                                        <ul class="list-inline">
-                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
-                                                            </li>
-                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
-                                                            </li>
-                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
-                                                            </li>
-                                                            <li class="list-inline-item selected"><i class="fa fa-star"></i>
-                                                            </li>
-                                                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
-                                                        </ul>
+                                                    <div class="product-ratings float-lg-left pb-3">
+                                                        @for ($i=1; $i<=5; $i++)
+                                                            <span class="ratedStar {{ $i <= $product->star_count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                        @endfor
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,18 +160,14 @@
                                                 <li class="list-inline-item"><a href="category.htm"><i
                                                             class="fa fa-calendar"></i>{{ $product->updated_at->format('Y-m-d') }}</a></li>
                                             </ul>
-                                            <p class="pr-5">{{$product->description}}</p>
+                                            <p class="pr-5" style="max-height: 80px; overflow: auto;">{{$product->description}}</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 align-self-center">
                                         <div class="product-ratings float-lg-right pb-3">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
-                                            </ul>
+                                            @for ($i=1; $i<=5; $i++)
+                                                <span class="ratedStar {{ $i <= $product->star_count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                            @endfor
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +178,9 @@
                     @endforeach
                 </div>
                     {{-- changed view end --}}
+                    {{-- show products in that category end--}}
+
+                    {{-- no item in this category start --}}
                     @else
                          <section class="section bg-gray">
                             <div class="container">
@@ -214,7 +203,7 @@
                             </div>
                         </section>
                     @endif
-
+                        {{-- no item in this category end --}}
                     <div class="pagination justify-content-center">
                         {{ $products->links('vendor.pagination.bootstrap-4') }}
                     </div>
@@ -227,6 +216,7 @@
 @section('js')
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () { })
         // sorting style change
         const savedView = sessionStorage.getItem("viewMode");
             if(savedView === "list"){

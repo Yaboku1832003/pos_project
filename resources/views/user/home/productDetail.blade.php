@@ -37,10 +37,10 @@
                                     <form id="categoryForm" action="{{ route('user#category') }}" method="GET" class="d-none">
                                         @csrf
                                         <input type="hidden" name="category_id" value="{{ $product->category_id }}">
+                                    </form>
                                     <a href="javascript:void(0)" onclick="document.getElementById('categoryForm').submit()">
                                         <i class="fa-solid fa-folder-open fs-5"></i> Category: {{$product->category_name}}
                                     </a>
-                                    </form>
                                 </li>
                                 <li class="list-inline-item"><a href="#"><i class="fa-solid fa-calendar-days  fs-5 mt-1"></i> {{$product->updated_at->format('F d, Y')}}</a></li>
                             </ul>

@@ -1,4 +1,18 @@
 @extends('user.layouts.master')
+
+@section('css')
+    <style>
+        .ratedStar {
+            font-size: 20px;
+            color: gray;
+            cursor: pointer;
+            }
+        .ratedStar.selected{
+            color: #0d6efd;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid fruite py-5 mt-5">
         <section class="hero-area bg-1 text-center overly">
@@ -52,10 +66,6 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                {{-- <div class="form-group col-lg-3 col-md-6">
-                                                    <input type="text" class="form-control my-2 my-lg-1" id="inputLocation4"
-                                                        placeholder="Price">
-                                                </div> --}}
                                                 <div class="form-group col-xl-3 col-lg-4 col-md-6 align-self-center">
                                                     <button type="submit" class="btn btn-primary active w-100">Search
                                                         Now</button>
@@ -106,23 +116,19 @@
                                                 <h4 class="card-title"><a href="single.html">{{ $product->name }}</a></h4>
                                                 <ul class="list-inline product-meta">
                                                     <li class="list-inline-item">
-                                                        <a href="single.html"><i class="fa fa-folder-open-o"></i>Electronics</a>
+                                                        <a href="single.html"><i class="fa fa-folder-open-o"></i>{{$product->category_name}}</a>
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <a href="category.html"><i
-                                                                class="fa fa-calendar"></i>{{ $product->created_at->format('Y-m-d') }}</a>
+                                                                class="fa fa-calendar"></i>{{ $product->updated_at->format('Y-m-d') }}</a>
                                                     </li>
                                                 </ul>
                                                 <p class="card-text flex-grow-1">
                                                     {{ \Illuminate\Support\Str::limit($product->description, 30) }}</p>
                                                 <div class="product-ratings mt-auto">
-                                                    <ul class="list-inline">
-                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
-                                                    </ul>
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <span class="ratedStar {{ $i <= $product->star_count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                    @endfor
                                                 </div>
                                             </div>
                                         </div>
