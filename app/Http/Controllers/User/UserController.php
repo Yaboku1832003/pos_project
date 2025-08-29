@@ -195,6 +195,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    // show profile and products in cart page
     public function goToCart(Request $request){
         $profile = User::select('users.id','users.name','users.profile','users.created_at')
                     ->where('id', Auth::user()->id)
@@ -213,5 +214,34 @@ class UserController extends Controller
         return view('user.home.cart',compact('cartData',"profile","totalPrice"));
     }
 
+    // delete item from cart
+    public function cartDelete(Request $request){
+        $cartData = $request->cartId;
+        // logger($cartData);
+        Cart::where('id', $cartData)->delete();
 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'cart deleted successfully'
+        ],200);
+    }
+
+    //qty update before leave url
+    public function cartUpdate(Request $request){
+        $cartUpdates = $request->data;
+         if($cartUpdates){
+        foreach($cartUpdates as $item){
+            Cart::whereId($item['cartId'])->update(['qty' => $item['quantity']]);
+        }
+        return response()->json([
+        'status' => 'success',
+        'message' => 'Cart updated successfully'
+        ],200);
+    }
+    }
+
+    //direct to payment page
+    public function paymentPage(){
+
+    }
 }

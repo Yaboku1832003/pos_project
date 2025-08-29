@@ -101,13 +101,15 @@
                                                 </td>
                                                 <td class="p-3 text-muted total">{{ $data->sale_price * $data->qty }} mmk</td>
                                                 <td class="d-flex justify-content-center align-content-center">
-
-                                                    <input type="hidden" class="cartId" value="{{$data->cart_id}}">
-
                                                     <button style="width: 40px; height: 40px;" title="Delete"
                                                         class="btn btn-outline-danger rounded-circle btn-delete">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" class="cartId" value="{{$data->cart_id}}">
+                                                    <input type="hidden" class="userId" value="{{Auth::user()->id}}">
+                                                    <input type="hidden" class="productId" value="{{$data->product_id}}">
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -126,6 +128,25 @@
                             </div>
                         </section>
                     @endif
+                    <!-- Cart Save Modal -->
+                    <div class="modal fade" id="cartSaveModal" tabindex="-1" aria-labelledby="cartSaveModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Unsaved Changes</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Do you want to save them before leaving?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="discardBtn" data-bs-dismiss="modal">Discard</button>
+                                <button type="button" class="btn btn-primary" id="saveBtn">Save Changes</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-end">
                         <div class="card mt-4" style="width: 300px;">
                             <div class="card-body">
@@ -145,7 +166,7 @@
                                     </li>
                                 </ul>
                                 <div class="mt-3 text-end">
-                                    <a href="" class="btn btn-success">Checkout</a>
+                                    <button id="btnCheckout" class="btn btn-success">Checkout</button>
                                 </div>
                             </div>
                         </div>
@@ -162,6 +183,9 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            let cartUpdated = false;
+            let pendingUrl = null;
+
 
             function countCalculation(button) {
                 let parentNode = button.closest("tr");
@@ -188,6 +212,7 @@
                     input.val(current - 1);
                     countCalculation($(this));
                     subTotalCalculation();
+                    cartUpdated = true;
                 }
             });
 
@@ -200,6 +225,7 @@
                     input.val(current + 1);
                     countCalculation($(this));
                     subTotalCalculation();
+                    cartUpdated = true;
                 }
             });
 
@@ -207,9 +233,85 @@
                 let parentNode = $(this).closest("tr");
                 cartId = parentNode.find(".cartId").val();
 
-                console.log(cartId);
+                deleteData = {
+                    'cartId' : cartId
+                }
 
+                $.ajax({
+                    type: 'get',
+                    url: '/user/cart/delete',
+                    data: deleteData,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        response.status == 'success' ? location.reload() : '';
+                    }
+                })
             })
+
+            $('a').click(function(e){
+                let url = $(this).attr('href');
+                if(cartUpdated){
+                    e.preventDefault(); // stop immediate navigation
+                    pendingUrl = url;
+                    $('#cartSaveModal').modal('show');
+                }
+            });
+
+            // Save changes
+            $('#saveBtn').click(function(){
+                let cartUpdates = [];
+                $("#productTable tbody tr").each(function() {
+                    let cartId = $(this).find('.cartId').val();
+                    let quantity = $(this).find('.quantity').val();
+                    cartUpdates.push({ cartId, quantity });
+                });
+
+                updateData = {
+                    'data' : cartUpdates,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }
+
+                $.ajax({
+                    url: '/user/cart/update',
+                    type: 'POST',
+                    data:  updateData ,
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.status === 'success'){
+                            cartUpdated = false;
+                            $('#cartSaveModal').modal('hide');
+                            if(pendingUrl) window.location.href = pendingUrl;
+                        }
+                    }
+                });
+            });
+
+            // Discard changes
+            $('#discardBtn').click(function(){
+                cartUpdated = false;
+                $('#cartSaveModal').modal('hide');
+                if(pendingUrl) window.location.href = pendingUrl;
+            });
+
+            $('#btnCheckout').click(function(){
+                orderList = [];
+                userId=$('.userId').val();
+                orderCode = "ZWY-POS-" + Math.floor(Math.random() * 100000000);
+                $("#productTable tbody tr").each(function(index, row) {
+                    productId = $(this).find('.productId').val();
+                    qty = $(this).find('.quantity').val();
+                    cartId = $(this).find('.cartId').val();
+                    orderList.push({
+                        'product_id' : productId,
+                        'user_id' : userId,
+                        'count' : qty,
+                        'status' : 0,
+                        'order_code' : orderCode
+                   });
+                })
+                console.log(orderList);
+            });
 
         });
     </script>
