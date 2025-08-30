@@ -17,6 +17,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::get('cart/delete',[UserController::class,'cartDelete'])->name('user#cartDelete');
         Route::post('cart/update',[UserController::class,'cartUpdate'])->name('user#cartDelete');
 
+
+        Route::get('cart/tempStorage',[UserController::class,'tempStorage'])->name('user#tempStorage');
         Route::get('cart/paymentPage',[UserController::class,'paymentPage'])->name('user#paymentPage');
 
 });

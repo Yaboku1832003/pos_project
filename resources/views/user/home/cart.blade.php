@@ -157,11 +157,11 @@
                                         <span id="subtotal">{{ $totalPrice }} mmk</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span>Delivery Fee</span>
+                                        <span>Delivery Fee:</span>
                                         <span>5000 mmk</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span>Total</span>
+                                        <span>Total:</span>
                                         <span id="finalTotal">{{ $totalPrice + 5000 }} mmk</span>
                                     </li>
                                 </ul>
@@ -261,9 +261,9 @@
             // Save changes
             $('#saveBtn').click(function(){
                 let cartUpdates = [];
-                $("#productTable tbody tr").each(function() {
-                    let cartId = $(this).find('.cartId').val();
-                    let quantity = $(this).find('.quantity').val();
+                $("#productTable tbody tr").each(function(index, item) {
+                    let cartId = $(item).find('.cartId').val();
+                    let quantity = $(item).find('.quantity').val();
                     cartUpdates.push({ cartId, quantity });
                 });
 
@@ -294,14 +294,19 @@
                 if(pendingUrl) window.location.href = pendingUrl;
             });
 
+            //checkOut
             $('#btnCheckout').click(function(){
                 orderList = [];
                 userId=$('.userId').val();
-                orderCode = "ZWY-POS-" + Math.floor(Math.random() * 100000000);
+                orderCode = "ZWY-POS-ORDER-" + Math.floor(Math.random() * 100000000);
+                // console.log(userId, orderCode);
+
                 $("#productTable tbody tr").each(function(index, row) {
-                    productId = $(this).find('.productId').val();
-                    qty = $(this).find('.quantity').val();
-                    cartId = $(this).find('.cartId').val();
+                    productId = $(row).find('.productId').val();
+                    qty = $(row).find('.quantity').val();
+                    cartId = $(row).find('.cartId').val();
+
+                    // array.push -> push object into array
                     orderList.push({
                         'product_id' : productId,
                         'user_id' : userId,
@@ -310,7 +315,17 @@
                         'order_code' : orderCode
                    });
                 })
-                console.log(orderList);
+                // console.log(orderList);
+                $.ajax({
+                    url: '/user/cart/tempStorage',
+                    type: 'get',
+                    data: Object.assign({},orderList) , //orderList = []; is array and we wanna send objects so we have to make them object assign
+                    dataType: 'json',
+                    success: function(response){
+                        // console.log(response);
+                        response.status == 'success' ? location.href ='/user/cart/paymentPage' : location.reload();
+                    }
+                });
             });
 
         });
