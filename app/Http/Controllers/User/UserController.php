@@ -218,8 +218,12 @@ class UserController extends Controller
         foreach ($cartData as $data) {
             $totalPrice += $data->sale_price * $data->qty;
         }
+        $orderHistory = Order::where('user_id',Auth::user()->id)
+                            ->groupBy('order_code')
+                            ->orderBy('created_at',"desc")
+                            ->get();
 
-        return view('user.home.cart', compact('cartData', "profile", "totalPrice"));
+        return view('user.home.cart', compact('cartData', "profile", "totalPrice",'orderHistory'));
     }
 
     // delete item from cart
@@ -346,7 +350,6 @@ class UserController extends Controller
             ->first();
 
         $pendingOrder = Order::where('user_id',Auth::user()->id)
-                            ->where('status','0')
                             ->groupBy('order_code')
                             ->orderBy('created_at',"desc")
                             ->get();

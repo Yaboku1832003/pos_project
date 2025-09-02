@@ -28,13 +28,19 @@
                                     <a href=""><i class="fa-solid fa-cart-shopping"> </i>My Cart</a>
 
                                 </li>
+                                {{-- split order by status start --}}
+                                @php
+                                    $pendingOrders = $orderHistory->where('status', 0);
+                                    $otherOrders   = $orderHistory->whereIn('status', [1, 2]);
+                                @endphp
+                                {{-- split order by status end --}}
                                 <li data-target="#pendingOrderSection">
                                     <a href=""><i class="fa-solid fa-spinner"></i> Pending
-                                        Orders<span>233</span></a>
+                                        Orders<span>{{$pendingOrders->count()}}</span></a>
                                 </li>
                                 <li data-target="#orderHistorySection">
                                     <a href="#"><i class="fa-solid fa-clock-rotate-left"></i>
-                                        Orders History<span>233</span></a>
+                                        Orders History<span>{{$otherOrders->count()}}</span></a>
                                 </li>
                                 <li>
                                     <a href="{{ route('user#homePage') }}"><i class="fas fa-home  fs-5 mt-1"></i> Back</a>
@@ -172,11 +178,22 @@
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between">
                                                 <span>Delivery Fee:</span>
-                                                <span>5000 mmk</span>
+                                                <span>@if ($cartData->count()>0)
+                                                    5000 mmk
+                                                    @else
+                                                         ----
+                                                    @endif
+                                                </span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between">
                                                 <span>Total:</span>
-                                                <span id="finalTotal">{{ $totalPrice + 5000 }} mmk</span>
+                                                <span id="finalTotal">
+                                                    @if ($cartData->count()>0)
+                                                        {{ $totalPrice + 5000 }} mmk
+                                                    @else
+                                                        ----
+                                                    @endif
+                                                </span>
                                             </li>
                                         </ul>
                                         <div class="mt-3 text-end">
@@ -189,48 +206,111 @@
                                 </div>
                             </div>
                     </div>
+
                     <div class="content-section d-none" id="pendingOrderSection">
                         <div class="card">
-                            <div class="table-responsive">
-                                <table class="table w-100">
-                                    <thead>
+                            @if ($pendingOrders->count()>0)
+                                <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th>Order Code</th>
-                                            <th>Date</th>
-                                            <th>Order Status</th>
+                                            <th scope="col">Order Code</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        @foreach ($pendingOrders as $items )
+                                            <tr class="align-middle">
+                                                <td class="fw-medium">{{$items->order_code}}</td>
+                                                <td>{{ $items->created_at->format('F d, Y - h:i A') }}</td>
+                                                <td>
+                                                    @if ($items->status == 0)
+                                                        <span class="d-inline-flex align-items-center px-3 py-1 rounded-pill text-dark bg-warning shadow-sm">
+                                                            <i class="fa-solid fa-spinner fa-spin me-2"></i>Pending
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                            @else
+                                <section class="section py-5">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-8 text-center mx-auto">
+                                                <div class="p-5 bg-light rounded shadow-sm">
+                                                    <div class="mb-4">
+                                                        <i class="fas fa-user-clock fa-4x text-secondary"></i>
+                                                    </div>
+                                                    <h4 class="mb-3 text-muted">No pending orders at the moment.</h4>
+                                                    <p class="text-muted">You currently have no orders waiting for processing. Once you place an order, it will appear here with its status.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            @endif
                         </div>
                     </div>
                     <div class="content-section d-none" id="orderHistorySection">
                         <div class="card">
-                            <div class="table-responsive">
-                                <table class="table w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Order Code</th>
-                                            <th>Date</th>
-                                            <th>Order Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            @if ($otherOrders->count() > 0)
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">Order Code</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($otherOrders as $items)
+                                                <tr class="align-middle">
+                                                    <td class="fw-medium">{{ $items->order_code }}</td>
+                                                    <td>{{ $items->created_at->format('F d, Y - h:i A') }}</td>
+                                                    <td>
+                                                        @if ($items->status == 1)
+                                                            <span class="d-inline-flex align-items-center px-3 py-1 rounded-pill bg-success text-white shadow-sm">
+                                                                <i class="fas fa-check-circle me-2"></i>Accepted
+                                                            </span>
+                                                        @elseif ($items->status == 2)
+                                                            <span class="d-inline-flex align-items-center px-3 py-1 rounded-pill bg-danger text-white shadow-sm">
+                                                                <i class="fas fa-times-circle me-2"></i>Rejected
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <section class="section py-5">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-8 text-center mx-auto">
+                                                <div class="p-5 bg-light rounded shadow-sm">
+                                                    <div class="mb-4">
+                                                        <i class="fas fa-user-clock fa-4x text-secondary"></i>
+                                                    </div>
+                                                    <h4 class="mb-3 text-muted">No completed orders yet.</h4>
+                                                    <p class="text-muted">
+                                                        You haven't completed any orders yet. <br>
+                                                        Your current order may still be pending, so please check the Pending Orders tab.
+                                                    </p>
+                                                    <a href="{{ route('user#homePage') }}" class="btn btn-primary mt-3">
+                                                        Browse Products
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -311,10 +391,10 @@
                 })
             })
 
-            $('a').click(function(e) {
+             $('a').not('.user-dashboard-menu li a').click(function(e) {
                 let url = $(this).attr('href');
                 if (cartUpdated) {
-                    e.preventDefault(); // stop immediate navigation
+                    e.preventDefault();
                     pendingUrl = url;
                     $('#cartSaveModal').modal('show');
                 }
@@ -400,6 +480,10 @@
 
             //user menu
             $('.user-dashboard-menu li').click(function(e){
+                // If this is the last li (Back button), allow normal navigation
+                if ($(this).is(':last-child')) {
+                    return; // do nothing, follow the link
+                }
                 e.preventDefault();
 
                 // Switch active state

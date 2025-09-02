@@ -193,6 +193,16 @@ class AdminController extends Controller
     }
     //delete admin end
 
+    //delete user start
+    public function deleteUser($id){
+        $user = User::find($id);
+        if($user){
+            $user->delete();
+        }
+        return back();
+    }
+    //delete user end
+
 
     //user list page and searchKey start
     public function userList()
