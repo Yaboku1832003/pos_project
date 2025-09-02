@@ -21,4 +21,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::get('cart/tempStorage',[UserController::class,'tempStorage'])->name('user#tempStorage');
         Route::get('cart/paymentPage',[UserController::class,'paymentPage'])->name('user#paymentPage');
 
+        Route::post('order',[UserController::class,'order'])->name('user#order');
+        Route::get('pendingOrder',[UserController::class,'pendingOrderList'])->name('user#pendingOrder');
+
 });

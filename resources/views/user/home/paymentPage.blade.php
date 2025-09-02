@@ -1,7 +1,7 @@
 @extends('user.layouts.master')
 
 @section('content')
-<section class="section">
+<section class="section bg-gray">
     <div class="container">
         <div class="row">
             <div class="card col-12 shadow-sm">
@@ -16,23 +16,25 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="mt-2 d-flex justify-content-between fs-6">
                                                 <span>Subtotal:</span>
-                                                <span id="subtotal"> mmk</span>
+                                                <span id="subtotal">{{$orderTemp[0]['subTotal']}} mmk</span>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-between fs-6">
                                                 <span>Delivery Fee:</span>
                                                 <span>5000 mmk</span>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-between fs-6">
+
                                                 <span>Total:</span>
-                                                <span id="finalTotal"> mmk</span>
+                                                <span id="finalTotal" >{{$orderTemp[0]['subTotal']+5000}}mmk</span>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-between fs-6">
                                                 <span>Order date:</span>
-                                                <span id="finalTotal"> </span>
+                                                <span id="orderDate">{{ \Carbon\Carbon::now()->format('d/m/y') }}</span>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-between fs-6">
+
                                                 <span>Order Code:</span>
-                                                <span id="finalTotal"> mmk</span>
+                                                <span id="" class="text-warning" style="font-size: 15px;">{{$orderTemp[0]['order_code']}}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -42,16 +44,18 @@
                                 <div class="row mt-2">
                                     <div class="col">
                                         <table class="table">
-                                            <tr>
-                                                <td>
-                                                    <img src="{{asset('productImage/6894d4c6b4a36itachi-uchiha-naruto-amoled-black-background-minimal-art-3840x2160-6478.jpg')}}" style="width:100px; height:100px; object-fit:cover;">
-                                                </td>
-                                                <td class="text-end">
-                                                   <div class="div">Name:</div>
-                                                   <div class="div">Price:</div>
-                                                   <div class="div">Qty:</div>
-                                                </td>
-                                            </tr>
+                                            @foreach ($products as $item )
+                                                <tr>
+                                                    <td>
+                                                        <img src="{{asset('productImage/'.$item->image)}}" style="width:100px; height:100px; object-fit:cover;">
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="div">Name:{{$item->name}}</div>
+                                                        <div class="div">Price:{{$item->sale_price}}</div>
+                                                        <div class="div">Qty:{{$item->qty}}</div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </table>
                                     </div>
                                 </div>
@@ -97,38 +101,53 @@
                                     Payment Info
                                 </div>
                                 <div class="card-body">
-                                    <form action="">
+                                    <form action="{{route('user#order')}}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="order_code" value="{{$orderTemp[0]['order_code']}}">
+                                        <input type="hidden" name="finalTotal" value="{{$orderTemp[0]['subTotal']+5000}}">
                                         <div class="form-row ">
                                             <div class="col-md-6">
-                                                <input type="text" name="name" class="form-control" placeholder="User Name..." readonly>
+                                                <input type="text" name="name" class="form-control" placeholder="User Name..." readonly value="{{Auth::user()->name}}">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" name="phone" class="form-control" placeholder="09xxxxxxxxx">
+                                                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="09xxxxxxxxx" value="{{old('phone')}}">
+                                                @error('phone')
+                                                    <span class="invalid-feedback">{{$message}}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="form-row mt-3">
-                                            <input type="text" name="address" class="form-control" placeholder="Address...">
+                                            <div class="col">
+                                                <textarea name="address" rows="5" class="form-control p-2 @error('address') is-invalid @enderror" placeholder="Address...">{{old('address')}}</textarea>
+                                                @error('address')
+                                                    <span class="invalid-feedback">{{$message}}</span>
+                                                @enderror
+                                            </div>
                                         </div>
 
                                         <div class="form-row mt-3">
                                             <div class="form-group col-lg-5">
-
-                                                    <select name="paymentType" id="" class=" w-100">
-                                                        <option value="">Choose Payment Method...</option>
-                                                        @foreach ($paymentAcc as $items)
-                                                            <option value="{{ $items->id }}"
-                                                                @if (old('paymentType') == $items->id) selected @endif>
-                                                                {{ $items->type }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                                <select name="paymentType" id=""
+                                                class=" w-100 @error('paymentType') is-invalid @enderror">
+                                                    <option value="">Choose Payment Method...</option>
+                                                    @foreach ($paymentAcc as $items)
+                                                        <option value="{{ $items->payment_id }}" @if (old('paymentType') == $items->payment_id) selected @endif>
+                                                            {{ $items->type }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('paymentType')
+                                                        <span class="invalid-feedback">{{$message}}</span>
+                                                @enderror
+                                            </div>
                                             <div class="form-group col-lg-7">
-                                                <input type="file" class="form-control" name="paymentVoucher"  id=""
+                                                <input type="file" class="form-control @error('paymentVoucher') is-invalid @enderror" name="paymentVoucher"  id=""
                                                     style="height: 40px;">
+                                                    @error('paymentVoucher')
+                                                        <span class="invalid-feedback">{{$message}}</span>
+                                                    @enderror
                                             </div>
                                         </div>
-
 
                                         <div class="form-row mt-3">
                                             <div class="col-5 offset-7 d-flex justify-content-end">

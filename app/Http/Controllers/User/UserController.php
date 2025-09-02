@@ -3,12 +3,14 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -259,6 +261,7 @@ class UserController extends Controller
                 'count' => $data['count'],
                 'status' => $data['status'],
                 'order_code' => $data['order_code'],
+                'subTotal' => $data['subTotal']
             ]);
         }
         // logger($orderTemp);
@@ -269,11 +272,85 @@ class UserController extends Controller
                 'message' => 'Successfully store in session.',
             ], 200);
     }
+
     //direct to payment page
     public function paymentPage()
     {
-        $paymentAcc = Payment::orderBy('account_name','asc')->get();
-        // dd($paymentAcc->toArray());
-        return view('user.home.paymentPage',compact('paymentAcc'));
+        $orderTemp = Session::get('tempCart');
+        $paymentAcc = Payment::select('id as payment_id','account_name','account_number','type')->orderBy('type','asc')->get();
+        $products = Cart::select('carts.qty', 'carts.user_id', 'products.image',
+                            'products.name', 'products.sale_price')
+            ->leftJoin('products', 'carts.product_id', 'products.id')
+            ->where('carts.user_id', Auth::user()->id)
+            ->get();
+        // dd($products->toArray());
+        return view('user.home.paymentPage',compact('paymentAcc','orderTemp','products'));
+    }
+
+    //order
+    public function order(Request $request){
+        // dd($request->toArray());
+        $request->validate([
+            'name'=>'required',
+            'phone'=>'required|numeric|digits_between:5,11',
+            'address'=>'required|max:2000',
+            'paymentType'=>'required',
+            'paymentVoucher'=>'required|file|mimes:png,jpg,jpeg,webp,svg,gif'
+        ]);
+
+        $orderTemp = Session::get('tempCart');
+
+        $paymentHistory = [
+            'user_name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'payment_type' => $request->paymentType,
+            'order_code' => $request->order_code,
+            'final_total' => $request->finalTotal
+        ];
+        if ($request->hasFile('paymentVoucher')) {
+            // get tmp name to save image
+            $fileName = uniqid() . $request->file('paymentVoucher')->getClientOriginalName();
+            // save image in public-productImage file
+            $request->file('paymentVoucher')->move(public_path() . '/payment_voucher/', $fileName);
+            // put $fileName in $data before put into db
+            $paymentHistory['payment_voucher'] = $fileName;
+        }
+        // dd($paymentHistory);
+        PaymentHistory::create($paymentHistory);
+        // dd($orderTemp);
+        foreach($orderTemp as $items){
+            Order::create([
+                'product_id' => $items['product_id'],
+                'user_id' => $items['user_id'],
+                'count' => $items['count'],
+                'status' => $items['status'],
+                'order_code' => $items['order_code']
+            ]);
+
+        Cart::where('product_id',$items['product_id'])
+                ->where('user_id',$items['user_id'])
+                ->delete();
+
+        }
+
+        Alert::success('Order Success','Your order has been placed successfully');
+        return to_route('user#cart');
+    }
+
+
+    //pending order list
+    public function pendingOrderList(){
+        $profile = User::select('users.id', 'users.name', 'users.profile', 'users.created_at')
+            ->where('id', Auth::user()->id)
+            ->first();
+
+        $pendingOrder = Order::where('user_id',Auth::user()->id)
+                            ->where('status','0')
+                            ->groupBy('order_code')
+                            ->orderBy('created_at',"desc")
+                            ->get();
+        // dd($pendingOrder->toArray());
+        return view('',compact('pendingOrder','profile'));
     }
 }

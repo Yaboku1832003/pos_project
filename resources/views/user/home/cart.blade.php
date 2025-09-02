@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <section class="section">
+    <section class="section bg-gray">
         <!-- Container Start -->
         <div class="container">
             <div class="row">
@@ -24,21 +24,21 @@
                         <!-- Dashboard Links -->
                         <div class="widget user-dashboard-menu">
                             <ul>
-                                <li class="active"><a href="dashboard-my-ads.html"><i class="fa-solid fa-cart-shopping"></i>
-                                        My Cart</a></li>
-                                <li>
-                                    <a href="#"><i class="fa-regular fa-thumbs-up"></i> Pending
+                                <li class="active" data-target="#cartSection">
+                                    <a href=""><i class="fa-solid fa-cart-shopping"> </i>My Cart</a>
+
+                                </li>
+                                <li data-target="#pendingOrderSection">
+                                    <a href=""><i class="fa-solid fa-spinner"></i> Pending
                                         Orders<span>233</span></a>
                                 </li>
-                                <li>
-                                    <a href="#"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                                <li data-target="#orderHistorySection">
+                                    <a href="#"><i class="fa-solid fa-clock-rotate-left"></i>
+                                        Orders History<span>233</span></a>
                                 </li>
                                 <li>
                                     <a href="{{ route('user#homePage') }}"><i class="fas fa-home  fs-5 mt-1"></i> Back</a>
                                 </li>
-                                {{-- <li>
-                                    <a href="#!" data-toggle="modal" data-target="#deleteaccount"><i class="fa fa-power-off"></i>Back</a>
-                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -47,132 +47,194 @@
 
                 {{-- My Cart data start --}}
                 <div class="col-lg-9">
-                    <h3 class="widget-header">My Cart</h3>
-                    @if ($cartData->count() > 0)
-                        <div class="table-responsive">
-                           <div class="table-responsive">
-                                <table class="table w-100" id="productTable">
+                    <div class="content-section" id="cartSection">
+                            <div class="card">
+                                <div class="card-header fs-3">My Cart</div>
+                                @if ($cartData->count() > 0)
+                                    <div class="table-responsive">
+                                            <table class="table w-100" id="productTable">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Name</th>
+                                                        <th>Price</th>
+                                                        <th class="text-center">Quantity</th>
+                                                        <th>Total</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($cartData as $data)
+                                                        <tr>
+                                                            <td class="p-3">
+                                                                <img src="{{ asset('productImage/' . $data->image) }}"
+                                                                    style="width:100px; height:100px; object-fit:cover;"
+                                                                    class="rounded-circle">
+                                                            </td>
+                                                            <td class="p-3">
+                                                                <h6 class="title">{{ $data->name }}</h6>
+                                                            </td>
+                                                            <td class="p-3">
+                                                                <span class="text-muted price">{{ $data->sale_price }} mmk</span>
+                                                            </td>
+                                                            <td class="p-3">
+                                                                {{-- Quantity + - start --}}
+                                                                <span
+                                                                    class="text-danger @if ($data->stock > 5) text-muted @endif"
+                                                                    style="font-size: 10px;">Stock: {{ $data->stock }} item(s)
+                                                                    left</span>
+                                                                @csrf
+                                                                <div class="d-flex justify-content-evenly align-items-center mt-3"
+                                                                    style="max-width: 120px;">
+                                                                    <button type="submit"
+                                                                        class="btn btn-outline-primary rounded-pill p-0 btn-minus"
+                                                                        value="minus" name="action"
+                                                                        style="width: 25px; height:25px;">
+                                                                        <i class="fas fa-minus"></i>
+                                                                    </button>
+                                                                    <input type="" name="quantity"
+                                                                        data-stock="{{ $data->stock }}"
+                                                                        class="form-control text-center border-0 quantity"
+                                                                        value="{{ $data->qty }}" min="1"
+                                                                        style="width:50px; height:25px;">
+                                                                    <button type="submit"
+                                                                        class="btn btn-outline-primary rounded-pill p-0 btn-plus"
+                                                                        value="plus" name="action"
+                                                                        style="width: 25px; height:25px;">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                                {{-- Quantity + - end --}}
+                                                            </td>
+                                                            <td class="p-3 text-muted total">{{ $data->sale_price * $data->qty }}
+                                                                mmk</td>
+                                                            <td class="d-flex justify-content-center align-content-center">
+                                                                <button style="width: 40px; height: 40px;" title="Delete"
+                                                                    class="btn btn-outline-danger rounded-circle btn-delete">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td>
+                                                                <input type="hidden" class="cartId" value="{{ $data->cart_id }}">
+                                                                <input type="hidden" class="userId"
+                                                                    value="{{ Auth::user()->id }}">
+                                                                <input type="hidden" class="productId"
+                                                                    value="{{ $data->product_id }}">
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                @else
+                                    <section class="section">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-6 text-center mx-auto">
+                                                    <h4>Empty Cart</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                @endif
+                                <!-- Cart Save Modal -->
+                                <div class="modal fade" id="cartSaveModal" tabindex="-1" aria-labelledby="cartSaveModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Unsaved Changes</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Do you want to save them before leaving?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" id="discardBtn"
+                                                    data-bs-dismiss="modal">Discard</button>
+                                                <button type="button" class="btn btn-primary" id="saveBtn">Save
+                                                    Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <div class="card mt-4" style="width: 300px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Cart Summary</h5>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Subtotal:</span>
+                                                <span id="subTotal">{{ $totalPrice }} mmk</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Delivery Fee:</span>
+                                                <span>5000 mmk</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Total:</span>
+                                                <span id="finalTotal">{{ $totalPrice + 5000 }} mmk</span>
+                                            </li>
+                                        </ul>
+                                        <div class="mt-3 text-end">
+                                            <button id="btnCheckout" class="btn btn-success"
+                                                @if ($cartData->count() == 0) disabled @endif>
+                                                Checkout
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="content-section d-none" id="pendingOrderSection">
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table w-100">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th class="text-center">Quantity</th>
-                                            <th>Total</th>
-                                            <th></th>
+                                            <th>Order Code</th>
+                                            <th>Date</th>
+                                            <th>Order Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($cartData as $data)
-                                            <tr>
-                                                <td class="p-3">
-                                                    <img src="{{ asset('productImage/' . $data->image) }}"
-                                                        style="width:100px; height:100px; object-fit:cover;"
-                                                        class="rounded-circle">
-                                                </td>
-                                                <td class="p-3">
-                                                    <h6 class="title">{{ $data->name }}</h6>
-                                                </td>
-                                                <td class="p-3">
-                                                    <span class="text-muted price">{{ $data->sale_price }} mmk</span>
-                                                </td>
-                                                <td class="p-3">
-                                                    {{-- Quantity + - start --}}
-                                                    <span class="text-danger @if ($data->stock > 5) text-muted @endif"
-                                                        style="font-size: 10px;">Stock: {{ $data->stock }} item(s) left</span>
-                                                    @csrf
-                                                    <div class="d-flex justify-content-evenly align-items-center mt-3"
-                                                        style="max-width: 120px;">
-                                                        <button type="submit" class="btn btn-outline-primary rounded-pill p-0 btn-minus"
-                                                                value="minus" name="action" style="width: 25px; height:25px;">
-                                                            <i class="fas fa-minus"></i>
-                                                        </button>
-                                                        <input type="" name="quantity"
-                                                            data-stock="{{ $data->stock }}"
-                                                            class="form-control text-center border-0 quantity"
-                                                            value="{{ $data->qty }}" min="1"
-                                                            style="width:50px; height:25px;">
-                                                        <button type="submit" class="btn btn-outline-primary rounded-pill p-0 btn-plus"
-                                                                value="plus" name="action" style="width: 25px; height:25px;">
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                    {{-- Quantity + - end --}}
-                                                </td>
-                                                <td class="p-3 text-muted total">{{ $data->sale_price * $data->qty }} mmk</td>
-                                                <td class="d-flex justify-content-center align-content-center">
-                                                    <button style="width: 40px; height: 40px;" title="Delete"
-                                                        class="btn btn-outline-danger rounded-circle btn-delete">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <input type="hidden" class="cartId" value="{{$data->cart_id}}">
-                                                    <input type="hidden" class="userId" value="{{Auth::user()->id}}">
-                                                    <input type="hidden" class="productId" value="{{$data->product_id}}">
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    @else
-                        <section class="section bg-gray">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6 text-center mx-auto">
-                                        <h4>Empty Cart</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    @endif
-                    <!-- Cart Save Modal -->
-                    <div class="modal fade" id="cartSaveModal" tabindex="-1" aria-labelledby="cartSaveModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Unsaved Changes</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Do you want to save them before leaving?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" id="discardBtn" data-bs-dismiss="modal">Discard</button>
-                                <button type="button" class="btn btn-primary" id="saveBtn">Save Changes</button>
-                            </div>
+                    </div>
+                    <div class="content-section d-none" id="orderHistorySection">
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Order Code</th>
+                                            <th>Date</th>
+                                            <th>Order Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-end">
-                        <div class="card mt-4" style="width: 300px;">
-                            <div class="card-body">
-                                <h5 class="card-title">Cart Summary</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <span>Subtotal:</span>
-                                        <span id="subtotal">{{ $totalPrice }} mmk</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <span>Delivery Fee:</span>
-                                        <span>5000 mmk</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <span>Total:</span>
-                                        <span id="finalTotal">{{ $totalPrice + 5000 }} mmk</span>
-                                    </li>
-                                </ul>
-                                <div class="mt-3 text-end">
-                                    <button id="btnCheckout" class="btn btn-success">Checkout</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+
                 {{-- My Cart data end --}}
             </div>
         </div>
@@ -189,7 +251,7 @@
 
             function countCalculation(button) {
                 let parentNode = button.closest("tr");
-                let price = parseFloat(parentNode.find(".price").text().replace("mmk", "").trim());
+                let price = parentNode.find(".price").text().replace("mmk", "");
                 let qty = parseInt(parentNode.find(".quantity").val());
                 parentNode.find(".total").text((price * qty) + " mmk");
             }
@@ -200,7 +262,7 @@
                     // console.log($item);
                     total += Number($(item).find(".total").text().replace("mmk", ""));
                 })
-                $("#subtotal").html(`${total} mmk`)
+                $("#subTotal").html(`${total} mmk`)
                 $("#finalTotal").html(`${total+5000} mmk`)
             }
 
@@ -234,7 +296,7 @@
                 cartId = parentNode.find(".cartId").val();
 
                 deleteData = {
-                    'cartId' : cartId
+                    'cartId': cartId
                 }
 
                 $.ajax({
@@ -249,9 +311,9 @@
                 })
             })
 
-            $('a').click(function(e){
+            $('a').click(function(e) {
                 let url = $(this).attr('href');
-                if(cartUpdated){
+                if (cartUpdated) {
                     e.preventDefault(); // stop immediate navigation
                     pendingUrl = url;
                     $('#cartSaveModal').modal('show');
@@ -259,73 +321,97 @@
             });
 
             // Save changes
-            $('#saveBtn').click(function(){
+            $('#saveBtn').click(function() {
                 let cartUpdates = [];
                 $("#productTable tbody tr").each(function(index, item) {
                     let cartId = $(item).find('.cartId').val();
                     let quantity = $(item).find('.quantity').val();
-                    cartUpdates.push({ cartId, quantity });
+                    cartUpdates.push({
+                        cartId,
+                        quantity
+                    });
                 });
 
                 updateData = {
-                    'data' : cartUpdates,
+                    'data': cartUpdates,
                     _token: $('meta[name="csrf-token"]').attr('content')
                 }
 
                 $.ajax({
                     url: '/user/cart/update',
                     type: 'POST',
-                    data:  updateData ,
+                    data: updateData,
                     dataType: 'json',
-                    success: function(response){
-                        if(response.status === 'success'){
+                    success: function(response) {
+                        if (response.status === 'success') {
                             cartUpdated = false;
                             $('#cartSaveModal').modal('hide');
-                            if(pendingUrl) window.location.href = pendingUrl;
+                            if (pendingUrl) window.location.href = pendingUrl;
                         }
                     }
                 });
             });
 
             // Discard changes
-            $('#discardBtn').click(function(){
+            $('#discardBtn').click(function() {
                 cartUpdated = false;
                 $('#cartSaveModal').modal('hide');
-                if(pendingUrl) window.location.href = pendingUrl;
+                if (pendingUrl) window.location.href = pendingUrl;
             });
 
             //checkOut
-            $('#btnCheckout').click(function(){
+            $('#btnCheckout').click(function() {
                 orderList = [];
-                userId=$('.userId').val();
-                orderCode = "ZWY-POS-ORDER-" + Math.floor(Math.random() * 100000000);
+                userId = $('.userId').val();
+                orderCode = "ZWY-POS-ORDER-" + Math.floor(Math.random() * 10000000000);
                 // console.log(userId, orderCode);
 
                 $("#productTable tbody tr").each(function(index, row) {
                     productId = $(row).find('.productId').val();
                     qty = $(row).find('.quantity').val();
                     cartId = $(row).find('.cartId').val();
+                    subTotal = $('#subTotal').text().replace("mmk", "");
+                    // console.log(subTotal);
 
                     // array.push -> push object into array
                     orderList.push({
-                        'product_id' : productId,
-                        'user_id' : userId,
-                        'count' : qty,
-                        'status' : 0,
-                        'order_code' : orderCode
-                   });
+                        'product_id': productId,
+                        'user_id': userId,
+                        'count': qty,
+                        'status': 0,
+                        'order_code': orderCode,
+                        'subTotal': subTotal
+                    });
                 })
                 // console.log(orderList);
                 $.ajax({
                     url: '/user/cart/tempStorage',
                     type: 'get',
-                    data: Object.assign({},orderList) , //orderList = []; is array and we wanna send objects so we have to make them object assign
+                    data: Object.assign({},
+                    orderList), //orderList = []; is array and we wanna send objects so we have to make them object assign
                     dataType: 'json',
-                    success: function(response){
+                    success: function(response) {
                         // console.log(response);
-                        response.status == 'success' ? location.href ='/user/cart/paymentPage' : location.reload();
+                        response.status == 'success' ? location.href =
+                            '/user/cart/paymentPage' : location.reload();
                     }
                 });
+            });
+
+            //user menu
+            $('.user-dashboard-menu li').click(function(e){
+                e.preventDefault();
+
+                // Switch active state
+                $('.user-dashboard-menu li').removeClass('active');
+                $(this).addClass('active');
+
+                // Hide all sections
+                $('.content-section').addClass('d-none');
+
+                // Show selected section
+                let target = $(this).data('target');
+                $(target).removeClass('d-none');
             });
 
         });
