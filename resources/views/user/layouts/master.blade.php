@@ -66,6 +66,13 @@
                         <a href="{{route('user#cart')}}" class="position-relative me-4">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
+                        <a href="#" class="position-relative me-4">
+                            <i class="fa-solid fa-bell fa-2x"></i>
+                            <!-- Red dot -->
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        </a>
                         <div class="nav-item dropdown d-flex align-items-center">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
                                 data-bs-toggle="dropdown">
@@ -86,7 +93,7 @@
                                 <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
-                                <a href="#" class="dropdown-item py-2 text-muted">Your Orders</a>
+                                <a href="" class="dropdown-item py-2 text-muted">My Orders</a>
                                 <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
                                 <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
 

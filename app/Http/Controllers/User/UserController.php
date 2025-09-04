@@ -329,7 +329,8 @@ class UserController extends Controller
                 'user_id' => $items['user_id'],
                 'count' => $items['count'],
                 'status' => $items['status'],
-                'order_code' => $items['order_code']
+                'order_code' => $items['order_code'],
+                'readStatus' => '0'
             ]);
 
         Cart::where('product_id',$items['product_id'])
@@ -344,7 +345,7 @@ class UserController extends Controller
 
 
     //pending order list
-    public function pendingOrderList(){
+    public function orderList(){
         $profile = User::select('users.id', 'users.name', 'users.profile', 'users.created_at')
             ->where('id', Auth::user()->id)
             ->first();

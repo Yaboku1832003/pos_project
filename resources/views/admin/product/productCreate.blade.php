@@ -14,7 +14,7 @@
                             <div class="text-center">
                                 <img class="img-profile mb-1 w-25 rounded" id="output" src="">
                             </div>
-                            <input type="file" name="image" id="" accept="image/*" class="form-control mt-1 @error('image') is-invalid @enderror "
+                            <input type="file" name="image" id="formFile" accept="image/*" class="form-control mt-1 @error('image') is-invalid @enderror "
                                 onchange="loadFile(event)">
                             @error('image')
                                 <small class="invalid-feedback">{{ $message }}</small>

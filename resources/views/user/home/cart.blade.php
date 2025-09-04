@@ -144,28 +144,40 @@
                                         </div>
                                     </section>
                                 @endif
-                                <!-- Cart Save Modal -->
-                                <div class="modal fade" id="cartSaveModal" tabindex="-1" aria-labelledby="cartSaveModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Unsaved Changes</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Do you want to save them before leaving?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" id="discardBtn"
-                                                    data-bs-dismiss="modal">Discard</button>
-                                                <button type="button" class="btn btn-primary" id="saveBtn">Save
-                                                    Changes</button>
-                                            </div>
+                                <!-- Cart Save Modal Start-->
+                                <div class="modal fade" id="cartSaveModal" tabindex="-1" aria-labelledby="cartSaveModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- smaller, centered modal -->
+                                        <div class="modal-content shadow-lg border-0 rounded-4">
+                                        <!-- Header -->
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title fw-bold text-danger">
+                                            <i class="fas fa-exclamation-circle me-2 text-primary"></i> Unsaved Changes
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <!-- Body -->
+                                        <div class="modal-body text-center">
+                                            <p class="fs-6 text-muted mb-3">
+                                            You’ve made changes to your cart.
+                                            Do you want to save them before leaving?
+                                            </p>
+                                            <i class="fas fa-shopping-cart fa-3x text-primary mb-3"></i>
+                                        </div>
+
+                                        <!-- Footer -->
+                                        <div class="modal-footer border-0 d-flex justify-content-center gap-2">
+                                            <button type="button" class="btn btn-danger border rounded-pill px-4" id="discardBtn" data-bs-dismiss="modal">
+                                            <i class="fas fa-times me-1"></i> Discard
+                                            </button>
+                                            <button type="button" class="btn btn-primary rounded-pill px-4" id="saveBtn">
+                                            <i class="fas fa-save me-1"></i> Save Changes
+                                            </button>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
+                                {{-- Cart Save Modal End --}}
                             </div>
                             <div class="d-flex justify-content-end">
                                 <div class="card mt-4" style="width: 300px;">
@@ -223,7 +235,7 @@
                                         @foreach ($pendingOrders as $items )
                                             <tr class="align-middle">
                                                 <td class="fw-medium">{{$items->order_code}}</td>
-                                                <td>{{ $items->created_at->format('F d, Y - h:i A') }}</td>
+                                                <td>{{ $items->created_at->format('F d, Y') }}</td>
                                                 <td>
                                                     @if ($items->status == 0)
                                                         <span class="d-inline-flex align-items-center px-3 py-1 rounded-pill text-dark bg-warning shadow-sm">
@@ -271,7 +283,7 @@
                                             @foreach ($otherOrders as $items)
                                                 <tr class="align-middle">
                                                     <td class="fw-medium">{{ $items->order_code }}</td>
-                                                    <td>{{ $items->created_at->format('F d, Y - h:i A') }}</td>
+                                                    <td>{{ $items->created_at->format('F d, Y') }}</td>
                                                     <td>
                                                         @if ($items->status == 1)
                                                             <span class="d-inline-flex align-items-center px-3 py-1 rounded-pill bg-success text-white shadow-sm">
@@ -325,36 +337,37 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            let cartUpdated = false;
-            let pendingUrl = null;
+            let cartUpdated = false; // Track if cart has unsaved changes
+            let pendingUrl = null; // Store URL user clicked while having unsaved changes
 
-
+            // Update product row total when quantity changes
             function countCalculation(button) {
-                let parentNode = button.closest("tr");
-                let price = parentNode.find(".price").text().replace("mmk", "");
-                let qty = parseInt(parentNode.find(".quantity").val());
-                parentNode.find(".total").text((price * qty) + " mmk");
+                let parentNode = button.closest("tr");                              // Find row of clicked button
+                let price = parentNode.find(".price").text().replace("mmk", "");    // Get price text, remove "mmk"
+                let qty = parseInt(parentNode.find(".quantity").val());             // Get quantity
+                parentNode.find(".total").text((price * qty) + " mmk");             // Update row total
             }
 
+             // Recalculate subtotal and final total
             function subTotalCalculation() {
                 let total = 0;
                 $("#productTable tbody tr").each(function(index, item) {
-                    // console.log($item);
                     total += Number($(item).find(".total").text().replace("mmk", ""));
                 })
                 $("#subTotal").html(`${total} mmk`)
-                $("#finalTotal").html(`${total+5000} mmk`)
+                $("#finalTotal").html(`${total+5000} mmk`) // Add fixed delivery fee to subTotal to get finalTotal
             }
 
+            // Decrease quantity button
             $('.btn-minus').click(function() {
                 let row = $(this).closest('tr');
                 let input = row.find('.quantity');
                 let current = parseInt(input.val());
                 if (current > 1) {
                     input.val(current - 1);
-                    countCalculation($(this));
-                    subTotalCalculation();
-                    cartUpdated = true;
+                    countCalculation($(this));  // Update row total
+                    subTotalCalculation();      // Update subtotal/final total
+                    cartUpdated = true;         // Mark cart as changed
                 }
             });
 
@@ -365,12 +378,13 @@
                 let current = parseInt(input.val());
                 if (current < stock) {
                     input.val(current + 1);
-                    countCalculation($(this));
-                    subTotalCalculation();
-                    cartUpdated = true;
+                    countCalculation($(this));  // Update row total
+                    subTotalCalculation();      // Update subtotal/final total
+                    cartUpdated = true;         // Mark cart as changed
                 }
             });
 
+            //Delete item from cart
             $(".btn-delete").click(function() {
                 let parentNode = $(this).closest("tr");
                 cartId = parentNode.find(".cartId").val();
@@ -391,25 +405,36 @@
                 })
             })
 
-             $('a').not('.user-dashboard-menu li a').click(function(e) {
-                let url = $(this).attr('href');
-                if (cartUpdated) {
-                    e.preventDefault();
-                    pendingUrl = url;
-                    $('#cartSaveModal').modal('show');
+            //Intercept links if cart has unsaved changes
+            $('.user-dashboard-menu li').click(function(e){
+                if ($(this).is(':last-child')) {
+                    // Back button → trigger modal if unsaved changes
+                    if (cartUpdated) {
+                        e.preventDefault();
+                        pendingUrl = $(this).find('a').attr('href');
+                        let modal = new bootstrap.Modal(document.getElementById('cartSaveModal'));
+                        modal.show();
+                    }
+                    return;
                 }
+
+                // normal section switching
+                e.preventDefault();
+                $('.user-dashboard-menu li').removeClass('active');
+                $(this).addClass('active');
+                $('.content-section').addClass('d-none');
+                let target = $(this).data('target');
+                $(target).removeClass('d-none');
             });
 
-            // Save changes
+
+            // 👉 Save changes to cart before leaving
             $('#saveBtn').click(function() {
                 let cartUpdates = [];
                 $("#productTable tbody tr").each(function(index, item) {
                     let cartId = $(item).find('.cartId').val();
                     let quantity = $(item).find('.quantity').val();
-                    cartUpdates.push({
-                        cartId,
-                        quantity
-                    });
+                    cartUpdates.push({ cartId, quantity });
                 });
 
                 updateData = {
@@ -424,20 +449,23 @@
                     dataType: 'json',
                     success: function(response) {
                         if (response.status === 'success') {
-                            cartUpdated = false;
-                            $('#cartSaveModal').modal('hide');
-                            if (pendingUrl) window.location.href = pendingUrl;
+                            cartUpdated = false;  // Reset flag
+                            let modal = bootstrap.Modal.getInstance(document.getElementById('cartSaveModal'));
+                            modal.hide();         // Close modal
+                            if (pendingUrl) window.location.href = pendingUrl; // Continue navigation
                         }
                     }
                 });
             });
 
-            // Discard changes
+            // 👉 Discard changes and leave page
             $('#discardBtn').click(function() {
-                cartUpdated = false;
-                $('#cartSaveModal').modal('hide');
-                if (pendingUrl) window.location.href = pendingUrl;
+                cartUpdated = false;  // Ignore unsaved changes
+                let modal = bootstrap.Modal.getInstance(document.getElementById('cartSaveModal'));
+                modal.hide();         // Close modal
+                if (pendingUrl) window.location.href = pendingUrl; // Continue navigation
             });
+
 
             //checkOut
             $('#btnCheckout').click(function() {

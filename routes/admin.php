@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::group(['prefix' => 'admin', 'middleware' => 'adminMiddleware'], function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin#dashboard');
@@ -73,4 +74,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminMiddleware'], function 
 
     });
      //superadmin only end (protected with middleWare)
+
+     Route::group(['prefix' => 'order'],function(){
+        Route::get('list',[OrderController::class,'orderList'])->name('admin#orderList');
+        Route::get('details/{orderCode}',[OrderController::class,'orderDetails'])->name('admin#orderDetails');
+        Route::get('/payment/download/{id}', [PaymentController::class, 'download'])->name('payment#download');
+     });
 });

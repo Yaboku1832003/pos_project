@@ -1,131 +1,161 @@
 @extends('admin.layouts.master')
 
 @section('content')
-    {{-- whole content start --}}
-    <div class="container-fluid">
-        {{-- add payment start --}}
-        <div class="card shadow mb-4 col-md-6 mx-auto">
-            <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-primary">Add Payment Method</h4>
-            </div>
+<div class="container-fluid py-4">
 
-            <form action="{{ route('payment#storeMethod') }}" method="POST">
-                @csrf
-
-                <div class="card-body">
-
-                    <div class="mb-3">
-                        <label for="account_type" class="form-label">Account Type</label>
-                        <input type="text" name="account_type" id="account_type"
-                            class="form-control @error('account_type') is-invalid @enderror"
-                            value="{{ old('account_type') }}" placeholder="e.g., KBZ pay, AYA pay">
-                        @error('account_type')
-                            <small class="invalid-feedback">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-
-                    <div class="mb-3">
-                        <label for="account_name" class="form-label">Account Name</label>
-                        <input type="text" name="account_name" id="account_name"
-                            class="form-control @error('account_name') is-invalid @enderror"
-                            value="{{ old('account_name') }}" placeholder="Enter account name">
-                        @error('account_name')
-                            <small class="invalid-feedback">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-
-                    <div class="mb-3">
-                        <label for="account_number" class="form-label">Account Number</label>
-                        <input type="text" name="account_number" id="account_number"
-                            class="form-control @error('account_number') is-invalid @enderror"
-                            value="{{ old('account_number') }}" placeholder="Enter account number">
-                        @error('account_number')
-                            <small class="invalid-feedback">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Add Payment Method</button>
+    <div class="row g-4">
+        {{-- Add Payment Method --}}
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fa-solid fa-wallet me-2"></i> Add Payment Method</h5>
                 </div>
-            </form>
-        </div>
-        {{-- add payment end --}}
 
-        {{-- payment list start --}}
-        <div class="card shadow mt-4 col-md-8 mx-auto">
-            <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-primary">Payment Methods List</h4>
-            </div>
+                <form action="{{ route('payment#storeMethod') }}" method="POST">
+                    @csrf
+                    <div class="card-body">
 
-            <div class="card-body">
-                @if ($payments->isEmpty())
-                    <p>No payment methods created yet.</p>
-                @else
-                    <table class="table table-hover shadow-sm">
-                        <thead class="bg-primary text-white">
-                            <tr>
-                                <th>#</th>
-                                <th>Account Type</th>
-                                <th>Account Name</th>
-                                <th>Account Number</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($payments as $payment)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $payment->type }}</td>
-                                    <td>{{ $payment->account_name }}</td>
-                                    <td>{{ $payment->account_number }}</td>
-                                    <td>
-                                        <a href="{{ route('payment#edit',$payment->id) }}"
-                                            class="btn btn-sm btn-outline-secondary"title="Edit Payment Method"
-                                            aria-label="Edit payment method for {{ $payment->account_name }}"> <i
-                                                class="fa-solid fa-pen-to-square"></i>
-                                        </a>
-                                        <button type="button" onclick="deleteButton({{ $payment->id }})"
-                                            class="btn btn-danger btn-sm" title="Delete Payment Method"
-                                            aria-label="Delete payment method for {{ $payment->account_name }}"><i
-                                                class="fa-solid fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
+                        <div class="mb-3">
+                            <label class="form-label">Account Type</label>
+                            <input type="text" name="account_type" class="form-control @error('account_type') is-invalid @enderror"
+                                   value="{{ old('account_type') }}" placeholder="e.g., KBZ Pay, AYA Pay">
+                            @error('account_type') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Account Name</label>
+                            <input type="text" name="account_name" class="form-control @error('account_name') is-invalid @enderror"
+                                   value="{{ old('account_name') }}" placeholder="Enter account name">
+                            @error('account_name') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" name="account_number" class="form-control @error('account_number') is-invalid @enderror"
+                                   value="{{ old('account_number') }}" placeholder="Enter account number">
+                            @error('account_number') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-light">Reset</button>
+                            <button type="submit" class="btn btn-primary">Add Method</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        {{-- payment list end --}}
+
+        {{-- Payment List --}}
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fa-solid fa-list me-2"></i> Payment Methods</h5>
+                </div>
+                <div class="card-body">
+                    @if($payments->isEmpty())
+                        <div class="text-center text-muted py-5">
+                            <i class="fa-solid fa-credit-card fa-2x mb-3"></i>
+                            <p>No payment methods created yet.</p>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-primary text-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type</th>
+                                        <th>Name</th>
+                                        <th>Number</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($payments as $payment)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $payment->type }}</td>
+                                            <td>{{ $payment->account_name }}</td>
+                                            <td>{{ $payment->account_number }}</td>
+                                            <td class="text-center">
+                                                <div class="btn-group btn-group-sm">
+                                                    <button class="btn btn-outline-secondary"
+                                                            onclick="openEditCard({{ $payment->id }})">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger"
+                                                            onclick="deleteButton({{ $payment->id }})">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        {{-- Floating Edit Card --}}
+                                        <div id="editCard{{ $payment->id }}"
+                                             class="position-fixed top-50 start-50 translate-middle shadow-lg bg-white p-4 rounded d-none"
+                                             style="width: 400px; z-index: 1050;">
+                                             <div class="card-header  d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-0"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i> Edit Payment Methods</h5>
+                                            </div>
+                                            <form action="{{ route('payment#update', $payment->id) }}" method="post">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <label class="form-label">Account Type</label>
+                                                    <input type="text" name="account_type" value="{{ old('account_type', $payment->type) }}" class="form-control mb-2">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Account Name</label>
+                                                    <input type="text" name="account_name" value="{{ old('account_name', $payment->account_name) }}" class="form-control mb-2">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Account Number</label>
+                                                    <input type="text" name="account_number" value="{{ old('account_number', $payment->account_number) }}" class="form-control mb-2">
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeEditCard({{ $payment->id }})">Cancel</button>
+                                                    <div class="ml-3">
+                                                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
-    {{-- whole content end --}}
+</div>
 @endsection
 
 @section('js-sweetalert')
-    <script>
-        function deleteButton($id) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                draggable: true,
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        icon: "success"
-                    });
-                    setInterval(() => {
-                        location.href = '/admin/payment/delete/' + $id
-                    }, 1000);
-                }
-            });
-        }
-    </script>
+<script>
+    function deleteButton(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if(result.isConfirmed){
+                location.href = '/admin/payment/delete/' + id;
+            }
+        });
+    }
+
+    function openEditCard(id){
+        document.querySelectorAll('[id^=editCard]').forEach(el => el.classList.add('d-none'));
+        document.getElementById('editCard' + id).classList.remove('d-none');
+    }
+
+    function closeEditCard(id){
+        document.getElementById('editCard' + id).classList.add('d-none');
+    }
+</script>
 @endsection
