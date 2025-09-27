@@ -93,14 +93,14 @@
                     <div class="col-md-12">
                         <div class="section-title">
                             <h2>Most Rated Items</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, magnam.</p>
+                            <p>Discover our top-rated items. 🌟</p>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="trending-ads-slide">
-                            @foreach ($products as $product)
+                            @foreach ($topRatedProducts as $product)
                                 <div class="col-sm-12 col-lg-4 d-flex align-items-stretch">
                                     <div class="product-item bg-light w-100">
                                         <div class="card h-100">
@@ -176,11 +176,16 @@
                                             </p>
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <h5 class="text-primary mb-0">{{ $item->sale_price }} MMK</h5>
-                                                @if (Auth::user())
-                                                <a href="#" class="btn btn-primary btn-sm d-inline-flex align-items-center">
-                                                    <i class="fa-solid fa-cart-shopping me-2"></i>
-                                                    Add to Cart
-                                                </a>
+                                                @if(Auth::user())
+                                                    <form action="{{ route('user#addToCart') }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="productId" value="{{ $item->id }}">
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <button type="submit" class="btn btn-primary rounded-pill btn-sm d-inline-flex align-items-center">
+                                                            <i class="fa-solid fa-cart-shopping me-2"></i>
+                                                            Add to Cart
+                                                        </button>
+                                                    </form>
                                                 @else
                                                     <small class="text-muted">
                                                         Need to Sign In/Up
@@ -198,96 +203,5 @@
             </div>
             <!-- Container End -->
         </section>
-        <!-- <div class="container py-5">
-                    <div class="tab-class text-center">
-                        <div class="row g-4">
-                            <div class="col-lg-4 text-start">
-                                <h1>Our Products</h1>
-                            </div>
-                            <div class="col-lg-8 text-end">
-                                <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                    <li class="nav-item">
-                                        <a class="d-flex m-2 py-2 bg-light rounded-pill" href="">
-                                            <span class="text-dark" style="width: 130px;">All Products</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="tab-content">
-                            <div id="tab-1" class="tab-pane fade show p-0 active">
-                                <div class="row g-4">
-                                    <div class="col-3">
-                                        <div class="form">
-                                            <form action="" method="get">
-                                                <div class="input-group">
-                                                    <input type="text" name="searchKey" value="" class="form-control"
-                                                        placeholder="Enter Search Key...">
-                                                    <button type="submit" class="btn"> <i class="fa-solid fa-magnifying-glass"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-12">
-                                                <form action="" method="get">
-                                                    <input type="text" name="minPrice" value="" placeholder="Minimum Price..."
-                                                        class="form-control my-2">
-                                                    <input type="text" name="maxPrice" value="" placeholder="Maximum Price..."
-                                                        class="form-control my-2">
-                                                    <input type="submit" value="Search" class="btn btn-success my-2 w-100">
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <form action="" method="get">
-                                                    <select name="sortingType" class="form-control w-100 bg-white mt-3">
-                                                    </select>
-                                                    <input type="submit" value="Sort" class="btn btn-success my-3 w-100">
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="row g-4">
-                                            @foreach ($products as $item)
-                                                <div class="col-4">
-                                                    <div class="card h-100 rounded position-relative">
-                                                        <div class="fruite-img">
-                                                            <a href="">
-                                                                <img src="{{ asset('productImage/' . $item->image) }}"
-                                                                    class="card-img-top img-fluid rounded-top"
-                                                                    style="height: 220px; object-fit: cover;" alt="">
-                                                            </a>
-                                                        </div>
-                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                            style="top: 10px; left: 10px;">Category Name
-                                                        </div>
-                                                        <div
-                                                            class="card-body d-flex flex-column justify-content-between p-4 border border-secondary border-top-0 rounded-bottom">
-                                                            <h4 class="card-title">{{ $item->name }}</h4>
-                                                            <p class="card-text overflow-auto" style="max-height: 80px;">
-                                                                {{ $item->description }}
-                                                            </p>
-                                                            <div class="d-flex justify-content-between flex-lg-wrap mt-3">
-                                                                <p class="text-dark fs-5 fw-bold mb-0"> mmk</p>
-                                                                <a href="#"
-                                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                                    cart
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
     </div>
 @endsection

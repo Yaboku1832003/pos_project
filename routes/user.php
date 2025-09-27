@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\OrderNotificationController;
 
 Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::get('homepage',[UserController::class,'homepage'])->name('user#homePage');
@@ -22,6 +23,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::get('cart/paymentPage',[UserController::class,'paymentPage'])->name('user#paymentPage');
 
         Route::post('order',[UserController::class,'order'])->name('user#order');
-        Route::get('myOrders',[UserController::class,'orderList'])->name('user#orderList');
 
+        Route::get('/notifications/count', [OrderNotificationController::class, 'getNotificationCount'])->name('user#notificationCount');
+        Route::post('/notifications/mark-as-read', [OrderNotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+        Route::get('/user/my-orders', [OrderNotificationController::class, 'myOrders'])->name('user#myOrders');
 });

@@ -66,13 +66,20 @@
                         <a href="{{route('user#cart')}}" class="position-relative me-4">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
-                        <a href="#" class="position-relative me-4">
+                        {{-- notify the unread orders start --}}
+                        <a href="{{ route('user#myOrders') }}" class="position-relative me-4" id="notification-bell">
                             <i class="fa-solid fa-bell fa-2x"></i>
-                            <!-- Red dot -->
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                                <span class="visually-hidden">New alerts</span>
+                            <span id="notification-dot"
+                                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                                style="display:none;">
+                            </span>
+                            <span id="notification-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="display:none;">
                             </span>
                         </a>
+
+                        {{-- notify the unread orders end --}}
                         <div class="nav-item dropdown d-flex align-items-center">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
                                 data-bs-toggle="dropdown">
@@ -255,5 +262,58 @@
     <script src="{{ asset('plugins/slick/slick.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-        @yield('js')
+    <script>
+    $(document).ready(function () {
+        function fetchNotifications() {
+            $.ajax({
+                url: '/user/notifications/count',
+                type: "GET",
+                success: function (response) {
+                    console.log("Notification response:", response);
+                    if (response.count > 0) {
+                        $("#notification-dot").show();
+                        $("#notification-count").text(response.count).show();
+                    } else {
+                        $("#notification-dot").hide();
+                        $("#notification-count").hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching notifications:", error);
+                }
+            });
+        }
+
+        // Run once when page loads
+        fetchNotifications();
+
+        // Auto refresh every 10s
+        setInterval(fetchNotifications, 10000);
+
+        // When bell is clicked → mark as read
+        $("#notification-bell").on("click", function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/user/notifications/mark-as-read',
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#notification-dot").hide();
+                        $("#notification-count").hide();
+                        window.location.href = "{{ route('user#myOrders') }}";
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error marking notifications as read:", error);
+                }
+            });
+        });
+    });
+</script>
+
+    @yield('js')
 </html>

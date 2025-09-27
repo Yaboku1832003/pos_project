@@ -33,8 +33,9 @@ class UserController extends Controller
             $product->star_count = number_format(Rating::where('product_id', $product->id)->avg('count')); //rating for each product id
                                                                                                            // echo $product->star_count.'<br>';
         }
+        $topRatedProducts = $products->sortByDesc('star_count')->take(5);
         // dd($products->toArray());
-        return view('user.home.userHomePage', compact('products', 'categories'));
+        return view('user.home.userHomePage', compact('products', 'categories','topRatedProducts'));
     }
 
     public function category(Request $request)

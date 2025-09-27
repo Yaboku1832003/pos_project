@@ -60,10 +60,12 @@
                                             <a href="{{route('admin#orderDetails',$items->order_code)}}" class="btn btn-sm btn-outline-info">
                                                 <i class="fa-solid fa-eye"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-outline-success @if ($items->status != 0) disabled @endif">
+                                            <a href="#" class="btn btn-sm confirm-order  @if ($items->status != 0 || $items->stock < $items->count) btn-outline-secondary disabled @else btn-outline-success @endif"
+                                                data-order_code ="{{ $items->order_code }}">
                                                 <i class="fa-solid fa-check"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-outline-danger @if ($items->status != 0) disabled @endif " >
+                                            <a href="#"  class="btn btn-sm reject-order  @if ($items->status != 0) btn-outline-secondary disabled @else btn-outline-danger @endif "
+                                                data-order_code ="{{ $items->order_code }}">
                                                 <i class="fa-solid fa-times"></i>
                                             </a>
                                         </div>
@@ -81,9 +83,74 @@
                         @endif
                     </tbody>
                 </table>
+                {{-- pagination --}}
+                <div class="mt-2 d-flex justify-content-end me-3">
+                    {{$orderList->links()}}
+                </div>
             </div>
         </div>
     </div>
 
 </div>
 @endsection
+
+@push('styles')
+    <style>
+        .table th:first-child {
+        border-top-left-radius: 0.5rem;
+    }
+    .table th:last-child {
+        border-top-right-radius: 0.5rem;
+    }
+    </style>
+@endpush
+
+@push('scripts')
+
+<script>
+document.addEventListener('DOMContentLoaded', function ()
+{
+    $(document).ready(function () {
+
+    // Confirm order
+    $('.confirm-order').click(function(e){
+        e.preventDefault();
+        var orderCode = $(this).data('order_code');
+
+        $.ajax({
+            type: 'GET',
+            url: '/admin/order/confirm',
+            data: { order_code: orderCode },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success'){
+                    location.reload();
+                }
+            },
+        });
+    });
+
+    // Reject order
+    $('.reject-order').click(function(e){
+        e.preventDefault();
+        var orderCode = $(this).data('order_code');
+
+        $.ajax({
+            type: 'GET',
+            url: '/admin/order/reject',
+            data: { order_code: orderCode },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success'){
+                    location.reload();
+                }
+            },
+        });
+    });
+
+});
+
+});
+
+</script>
+@endpush

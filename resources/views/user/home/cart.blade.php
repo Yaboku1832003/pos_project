@@ -495,13 +495,11 @@
                 $.ajax({
                     url: '/user/cart/tempStorage',
                     type: 'get',
-                    data: Object.assign({},
-                    orderList), //orderList = []; is array and we wanna send objects so we have to make them object assign
+                    data: Object.assign({},orderList), //orderList = []; is array and we wanna send objects so we have to make them object assign
                     dataType: 'json',
                     success: function(response) {
                         // console.log(response);
-                        response.status == 'success' ? location.href =
-                            '/user/cart/paymentPage' : location.reload();
+                        response.status == 'success' ? location.href = '/user/cart/paymentPage' : location.reload();
                     }
                 });
             });

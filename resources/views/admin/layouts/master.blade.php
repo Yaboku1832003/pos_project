@@ -66,6 +66,7 @@
             }
         }
     </style>
+    @stack('styles')
 </head>
 
 <body id="page-top">
@@ -258,11 +259,11 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
 
-    <script src="{{ asset('admin/vendor/chart.js/Chart.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin/vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('admin/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('admin/js/demo/chart-pie-demo.js') }}"></script> --}}
 
     {{-- sweet alert cdn --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -306,8 +307,9 @@
                 });
             }
         });
-    </script>
 
+    </script>
+    @stack('scripts')
 </body>
 
 </html>
