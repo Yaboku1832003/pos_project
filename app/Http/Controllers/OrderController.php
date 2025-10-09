@@ -52,10 +52,14 @@ class OrderController extends Controller
 
     public function orderConfirm(Request $request){
         // logger($request->all());
-        Order::where('order_code', $request[0]['order_code'])
+        Order::where('order_code', $request->order_code)
             ->update(['status' => 1]);
 
-        foreach ($request->all() as $items) {
+        $order = Order::where('order_code', $request->order_code)
+                        ->get();
+        // logger($order->toArray());
+
+        foreach ($order as $items) {
         Product::where('id', $items['product_id'])
                 ->decrement('stock', $items['count']);
         }

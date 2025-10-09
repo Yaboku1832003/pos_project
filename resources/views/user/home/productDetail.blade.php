@@ -284,7 +284,6 @@
                             </div>
                             {{-- Quantity + - end --}}
                             <div class="d-flex gap-2 mt-3">
-                                <button type="submit" name="action" value="buyNow" class="btn btn-primary flex-fill"><i class="fa-solid fa-wallet p-2 fs-5"></i>Buy Now</button>
                                 <button type="submit" name="action" value="addToCart" class="btn btn-outline-primary flex-fill "><i class="fa-solid fa-cart-plus p-2 fs-5"></i>Add to Cart</button>
                             </div>
                         </form>

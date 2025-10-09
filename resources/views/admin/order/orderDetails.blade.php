@@ -92,8 +92,8 @@
                     @foreach ($order as $items)
 
                     <tr>
-                        <input type="hidden" class="productId" value="{{$items->product_id}}">
-                        <input type="hidden" class="count" value="{{$items->order_count}}">
+                        {{-- <input type="hidden" class="productId" value="{{$items->product_id}}"> --}}
+                        {{-- <input type="hidden" class="count" value="{{$items->order_count}}"> --}}
 
                         <td class="d-flex align-items-center">
                             <img src="{{ asset('productImage/'.$items->image) }}"
@@ -129,7 +129,7 @@
     <div class="row my-3">
         <div class="col text-end">
             <button type="button" class="btn btn-md shadow-sm me-4  text-white  @if ($status) bg-success @else bg-secondary disabled  @endif" id="btn-order-confirm">Confirm</button>
-            <button type="button" class="btn btn-md shadow-sm text-white  bg-danger " id="btn-order-reject">Reject</button>
+            <button type="button" class="btn btn-md shadow-sm text-white @if ($status) bg-danger @else bg-secondary disabled  @endif" id="btn-order-reject">Reject</button>
         </div>
     </div>
 </div>
@@ -171,21 +171,11 @@ document.addEventListener('DOMContentLoaded', function ()
 { // Example JS for confirmation actions
 $('#btn-order-confirm').click(function(){
     orderCode = $('#order_code').text();
-    orderList = []
-    $('.table tbody tr').each(function(index,row){
-        productId= $(row).find('.productId').val();
-        count= $(row).find('.count').val();
 
-        orderList.push({
-            'product_id' : productId,
-            'count' : count,
-            'order_code' : orderCode
-        })
-    })
     $.ajax({
         type : 'get',
         url : '/admin/order/confirm',
-        data : Object.assign({},orderList),
+        data : {'order_code' : orderCode},
         dataType : 'json',
         success : function($response){
             $response.status == 'success' ? window.location.href = document.referrer : '';

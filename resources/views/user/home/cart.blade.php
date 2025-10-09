@@ -1,6 +1,9 @@
 @extends('user.layouts.master')
 
 @section('content')
+@php
+    $activeTab = request('tab', 'cartSection'); // default to cartSection
+@endphp
 
     <section class="section bg-gray">
         <!-- Container Start -->
@@ -24,26 +27,23 @@
                         <!-- Dashboard Links -->
                         <div class="widget user-dashboard-menu">
                             <ul>
-                                <li class="active" data-target="#cartSection">
+                                <li class="{{ $activeTab == 'cartSection' ? 'active' : '' }}" data-target="#cartSection">
                                     <a href=""><i class="fa-solid fa-cart-shopping"> </i>My Cart</a>
-
                                 </li>
                                 {{-- split order by status start --}}
-                                @php
-                                    $pendingOrders = $orderHistory->where('status', 0);
-                                    $otherOrders   = $orderHistory->whereIn('status', [1, 2]);
-                                @endphp
-                                {{-- split order by status end --}}
-                                <li data-target="#pendingOrderSection">
+                                <li class="{{ $activeTab == 'pendingOrderSection' ? 'active' : '' }}" data-target="#pendingOrderSection">
                                     <a href=""><i class="fa-solid fa-spinner"></i> Pending
-                                        Orders<span>{{$pendingOrders->count()}}</span></a>
+                                        Orders<span>{{$pendingOrders->total()}}</span></a>
                                 </li>
-                                <li data-target="#orderHistorySection">
+                                <li class="{{ $activeTab == 'orderHistorySection' ? 'active' : '' }}" data-target="#orderHistorySection">
                                     <a href="#"><i class="fa-solid fa-clock-rotate-left"></i>
-                                        Orders History<span>{{$otherOrders->count()}}</span></a>
+                                        Orders History<span>{{$otherOrders->total()}}</span></a>
                                 </li>
+                                {{-- split order by status end --}}
                                 <li>
-                                    <a href="{{ route('user#homePage') }}"><i class="fas fa-home  fs-5 mt-1"></i> Back</a>
+                                    <a href="{{ route('user#homePage') }}">
+                                        <i class="fas fa-home fs-5 mt-1 me-2"></i> Back
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -53,7 +53,7 @@
 
                 {{-- My Cart data start --}}
                 <div class="col-lg-9">
-                    <div class="content-section" id="cartSection">
+                    <div class="content-section {{ $activeTab != 'cartSection' ? 'd-none' : '' }}" id="cartSection">
                             <div class="card">
                                 <div class="card-header fs-3">My Cart</div>
                                 @if ($cartData->count() > 0)
@@ -219,9 +219,9 @@
                             </div>
                     </div>
 
-                    <div class="content-section d-none" id="pendingOrderSection">
+                    <div class="content-section {{ $activeTab != 'pendingOrderSection' ? 'd-none' : '' }}" id="pendingOrderSection">
                         <div class="card">
-                            @if ($pendingOrders->count()>0)
+                            @if ($pendingOrders->total()>0)
                                 <div class="table-responsive">
                                 <table class="table table-hover align-middle">
                                     <thead class="table-light">
@@ -234,7 +234,11 @@
                                     <tbody>
                                         @foreach ($pendingOrders as $items )
                                             <tr class="align-middle">
-                                                <td class="fw-medium">{{$items->order_code}}</td>
+                                                <td class="fw-medium">
+                                                    <a href="{{route('user#orderDetails',$items->order_code)}}" class="badge bg-light text-info orderCode">
+                                                        {{$items->order_code}}
+                                                    </a>
+                                                </td>
                                                 <td>{{ $items->created_at->format('F d, Y') }}</td>
                                                 <td>
                                                     @if ($items->status == 0)
@@ -247,6 +251,8 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{-- Pagination --}}
+                                {{ $pendingOrders->appends(['tab' => 'pendingOrderSection'])->links() }}
                             </div>
                             @else
                                 <section class="section py-5">
@@ -267,9 +273,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="content-section d-none" id="orderHistorySection">
+                    <div class="content-section {{ $activeTab != 'orderHistorySection' ? 'd-none' : '' }}" id="orderHistorySection">
                         <div class="card">
-                            @if ($otherOrders->count() > 0)
+                            @if ($otherOrders->total() > 0)
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle">
                                         <thead class="table-light">
@@ -282,7 +288,11 @@
                                         <tbody>
                                             @foreach ($otherOrders as $items)
                                                 <tr class="align-middle">
-                                                    <td class="fw-medium">{{ $items->order_code }}</td>
+                                                    <td class="fw-medium">
+                                                        <a href="{{route('user#orderDetails',$items->order_code)}}" class="badge bg-light text-info orderCode">
+                                                        {{$items->order_code}}
+                                                        </a>
+                                                    </td>
                                                     <td>{{ $items->created_at->format('F d, Y') }}</td>
                                                     <td>
                                                         @if ($items->status == 1)
@@ -299,6 +309,8 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    {{-- Pagination --}}
+                                    {{ $otherOrders->appends(['tab' => 'orderHistorySection'])->links() }}
                                 </div>
                             @else
                                 <section class="section py-5">

@@ -37,9 +37,6 @@ class AuthenticatedSessionController extends Controller
         if( $request->user()->role == 'user'){
             return to_route('user#homePage');
         }
-
-
-
     }
 
     /**

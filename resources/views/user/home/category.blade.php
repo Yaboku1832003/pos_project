@@ -30,9 +30,13 @@
                     {{-- sidebar start --}}
                     <div class="category-sidebar">
                         <div class="widget filter">
-                            <h4 class="widget-header">Show Produts</h4>
-                                <form id="sortForm" action="{{ route('user#category') }}" method="GET">
-                                @csrf
+                            <a href="{{ route('user#homePage') }}" class="widget-header">
+                                <i class="fas fa-home me-2"></i> Back
+                            </a>
+                            <h4 class="widget-header mt-2">Show Produts</h4>
+                                <div class="widget-header">
+                                    <form id="sortForm" action="{{ route('user#category') }}" method="GET">
+                                    @csrf
                                     <input type="hidden" name="category_id" value="{{ request('category_id') }}">
                                     <input type="hidden" name="search" value="{{ request('search') }}">
 
@@ -44,6 +48,7 @@
                                         <option value="top_rated" {{ request('sort') == 'top_rated' ? 'selected' : '' }}>Top Rated</option>
                                     </select>
                                 </form>
+                                </div>
                         </div>
                         <div class="widget price-range w-100">
                             <h4 class="widget-header">Price Range</h4>

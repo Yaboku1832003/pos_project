@@ -79,7 +79,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminMiddleware'], function 
         Route::get('list',[OrderController::class,'orderList'])->name('admin#orderList');
         Route::get('details/{orderCode}',[OrderController::class,'orderDetails'])->name('admin#orderDetails');
 
-        Route::get('confirm',[OrderCOntroller::class,'orderConfirm'])->name('order#confirm');
-        Route::get('reject',[OrderCOntroller::class,'orderReject'])->name('order#reject');
+        Route::get('confirm',[OrderController::class,'orderConfirm'])->name('order#confirm');
+        Route::get('reject',[OrderController::class,'orderReject'])->name('order#reject');
      });
 });

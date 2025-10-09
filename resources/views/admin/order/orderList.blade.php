@@ -38,7 +38,7 @@
                             @foreach ($orderList as $items)
                                 <tr>
                                     <td>{{$items->created_at->format('j-F-Y')}}</td>
-                                    <td class="text-start"><span class="badge bg-light text-info">{{$items->order_code}}</span></td>
+                                    <td class="text-start"><span class="badge bg-light text-info orderCode">{{$items->order_code}}</span></td>
                                     <td class="text-center">{{$items->name}}</td>
                                     <td class="text-center">
                                         @if ($items->status == 0)
@@ -60,12 +60,10 @@
                                             <a href="{{route('admin#orderDetails',$items->order_code)}}" class="btn btn-sm btn-outline-info">
                                                 <i class="fa-solid fa-eye"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm confirm-order  @if ($items->status != 0 || $items->stock < $items->count) btn-outline-secondary disabled @else btn-outline-success @endif"
-                                                data-order_code ="{{ $items->order_code }}">
+                                            <a href="#" class="btn btn-sm confirm-order  @if ($items->status != 0 || $items->stock < $items->count) btn-outline-secondary disabled @else btn-outline-success @endif">
                                                 <i class="fa-solid fa-check"></i>
                                             </a>
-                                            <a href="#"  class="btn btn-sm reject-order  @if ($items->status != 0) btn-outline-secondary disabled @else btn-outline-danger @endif "
-                                                data-order_code ="{{ $items->order_code }}">
+                                            <a href="#"  class="btn btn-sm reject-order  @if ($items->status != 0) btn-outline-secondary disabled @else btn-outline-danger @endif ">
                                                 <i class="fa-solid fa-times"></i>
                                             </a>
                                         </div>
@@ -115,8 +113,9 @@ document.addEventListener('DOMContentLoaded', function ()
     // Confirm order
     $('.confirm-order').click(function(e){
         e.preventDefault();
-        var orderCode = $(this).data('order_code');
-
+        e.preventDefault();
+         orderCode = $(this).parents("tr").find('.orderCode').text();
+        // console.log(orderCode);
         $.ajax({
             type: 'GET',
             url: '/admin/order/confirm',
@@ -133,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function ()
     // Reject order
     $('.reject-order').click(function(e){
         e.preventDefault();
-        var orderCode = $(this).data('order_code');
-
+         orderCode = $(this).parents("tr").find('.orderCode').text();
+        // console.log(orderCode);
         $.ajax({
             type: 'GET',
             url: '/admin/order/reject',

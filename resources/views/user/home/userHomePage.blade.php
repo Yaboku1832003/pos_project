@@ -24,7 +24,7 @@
                         <div class="content-block">
                             <h1>Click, Cart, Celebrate</h1>
                             <p>Welcome to our shop! Explore everything we have to offer <br> we guarantee your complete satisfaction with every purchase.</p>
-                            <div class="short-popular-category-list text-center">
+                            {{-- <div class="short-popular-category-list text-center">
                                 <h2>Popular Category</h2>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
@@ -43,7 +43,7 @@
                                         <a href="category.html"><i class="fa fa-coffee"></i> Cafe</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> --}}
 
                         </div>
                         <!-- Advance Search -->
@@ -105,7 +105,7 @@
                                     <div class="product-item bg-light w-100">
                                         <div class="card h-100">
                                             <div class="thumb-content">
-                                                <a href="single.html">
+                                                <a href="{{route('user#productDetail',$product->id)}}">
                                                     <img class="card-img-top img-fluid"
                                                         src="{{ asset('productImage/' . $product->image) }}"
                                                         alt="Product image for {{ $product->name }}"
@@ -155,7 +155,7 @@
                         <!-- Section title -->
                         <div class="section-title">
                             <h2>Our Products</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, provident!</p>
+                            <p>Explore our latest collection of quality products made to fit your lifestyle and budget.</p>
                         </div>
                         <div class="row">
                             @foreach ($products as $item)
@@ -197,6 +197,10 @@
                                     </div>
                                 </div>
                             @endforeach
+                            {{-- Pagination --}}
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $products->links('pagination::bootstrap-5') }}
+                            </div>
                         </div>
                     </div>
                 </div>
