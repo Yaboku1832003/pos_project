@@ -66,6 +66,7 @@
                         <a href="{{route('user#cart')}}" class="position-relative me-4">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </a>
+
                         {{-- notify the unread orders start --}}
                         <a href="{{ route('user#myOrders') }}" class="position-relative me-4" id="notification-bell">
                             <i class="fa-solid fa-bell fa-2x"></i>
@@ -78,8 +79,8 @@
                                 style="display:none;">
                             </span>
                         </a>
-
                         {{-- notify the unread orders end --}}
+
                         <div class="nav-item dropdown d-flex align-items-center">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
                                 data-bs-toggle="dropdown">
@@ -264,7 +265,9 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
     $(document).ready(function () {
-        function fetchNotifications() {
+        // get orderNotification order and show order count start
+        function fetchNotifications()
+        {
             $.ajax({
                 url: '/user/notifications/count',
                 type: "GET",
@@ -283,6 +286,7 @@
                 }
             });
         }
+        // get orderNotification order and show order count end
 
         // Run once when page loads
         fetchNotifications();
@@ -290,7 +294,7 @@
         // Auto refresh every 10s
         setInterval(fetchNotifications, 10000);
 
-        // When bell is clicked → mark as read
+        // When bell is clicked → mark as read start
         $("#notification-bell").on("click", function (e) {
             e.preventDefault();
 
@@ -312,6 +316,7 @@
                 }
             });
         });
+        // When bell is clicked → mark as read end
     });
 </script>
 
