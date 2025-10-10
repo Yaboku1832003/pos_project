@@ -26,6 +26,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'userMiddleware'],function(){
         Route::post('order',[UserController::class,'order'])->name('user#order');
 
         Route::get('/notifications/count', [OrderNotificationController::class, 'getNotificationCount'])->name('user#notificationCount');
-        Route::post('/notifications/mark-as-read', [OrderNotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-        Route::get('/user/my-orders', [OrderNotificationController::class, 'myOrders'])->name('user#myOrders');
+        Route::post('/notifications/mark-all-read', [OrderNotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+        Route::post('/notifications/mark-single-read', [OrderNotificationController::class, 'markSingleRead'])->name('notifications.markSingleRead');
+        Route::get('/user/myNotifications', [OrderNotificationController::class, 'myNotifications'])->name('user#myNotifications');
 });

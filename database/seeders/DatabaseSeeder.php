@@ -14,15 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Check if superadmin exists first
+        if (!User::where('email', 'superadmin@example.com')->exists()) {
+            User::create([
+                'name' => 'Super Admin Account',
+                'email' => 'superadmin@example.com',
+                'password' => Hash::make('admin12345'),
+                'role' => 'superadmin',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
 
-        User::create([
-            'name' => 'Super Admin Account',
-            'email' => 'superadmin@example.com',
-            'password' => Hash::make('admin12345'),
-            'role' => 'superadmin',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+        // Call other seeders
+        $this->call([
+            ProductSeeder::class,
         ]);
     }
 }

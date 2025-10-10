@@ -440,7 +440,7 @@
             });
 
 
-            // 👉 Save changes to cart before leaving
+            //Save changes to cart before leaving
             $('#saveBtn').click(function() {
                 let cartUpdates = [];
                 $("#productTable tbody tr").each(function(index, item) {
@@ -470,7 +470,7 @@
                 });
             });
 
-            // 👉 Discard changes and leave page
+            //Discard changes and leave page
             $('#discardBtn').click(function() {
                 cartUpdated = false;  // Ignore unsaved changes
                 let modal = bootstrap.Modal.getInstance(document.getElementById('cartSaveModal'));

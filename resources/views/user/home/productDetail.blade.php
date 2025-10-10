@@ -290,7 +290,11 @@
                         @endif
                         {{-- Add to Cart end --}}
                         {{-- get releated products with foreach loop start --}}
-                        @foreach ($relatedProducts as $item)
+                        @php
+                            // Shuffle the collection and reindex
+                            $shuffledProducts = $relatedProducts->shuffle()->take(2);
+                        @endphp
+                        @foreach ($shuffledProducts->shuffle() as $item)
                                 <div class="row my-3">
                                     <div class="card h-100 border border-secondary">
                                         <a href="{{ route('user#productDetail', $item->id) }}">

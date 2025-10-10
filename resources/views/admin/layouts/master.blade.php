@@ -119,9 +119,9 @@
                 </li>
             @endif
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fa-solid fa-list"></i><span>Sale Information </span></a>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin#orderList')}}"><i class="fa-solid fa-cart-shopping"></i><span>Order Board

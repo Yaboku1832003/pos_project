@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
+    //add products to cart start
     public function addToCart(Request $request)
     {
         $userId    = Auth::user()->id;
@@ -36,8 +37,9 @@ class CartController extends Controller
         }
         return redirect()->back();
     }
+    //add products to cart end
 
-    // show profile and products in cart page
+    // show profile and products in cart page start
     public function goToCart(Request $request)
     {
         $profile = User::select('users.id', 'users.name', 'users.profile', 'users.created_at')
@@ -53,11 +55,6 @@ class CartController extends Controller
         foreach ($cartData as $data) {
             $totalPrice += $data->sale_price * $data->qty;
         }
-
-        // $orderHistory = Order::where('user_id',Auth::user()->id)
-        //                     ->groupBy('order_code')
-        //                     ->orderBy('created_at',"desc")
-        //                     ->get();
 
         // Pending orders
         $pendingOrders = Order::select('orders.order_code','orders.created_at','orders.status')
@@ -78,6 +75,9 @@ class CartController extends Controller
 
         return view('user.home.cart', compact('cartData', "profile", "totalPrice",'pendingOrders','otherOrders'));
     }
+    // show profile and products in cart page end
+
+    //order detail in cart start
     public function orderDetails($orderCode){
         $order = Order::select('orders.id as order_id','orders.count as order_count','orders.order_code','orders.created_at','orders.status',
                                 'products.id as product_id','products.image','products.sale_price','products.stock','products.name as product_name',)
@@ -92,7 +92,9 @@ class CartController extends Controller
                         // dd($order->toArray());
                 return view('user.home.orderDetail',compact('order','paymentHistory'));
     }
-    // delete item from cart
+    //order detail in cart end
+
+    // delete item from cart start
     public function cartDelete(Request $request)
     {
         $cartData = $request->cartId;
@@ -104,6 +106,7 @@ class CartController extends Controller
             'message' => 'cart deleted successfully',
         ], 200);
     }
+    // delete item from cart end
 
     //qty update before leave url
     public function cartUpdate(Request $request)

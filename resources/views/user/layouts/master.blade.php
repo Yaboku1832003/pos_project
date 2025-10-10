@@ -34,7 +34,8 @@
 
     @yield('css')
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
@@ -63,61 +64,61 @@
 
 
                         @if (Auth::user())
-                        <a href="{{route('user#cart')}}" class="position-relative me-4">
-                            <i class="fa fa-shopping-cart fa-2x"></i>
-                        </a>
-
-                        {{-- notify the unread orders start --}}
-                        <a href="{{ route('user#myOrders') }}" class="position-relative me-4" id="notification-bell">
-                            <i class="fa-solid fa-bell fa-2x"></i>
-                            <span id="notification-dot"
-                                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                                style="display:none;">
-                            </span>
-                            <span id="notification-count"
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                style="display:none;">
-                            </span>
-                        </a>
-                        {{-- notify the unread orders end --}}
-
-                        <div class="nav-item dropdown d-flex align-items-center">
-                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
-                                data-bs-toggle="dropdown">
-                                @php
-                                    $profile = Auth::user()->profile;
-                                    if ($profile) {
-                                        if (filter_var($profile, FILTER_VALIDATE_URL)) {
-                                            $imgSrc = $profile;
-                                        } else {
-                                            $imgSrc = asset('profileImage/' . $profile);
-                                        }
-                                    } else {
-                                        $imgSrc = asset('default/default-profile.png');
-                                    }
-                                @endphp
-                                <img src="{{ $imgSrc }}" style="width: 45px; height: 45px; object-fit: cover;"
-                                    class="img-profile rounded-circle me-2" alt="">
-                                <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
+                            <a href="{{ route('user#cart') }}" class="position-relative me-4">
+                                <i class="fa fa-shopping-cart fa-2x"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
-                                <a href="" class="dropdown-item py-2 text-muted">My Orders</a>
-                                <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
-                                <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
 
-                                <div class="dropdown-item py-2">
-                                    <form action="{{ route('logout') }}" method="post" class="p-0">
-                                        @csrf
-                                        <button type="submit"
-                                            class="btn btn-outline-primary rounded w-100">Logout</button>
-                                    </form>
+                            {{-- notify the unread orders start --}}
+                            <a href="{{ route('user#myNotifications') }}" class="position-relative me-4"
+                                id="notification-bell">
+                                <i class="fa-solid fa-bell fa-2x"></i>
+                                <span id="notification-dot"
+                                    class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                                    style="display:none;">
+                                </span>
+                                <span id="notification-count"
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style="display:none;">
+                                </span>
+                            </a>
+                            {{-- notify the unread orders end --}}
+
+                            <div class="nav-item dropdown d-flex align-items-center">
+                                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
+                                    data-bs-toggle="dropdown">
+                                    @php
+                                        $profile = Auth::user()->profile;
+                                        if ($profile) {
+                                            if (filter_var($profile, FILTER_VALIDATE_URL)) {
+                                                $imgSrc = $profile;
+                                            } else {
+                                                $imgSrc = asset('profileImage/' . $profile);
+                                            }
+                                        } else {
+                                            $imgSrc = asset('default/default-profile.png');
+                                        }
+                                    @endphp
+                                    <img src="{{ $imgSrc }}"
+                                        style="width: 45px; height: 45px; object-fit: cover;"
+                                        class="img-profile rounded-circle me-2" alt="">
+                                    <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
+                                    <a href="" class="dropdown-item py-2 text-muted">My Orders</a>
+                                    <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
+                                    <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
+
+                                    <div class="dropdown-item py-2">
+                                        <form action="{{ route('logout') }}" method="post" class="p-0">
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn btn-outline-primary rounded w-100">Logout</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @else
-
                             <a href="{{ route('login') }}" class="btn btn-primary mx-1">Sign In/Up</a>
-
                         @endif
                     </div>
                 </div>
@@ -128,93 +129,64 @@
 
 
     @yield('content')
-
-    {{-- sweet alert laravel configuration --}}
-    @include('sweetalert::alert')
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5">
-        <div class="container py-5">
-            <!-- Top Row: Brand, Email Subscription, Socials -->
-            <div class="pb-4 mb-4 border-bottom border-secondary">
-                <div class="row g-4 align-items-center">
-                    <!-- Logo & Tagline -->
-                    <div class="col-lg-3">
-                        <a href="#" class="text-decoration-none">
-                            <h1 class="text-primary mb-0">IT Marts</h1>
-                            <p class="text-muted mb-0">Latest products</p>
-                        </a>
-                    </div>
-
-                    <!-- Social Links -->
-                    <div class="col-lg-3">
-                        <div class="d-flex justify-content-lg-end justify-content-start pt-3 pt-lg-0">
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i
-                                    class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i
-                                    class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i
-                                    class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href="#"><i
-                                    class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" style="max-width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-            </div>
-
-            <!-- Bottom Row: 4 Column Footer Content -->
-            <div class="row g-5">
-                <!-- Column 1 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item">
-                        <h4 class="text-light mb-3">Why People Like us!</h4>
-                        <p>Typesetting, remaining essentially unchanged. Popularised in the 1960s with tools like Aldus
-                            PageMaker including Lorem Ipsum.</p>
-                        <a href="#" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
-                    </div>
-                </div>
-
-                <!-- Column 2 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item d-flex flex-column text-start">
-                        <h4 class="text-light mb-3">Shop Info</h4>
-                        <a class="btn-link text-muted mb-1" href="#">About Us</a>
-                        <a class="btn-link text-muted mb-1" href="#">Contact Us</a>
-                        <a class="btn-link text-muted mb-1" href="#">Privacy Policy</a>
-                        <a class="btn-link text-muted mb-1" href="#">Terms & Conditions</a>
-                        <a class="btn-link text-muted mb-1" href="#">Return Policy</a>
-                        <a class="btn-link text-muted" href="#">FAQs & Help</a>
-                    </div>
-                </div>
-
-                <!-- Column 3 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item d-flex flex-column text-start">
-                        <h4 class="text-light mb-3">Account</h4>
-                        <a class="btn-link text-muted mb-1" href="#">My Account</a>
-                        <a class="btn-link text-muted mb-1" href="#">Shop Details</a>
-                        <a class="btn-link text-muted mb-1" href="#">Shopping Cart</a>
-                        <a class="btn-link text-muted mb-1" href="#">Wishlist</a>
-                        <a class="btn-link text-muted mb-1" href="#">Order History</a>
-                        <a class="btn-link text-muted" href="#">International Orders</a>
-                    </div>
-                </div>
-
-                <!-- Column 4 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item">
-                        <h4 class="text-light mb-3">Contact</h4>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-2"></i>1429 Netus Rd, NY 48247</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-2"></i>Example@gmail.com</p>
-                        <p class="mb-2"><i class="fa fa-phone me-2"></i>+0123 4567 8910</p>
-                        <p class="mb-2">Payment Accepted</p>
-                        <img src="img/payment.png" class="img-fluid" alt="Payment Methods">
-                    </div>
+                <div class="modal-body" id="notificationList">
+                    <div class="text-center text-muted">Loading...</div>
                 </div>
             </div>
         </div>
     </div>
 
+    {{-- sweet alert laravel configuration --}}
+    @include('sweetalert::alert')
+
+    <!-- Footer Start -->
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer py-3">
+        <div class="container py-3">
+            <div class="row">
+                <!-- Social Media (Horizontal) -->
+                <div class="col-md-4 d-flex flex-column align-items-start">
+                    <div class="mb-2 fw-bold">Follow Us:</div>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-sm-square rounded-circle" href="#"
+                            style="background-color:#1877F2; color:white;"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-sm-square rounded-circle" href="#"
+                            style="background-color:#000000; color:white;"><i class="fab fa-tiktok"></i></a>
+                        <a class="btn btn-sm-square rounded-circle" href="#"
+                            style="background-color:#0088cc; color:white;"><i class="fab fa-telegram"></i></a>
+                        <a class="btn btn-sm-square rounded-circle" href="#"
+                            style="background-color:#C13584; color:white;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links (Vertical) -->
+                <div class="col-md-4 d-flex flex-column justify-content-start">
+                    <a class="btn-link text-light mb-1" href="#">Our Policy</a>
+                    <a class="btn-link text-light mb-1" href="#">Blog</a>
+                    <a class="btn-link text-light mb-1" href="#">Contact Us</a>
+                    <a class="btn-link text-light" href="#">About Us</a>
+                </div>
+
+                <!-- Payments (Vertical) -->
+                <div class="col-md-4 d-flex flex-column align-items-start">
+                    <div class="mb-2 fw-bold">Payments:</div>
+                    <img src="img/kpay.png" alt="KPay" style="height:30px;" class="mb-1">
+                    <img src="img/wavepay.png" alt="WavePay" style="height:30px;" class="mb-1">
+                    <img src="img/cbpay.png" alt="CbPay" style="height:30px;">
+                </div>
+            </div>
+        </div>
+
+    </div>
     <!-- Footer End -->
 
     <!-- Copyright Start -->
@@ -264,61 +236,60 @@
     <script src="{{ asset('plugins/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
-    $(document).ready(function () {
-        // get orderNotification order and show order count start
-        function fetchNotifications()
-        {
-            $.ajax({
-                url: '/user/notifications/count',
-                type: "GET",
-                success: function (response) {
-                    console.log("Notification response:", response);
-                    if (response.count > 0) {
-                        $("#notification-dot").show();
-                        $("#notification-count").text(response.count).show();
-                    } else {
-                        $("#notification-dot").hide();
-                        $("#notification-count").hide();
+        $(document).ready(function() {
+            // get orderNotification order and show order count start
+            function fetchNotifications() {
+                $.ajax({
+                    url: '/user/notifications/count',
+                    type: "GET",
+                    success: function(response) {
+                        console.log("Notification response:", response);
+                        if (response.count > 0) {
+                            $("#notification-dot").show();
+                            $("#notification-count").text(response.count).show();
+                        } else {
+                            $("#notification-dot").hide();
+                            $("#notification-count").hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching notifications:", error);
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching notifications:", error);
-                }
-            });
-        }
-        // get orderNotification order and show order count end
+                });
+            }
+            // get orderNotification order and show order count end
 
-        // Run once when page loads
-        fetchNotifications();
+            // Run once when page loads
+            fetchNotifications();
 
-        // Auto refresh every 10s
-        setInterval(fetchNotifications, 10000);
-
-        // When bell is clicked → mark as read start
-        $("#notification-bell").on("click", function (e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: '/user/notifications/mark-as-read',
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function (response) {
-                    if (response.success) {
-                        $("#notification-dot").hide();
-                        $("#notification-count").hide();
-                        window.location.href = "{{ route('user#myOrders') }}";
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error marking notifications as read:", error);
-                }
-            });
+            // Auto refresh every 10s
+            setInterval(fetchNotifications, 10000);
         });
-        // When bell is clicked → mark as read end
-    });
-</script>
+        // $('#notification-bell').click(function(e) {
+        //     e.preventDefault(); // prevent following the link
+
+        //     $.ajax({
+        //         url: "/user/notifications/mark-all-read",
+        //         type: "POST",
+        //         data: {
+        //             _token: "{{ csrf_token() }}"
+        //         },
+        //         success: function(res) {
+        //             if (res.success) {
+        //                 // Hide notification dot and count
+        //                 $('#notification-dot').hide();
+        //                 $('#notification-count').text(0).hide();
+        //                 console.log('All notifications marked as read!');
+        //             }
+        //         },
+        //         error: function(err) {
+        //             console.error('Error marking notifications read:', err);
+        //         }
+        //     });
+
+        // });
+    </script>
 
     @yield('js')
+
 </html>

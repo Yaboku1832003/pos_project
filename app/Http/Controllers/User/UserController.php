@@ -25,7 +25,7 @@ class UserController extends Controller
         $products = Product::select('products.id', 'products.name', 'products.sale_price', 'products.description', 'products.image', 'products.updated_at',
             'categories.id as category_id', 'categories.name as category_name')
             ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
-            ->paginate(9);
+            ->get();
 
         $categories = Category::all();
 
@@ -43,6 +43,8 @@ class UserController extends Controller
 
     public function category(Request $request)
     {
+        $categories = Category::all();
+
         $search     = $request->input('search');
         $categoryId = $request->input('category_id');
         //price range
@@ -104,7 +106,7 @@ class UserController extends Controller
         }
         $productCount = $products->count();
 
-        return view('user.home.category', compact('products', 'categoryName', 'productCount'));
+        return view('user.home.category', compact('products', 'categoryName', 'productCount','categories'));
     }
 
     // one specific product detail
@@ -119,7 +121,6 @@ class UserController extends Controller
             ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
             ->where('category_id', $product->category_id)
             ->where('products.id', '!=', $product->id)
-            ->take(2)
             ->get();
 
         $comments = Comment::select('comments.id as comment_id', 'comments.comment', 'comments.created_at',

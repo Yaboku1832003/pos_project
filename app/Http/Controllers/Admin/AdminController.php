@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PaymentHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +16,25 @@ class AdminController extends Controller
     //admin dashboard
     public function dashboard()
     {
+        $monthlyTotals = Order::leftJoin('products', 'orders.product_id', 'products.id')
+            ->where('orders.status', 1)
+            ->selectRaw('DATE_FORMAT(orders.created_at, "%Y-%m") as month,
+                        SUM(orders.count * products.sale_price) as total_sale_price,
+                        SUM(orders.count * products.cost_price) as total_cost_price')
+            ->groupBy('month')
+            ->get();
+// Get all order codes where status is 1
+        $orderCodes = Order::where('status', 1)
+                    ->pluck('order_code'); // pluck returns a simple array
+
+// Sum total payment grouped by month for those order codes
+        $totalPayment = PaymentHistory::whereIn('order_code', $orderCodes)
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(final_total) as total_payment')
+            ->groupBy('month')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        dd($totalPayment->toArray());
         return view('admin.dashboard.mainDashboard');
     }
 
@@ -169,11 +190,11 @@ class AdminController extends Controller
     public function adminList()
     {
         $admins = User::select('id', 'profile', 'name', 'email',
-            'address', 'phone', 'role', 'created_at', 'provider','nickname')
+            'address', 'phone', 'role', 'created_at', 'provider', 'nickname')
             ->whereIn('role', ['admin', 'superadmin'])
-            //this query add only when searchKey is entered//
+        //this query add only when searchKey is entered//
             ->when(request('searchKey'), function ($upperQuery) {
-                $upperQuery->whereAny(['name', 'address', 'phone', 'email','nickname'],
+                $upperQuery->whereAny(['name', 'address', 'phone', 'email', 'nickname'],
                     'like', '%' . request('searchKey') . '%');
             })->paginate(5);
 
@@ -182,11 +203,11 @@ class AdminController extends Controller
     }
     //admin list page and searchKey end
 
-
     //delete admin start
-    public function deleteAdmin($id){
+    public function deleteAdmin($id)
+    {
         $admin = User::find($id);
-        if($admin){
+        if ($admin) {
             $admin->delete();
         }
         return back();
@@ -194,27 +215,27 @@ class AdminController extends Controller
     //delete admin end
 
     //delete user start
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         $user = User::find($id);
-        if($user){
+        if ($user) {
             $user->delete();
         }
         return back();
     }
     //delete user end
 
-
     //user list page and searchKey start
     public function userList()
     {
-       $users = User::select('id', 'profile', 'name', 'email',
-            'address', 'phone', 'role', 'created_at', 'provider','nickname')
+        $users = User::select('id', 'profile', 'name', 'email',
+            'address', 'phone', 'role', 'created_at', 'provider', 'nickname')
             ->where('role', 'user')
-            //this query add only when searchKey is entered start//
+        //this query add only when searchKey is entered start//
             ->when(request('searchKey'), function ($upperQuery) {
-                $upperQuery->whereAny(['name', 'address', 'phone', 'email','nickname'],
+                $upperQuery->whereAny(['name', 'address', 'phone', 'email', 'nickname'],
                     'like', '%' . request('searchKey') . '%');
-            //this query add only when searchKey is entered end//
+                //this query add only when searchKey is entered end//
             })->paginate(5);
 
         // Pass data to the view
