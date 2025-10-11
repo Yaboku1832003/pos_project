@@ -56,9 +56,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="" class="nav-item nav-link ">Shop</a>
-                        <a href="" class="nav-item nav-link">Cart</a>
-                        <a href="#" class="nav-item nav-link">Contact</a>
+                        <a href="" class="nav-item nav-link ">Policy</a>
+                        <a href="" class="nav-item nav-link">About us</a>
+                        <a href="#" class="nav-item nav-link">Contact us</a>
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
 
@@ -104,7 +104,6 @@
                                     <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
-                                    <a href="" class="dropdown-item py-2 text-muted">My Orders</a>
                                     <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
                                     <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
 
@@ -130,20 +129,7 @@
 
     @yield('content')
     <!-- Notification Modal -->
-    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" style="max-width: 400px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Order Notifications</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="notificationList">
-                    <div class="text-center text-muted">Loading...</div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     {{-- sweet alert laravel configuration --}}
     @include('sweetalert::alert')
@@ -179,9 +165,9 @@
                 <!-- Payments (Vertical) -->
                 <div class="col-md-4 d-flex flex-column align-items-start">
                     <div class="mb-2 fw-bold">Payments:</div>
-                    <img src="img/kpay.png" alt="KPay" style="height:30px;" class="mb-1">
-                    <img src="img/wavepay.png" alt="WavePay" style="height:30px;" class="mb-1">
-                    <img src="img/cbpay.png" alt="CbPay" style="height:30px;">
+                    <img src="{{asset('paymentMethods/KBZpay.png')}}" alt="KPay" style="width:45px; height:45px; object-fit:cover;" class="mb-1">
+                    <img src="{{asset('paymentMethods/CBpay.png')}}" alt="WavePay" style="width:45px; height:45px; object-fit:cover;" class="mb-1">
+                    <img src="{{asset('paymentMethods/AYApay.png')}}" alt="CbPay" style="width:45px; height:45px; object-fit:cover;">
                 </div>
             </div>
         </div>
@@ -194,23 +180,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your
-                            Site
-                            Name</a>, All right reserved.</span>
-                </div>
-                <div class="col-md-6 my-auto text-center text-md-end text-white">
-                    <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                    <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                    <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    {{-- Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By
-                    <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a> --}}
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>IT Mart</a>, All right reserved.</span>
                 </div>
             </div>
         </div>
     </div>
     <!-- Copyright End -->
-
-
 
     <!-- Back to Top -->
     <div class="scroll-top-to">
@@ -218,8 +193,6 @@
     </div>
     <!-- <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
             class="fa fa-arrow-up"></i></a> -->
-
-
     <!-- JavaScript Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -265,29 +238,6 @@
             // Auto refresh every 10s
             setInterval(fetchNotifications, 10000);
         });
-        // $('#notification-bell').click(function(e) {
-        //     e.preventDefault(); // prevent following the link
-
-        //     $.ajax({
-        //         url: "/user/notifications/mark-all-read",
-        //         type: "POST",
-        //         data: {
-        //             _token: "{{ csrf_token() }}"
-        //         },
-        //         success: function(res) {
-        //             if (res.success) {
-        //                 // Hide notification dot and count
-        //                 $('#notification-dot').hide();
-        //                 $('#notification-count').text(0).hide();
-        //                 console.log('All notifications marked as read!');
-        //             }
-        //         },
-        //         error: function(err) {
-        //             console.error('Error marking notifications read:', err);
-        //         }
-        //     });
-
-        // });
     </script>
 
     @yield('js')

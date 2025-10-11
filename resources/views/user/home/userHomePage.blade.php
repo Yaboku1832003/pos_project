@@ -24,27 +24,6 @@
                         <div class="content-block">
                             <h1>Click, Cart, Celebrate</h1>
                             <p>Welcome to our shop! Explore everything we have to offer <br> we guarantee your complete satisfaction with every purchase.</p>
-                            {{-- <div class="short-popular-category-list text-center">
-                                <h2>Popular Category</h2>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <a href="category.html"><i class="fa fa-bed"></i> Hotel</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="category.html"><i class="fa fa-grav"></i> Fitness</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="category.html"><i class="fa fa-car"></i> Cars</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="category.html"><i class="fa fa-cutlery"></i> Restaurants</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="category.html"><i class="fa fa-coffee"></i> Cafe</a>
-                                    </li>
-                                </ul>
-                            </div> --}}
-
                         </div>
                         <!-- Advance Search -->
                         <div class="advance-search">
