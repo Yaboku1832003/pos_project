@@ -14,28 +14,63 @@ use RealRashid\SweetAlert\Facades\Alert;
 class AdminController extends Controller
 {
     //admin dashboard
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        //Get selected month from request, default to current month
+        $filterMonth = $request->input('month', date('Y-m'));
+
+        //Monthly totals
         $monthlyTotals = Order::leftJoin('products', 'orders.product_id', 'products.id')
             ->where('orders.status', 1)
-            ->selectRaw('DATE_FORMAT(orders.created_at, "%Y-%m") as month,
-                        SUM(orders.count * products.sale_price) as total_sale_price,
-                        SUM(orders.count * products.cost_price) as total_cost_price')
-            ->groupBy('month')
-            ->get();
-// Get all order codes where status is 1
+            ->whereRaw('DATE_FORMAT(orders.updated_at, "%Y-%m") = ?', [$filterMonth])
+            ->selectRaw('
+            SUM(orders.count * products.sale_price) as total_sale_price,
+            SUM(orders.count * products.cost_price) as total_cost_price
+        ')
+            ->first();
+
+        //Get all order codes
         $orderCodes = Order::where('status', 1)
-                    ->pluck('order_code'); // pluck returns a simple array
+            ->pluck('order_code');
 
-// Sum total payment grouped by month for those order codes
+        //Total payment for selected month
         $totalPayment = PaymentHistory::whereIn('order_code', $orderCodes)
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(final_total) as total_payment')
-            ->groupBy('month')
-            ->orderBy('month', 'desc')
+            ->whereRaw('DATE_FORMAT(updated_at, "%Y-%m") = ?', [$filterMonth])
+            ->selectRaw('SUM(final_total) as totalPayment')
+            ->first();
+
+        //Daily totals for selected month
+        $dailyTotals = Order::leftJoin('products', 'orders.product_id', 'products.id')
+            ->where('orders.status', 1)
+            ->whereRaw('DATE_FORMAT(orders.updated_at, "%Y-%m") = ?', [$filterMonth])
+            ->selectRaw('
+            DATE_FORMAT(orders.updated_at, "%Y-%m-%d") as day,
+            SUM(orders.count * products.sale_price) as total_sale_price,
+            SUM(orders.count * products.cost_price) as total_cost_price
+        ')
+            ->groupBy('day')
+            ->orderBy('day')
             ->get();
 
-        dd($totalPayment->toArray());
-        return view('admin.dashboard.mainDashboard');
+        $totalAcceptedOrders = PaymentHistory::whereRaw('DATE_FORMAT(updated_at, "%Y-%m") = ?', [$filterMonth])
+                ->whereIn('order_code', $orderCodes)
+                ->distinct('order_code')
+                ->count('order_code');
+        $totalRejectedOrders = PaymentHistory::join('orders', 'payment_histories.order_code', '=', 'orders.order_code')
+    ->whereRaw('DATE_FORMAT(payment_histories.updated_at, "%Y-%m") = ?', [$filterMonth])
+    ->where('orders.status', 2)
+    ->distinct()
+    ->count('payment_histories.order_code');
+        //Pass everything to the view
+        return view('admin.dashboard.mainDashboard', compact(
+            'filterMonth',
+            'monthlyTotals',
+            'totalPayment',
+            'dailyTotals',
+            'totalAcceptedOrders',
+            'totalRejectedOrders'
+
+        ));
     }
 
     //create payment method page start

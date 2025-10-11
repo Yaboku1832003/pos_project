@@ -267,7 +267,7 @@
 
     {{-- sweet alert cdn --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    @yield('js')
     {{-- this js is in list.blade.php --}}
     @yield('js-sweetalert')
 

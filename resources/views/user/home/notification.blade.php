@@ -4,7 +4,9 @@
     <section class="section bg-light">
         <div class="container">
             <div class="card shadow-sm border-0 rounded-4 p-4">
-
+                <div class="d-flex justify-content-end align-items-center">
+                    <a href="javascript:history.back()" class="btn btn-sm fs-2"><i class="fa-solid fa-xmark"></i></a>
+                </div>
                 {{-- Header --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0">
