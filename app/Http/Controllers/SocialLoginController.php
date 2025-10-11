@@ -13,28 +13,40 @@ class SocialLoginController extends Controller
     public function redirect($provider){
         return Socialite::driver($provider)->redirect();
     }
-    public function callback($provider){
-        // $data = Socialite::driver($provider)->user();
-        // dd($data);
+    public function callback($provider)
+{
+    $socialLoginData = Socialite::driver($provider)->user();
 
-        $socialLoginData = Socialite::driver($provider)->user();
+    // Try to find the user by email first
+    $user = User::where('email', $socialLoginData->email)->first();
 
-        $user = User::updateOrCreate([
+    if ($user) {
+        // If user exists, update their provider info
+        $user->update([
+            'provider' => $provider,
             'provider_id' => $socialLoginData->id,
-        ],
-        [
+            'provider_token' => $socialLoginData->token,
+            'name' => $socialLoginData->name,
+            'nickname' => $socialLoginData->nickname,
+            'profile' => $socialLoginData->avatar,
+        ]);
+    } else {
+        // If no user exists, create a new one
+        $user = User::create([
             'name' => $socialLoginData->name,
             'email' => $socialLoginData->email,
             'nickname' => $socialLoginData->nickname,
             'profile' => $socialLoginData->avatar,
-            'provider' => $provider, //google or github
+            'provider' => $provider,
             'provider_id' => $socialLoginData->id,
             'provider_token' => $socialLoginData->token,
             'role' => 'user'
         ]);
-
-        Auth::login($user);
-
-        return to_route('user#dashboard');
     }
+
+    Auth::login($user);
+
+    return to_route('user#homePage');
+}
+
 }
