@@ -13,30 +13,31 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    //add products to cart start
-    public function addToCart(Request $request)
-    {
-        $userId    = Auth::user()->id;
-        $productId = $request->productId;
-        $quantity  = $request->quantity;
-        // Check if cart already has this product
-        $cart = Cart::where('user_id', $userId)
-            ->where('product_id', $productId)
-            ->first();
-        if ($cart) {
-            // Increase existing quantity
-            $cart->qty += $quantity;
-            $cart->save();
-        } else {
-            // Create a new cart item
-            Cart::create([
-                'user_id'    => $userId,
-                'product_id' => $productId,
-                'qty'        => $quantity,
-            ]);
-        }
-        return redirect()->back();
+public function addToCart(Request $request)
+{
+    $userId    = Auth::user()->id;
+    $productId = $request->productId;
+    $quantity  = $request->quantity;
+
+    // Check if cart already has this product
+    $cart = Cart::where('user_id', $userId)
+        ->where('product_id', $productId)
+        ->first();
+
+    if ($cart) {
+        $cart->qty += $quantity;
+        $cart->save();
+    } else {
+        Cart::create([
+            'user_id'    => $userId,
+            'product_id' => $productId,
+            'qty'        => $quantity,
+        ]);
     }
+
+    return response()->json(['message' => 'Product added to cart']);
+}
+
     //add products to cart end
 
     // show profile and products in cart page start

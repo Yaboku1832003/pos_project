@@ -31,7 +31,8 @@
     <link href="{{ asset('plugins/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/slick/slick-theme.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     @yield('css')
     <!-- CSS -->
     <link rel="stylesheet"
@@ -191,6 +192,17 @@
     <div class="scroll-top-to">
         <i class="fa fa-angle-up"></i>
     </div>
+    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+    <div class="toast-header">
+      <strong class="me-auto">Notification</strong>
+      <small>Now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body"></div>
+  </div>
+</div>
+
     <!-- <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
             class="fa fa-arrow-up"></i></a> -->
     <!-- JavaScript Libraries -->
@@ -206,6 +218,7 @@
     <script src="{{ asset('plugins/tether/js/tether.min.js') }}"></script>
     <script src="{{ asset('plugins/raty/jquery.raty-fa.js') }}"></script>
     <script src="{{ asset('plugins/slick/slick.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('plugins/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script>

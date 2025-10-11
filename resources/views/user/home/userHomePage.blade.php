@@ -156,7 +156,16 @@
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <h5 class="text-primary mb-0">{{ $item->sale_price }} MMK</h5>
                                                 @if(Auth::user())
-                                                    <form action="{{ route('user#addToCart') }}" method="POST" class="d-inline">
+                                                    <!-- <form action="{{ route('user#addToCart') }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="productId" value="{{ $item->id }}">
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <button type="submit" class="btn btn-primary rounded-pill btn-sm d-inline-flex align-items-center">
+                                                            <i class="fa-solid fa-cart-shopping me-2"></i>
+                                                            Add to Cart
+                                                        </button>
+                                                    </form> -->
+                                                    <form action="{{ route('user#addToCart') }}" method="POST" class="add-to-cart-form d-inline">
                                                         @csrf
                                                         <input type="hidden" name="productId" value="{{ $item->id }}">
                                                         <input type="hidden" name="quantity" value="1">
@@ -182,6 +191,65 @@
                 </div>
             </div>
             <!-- Container End -->
+            <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080; min-width: 300px;">
+            <div id="liveToast" class="toast shadow border-start border-4 border-primary rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+                <div class="toast-header bg-primary text-white rounded-top">
+                <i class="bi bi-bell-fill me-2"></i>
+                <strong class="me-auto">Notification</strong>
+                <small class="text-white-50">Now</small>
+                <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body fs-5 px-3 py-2">
+                <!-- Your notification message here -->
+                </div>
+            </div>
+            </div>
         </section>
     </div>
+
+
 @endsection
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const cartForms = document.querySelectorAll('.add-to-cart-form');
+
+    cartForms.forEach(form => {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    const toastLiveExample = document.getElementById('liveToast');
+                    const toastBody = toastLiveExample.querySelector('.toast-body');
+
+                    toastBody.textContent = data.message || 'Product added to cart';
+
+                    const toast = new bootstrap.Toast(toastLiveExample);
+                    toast.show();
+
+                } else {
+                    alert('Failed to add to cart');
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert('Something went wrong.');
+            }
+        });
+    });
+});
+</script>
+
