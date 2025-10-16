@@ -32,7 +32,7 @@
     <link href="{{ asset('plugins/slick/slick-theme.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     @yield('css')
     <!-- CSS -->
     <link rel="stylesheet"
@@ -105,8 +105,8 @@
                                     <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
-                                    <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
-                                    <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
+                                    <a href="{{route('userProfile#edit')}}" class="dropdown-item py-2 text-muted">Edit Profile</a>
+                                    <a href="{{ route('userProfile#changePasswordPage') }}" class="dropdown-item py-2 text-muted">Change Password</a>
 
                                     <div class="dropdown-item py-2">
                                         <form action="{{ route('logout') }}" method="post" class="p-0">
@@ -135,73 +135,105 @@
     {{-- sweet alert laravel configuration --}}
     @include('sweetalert::alert')
 
+
     <!-- Footer Start -->
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer py-3">
-        <div class="container py-3">
+    <div class="container-fluid"
+        style="background: linear-gradient(135deg, #1c1c1c, #111111); color: #f1f1f1; padding: 50px 0;">
+        <div class="container">
             <div class="row">
-                <!-- Social Media (Horizontal) -->
-                <div class="col-md-4 d-flex flex-column align-items-start">
-                    <div class="mb-2 fw-bold">Follow Us:</div>
+
+                <!-- Social Media -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
                     <div class="d-flex gap-2">
-                        <a class="btn btn-sm-square rounded-circle" href="#"
-                            style="background-color:#1877F2; color:white;"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-sm-square rounded-circle" href="#"
-                            style="background-color:#000000; color:white;"><i class="fab fa-tiktok"></i></a>
-                        <a class="btn btn-sm-square rounded-circle" href="#"
-                            style="background-color:#0088cc; color:white;"><i class="fab fa-telegram"></i></a>
-                        <a class="btn btn-sm-square rounded-circle" href="#"
-                            style="background-color:#C13584; color:white;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                            style="width:40px; height:40px; background-color:#1877F2; color:white; text-decoration:none;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                            style="width:40px; height:40px; background-color:#000000; color:white; text-decoration:none;">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                            style="width:40px; height:40px; background-color:#0088cc; color:white; text-decoration:none;">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                            style="width:40px; height:40px; background-color:#C13584; color:white; text-decoration:none;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Links (Vertical) -->
-                <div class="col-md-4 d-flex flex-column justify-content-start">
-                    <a class="btn-link text-light mb-1" href="#">Our Policy</a>
-                    <a class="btn-link text-light mb-1" href="#">Blog</a>
-                    <a class="btn-link text-light mb-1" href="#">Contact Us</a>
-                    <a class="btn-link text-light" href="#">About Us</a>
+                <!-- Useful Links -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column gap-2">
+                        {{-- <a href="#" style="color:#f1f1f1; text-decoration:none;">Our Policy</a> --}}
+                        <a href="{{route('user#policy')}}" style="color:#f1f1f1; text-decoration:none;">Our Policy</a>
+                        <a href="{{route('user#contactUs')}}" style="color:#f1f1f1; text-decoration:none;">Contact Us</a>
+                        <a href="{{route('user#aboutUs')}}" style="color:#f1f1f1; text-decoration:none;">About Us</a>
+                    </div>
                 </div>
 
-                <!-- Payments (Vertical) -->
-                <div class="col-md-4 d-flex flex-column align-items-start">
-                    <div class="mb-2 fw-bold">Payments:</div>
-                    <img src="{{asset('paymentMethods/KBZpay.png')}}" alt="KPay" style="width:45px; height:45px; object-fit:cover;" class="mb-1">
-                    <img src="{{asset('paymentMethods/CBpay.png')}}" alt="WavePay" style="width:45px; height:45px; object-fit:cover;" class="mb-1">
-                    <img src="{{asset('paymentMethods/AYApay.png')}}" alt="CbPay" style="width:45px; height:45px; object-fit:cover;">
+                <!-- Payment Methods -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Payments</h5>
+                    <div class="d-flex gap-3 align-items-center">
+                        <img src="{{ asset('paymentMethods/KBZpay.png') }}" alt="KPay"
+                            style="width:50px; height:50px; object-fit:contain; transition: transform 0.3s, filter 0.3s; cursor:pointer;"
+                            onmouseover="this.style.transform='scale(1.1)'; this.style.filter='brightness(1.2)';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.filter='brightness(1)';">
+                        <img src="{{ asset('paymentMethods/CBpay.png') }}" alt="WavePay"
+                            style="width:50px; height:50px; object-fit:contain; transition: transform 0.3s, filter 0.3s; cursor:pointer;"
+                            onmouseover="this.style.transform='scale(1.1)'; this.style.filter='brightness(1.2)';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.filter='brightness(1)';">
+                        <img src="{{ asset('paymentMethods/AYApay.png') }}" alt="CbPay"
+                            style="width:50px; height:50px; object-fit:contain; transition: transform 0.3s, filter 0.3s; cursor:pointer;"
+                            onmouseover="this.style.transform='scale(1.1)'; this.style.filter='brightness(1.2)';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.filter='brightness(1)';">
+                    </div>
                 </div>
+
+
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="text-center mt-4 pt-3" style="border-top: 1px solid #333;">
+                <small>&copy; 2025 YourCompany. All rights reserved.</small>
             </div>
         </div>
-
     </div>
+
     <!-- Footer End -->
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright bg-dark py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>IT Mart</a>, All right reserved.</span>
-                </div>
+    <!-- Back to Top -->
+    <div class="scroll-top-to"
+        style="position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+            background: linear-gradient(135deg,#00aaff,#0077cc);
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 1.2rem; transition: transform 0.3s;">
+        <i class="fa fa-angle-up"></i>
+    </div>
+
+    <!-- Toast Notification -->
+    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+            data-bs-delay="3000"
+            style="border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: none; background-color: #0077cc;">
+            <div class="toast-header"
+                style="background-color: #00aaff; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                <strong class="me-auto" style="color: #f1f1f1;">Notification</strong>
+                <small style="color: #e0f7ff;">Now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                    style="filter: invert(1);"></button>
+            </div>
+            <div class="toast-body" style="color: #e0f7ff; font-size: 0.95rem; line-height: 1.4;">
             </div>
         </div>
     </div>
-    <!-- Copyright End -->
 
-    <!-- Back to Top -->
-    <div class="scroll-top-to">
-        <i class="fa fa-angle-up"></i>
-    </div>
-    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
-    <div class="toast-header">
-      <strong class="me-auto">Notification</strong>
-      <small>Now</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body"></div>
-  </div>
-</div>
 
     <!-- <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
             class="fa fa-arrow-up"></i></a> -->

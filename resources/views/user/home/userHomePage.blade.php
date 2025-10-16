@@ -6,8 +6,9 @@
             font-size: 20px;
             color: gray;
             cursor: pointer;
-            }
-        .ratedStar.selected{
+        }
+
+        .ratedStar.selected {
             color: #0d6efd;
         }
     </style>
@@ -23,7 +24,8 @@
                         <!-- Header Contetnt -->
                         <div class="content-block">
                             <h1>Click, Cart, Celebrate</h1>
-                            <p>Welcome to our shop! Explore everything we have to offer <br> we guarantee your complete satisfaction with every purchase.</p>
+                            <p>Welcome to our shop! Explore everything we have to offer <br> we guarantee your complete
+                                satisfaction with every purchase.</p>
                         </div>
                         <!-- Advance Search -->
                         <div class="advance-search">
@@ -31,17 +33,18 @@
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 align-content-center">
 
-                                        <form action="{{route('user#category')}}" method="GET">
+                                        <form action="{{ route('user#category') }}" method="GET">
                                             <div class="form-row">
                                                 <div class="form-group col-xl-5 col-lg-4 col-md-6">
-                                                    <input type="text" name="search" class="form-control my-2 my-lg-1" id=""
-                                                        placeholder="What are you looking for">
+                                                    <input type="text" name="search" class="form-control my-2 my-lg-1"
+                                                        id="" placeholder="What are you looking for">
                                                 </div>
                                                 <div class="form-group col-lg-4 col-md-6">
                                                     <select class="form-control w-100 mt-lg-1 mt-md-2" name="category_id">
                                                         <option value="">Category</option>
                                                         @foreach ($categories as $category)
-                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                                            <option value="{{ $category->id }}">{{ $category->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -63,8 +66,8 @@
 
 
         <!--===========================================
-            =            Popular deals section            =
-            ============================================-->
+                =            Popular deals section            =
+                ============================================-->
 
         <section class="popular-deals section bg-gray">
             <div class="container">
@@ -84,7 +87,7 @@
                                     <div class="product-item bg-light w-100">
                                         <div class="card h-100">
                                             <div class="thumb-content">
-                                                <a href="{{route('user#productDetail',$product->id)}}">
+                                                <a href="{{ route('user#productDetail', $product->id) }}">
                                                     <img class="card-img-top img-fluid"
                                                         src="{{ asset('productImage/' . $product->image) }}"
                                                         alt="Product image for {{ $product->name }}"
@@ -95,7 +98,8 @@
                                                 <h4 class="card-title"><a href="single.html">{{ $product->name }}</a></h4>
                                                 <ul class="list-inline product-meta">
                                                     <li class="list-inline-item">
-                                                        <a href="single.html"><i class="fa fa-folder-open-o"></i>{{$product->category_name}}</a>
+                                                        <a href="single.html"><i
+                                                                class="fa fa-folder-open-o"></i>{{ $product->category_name }}</a>
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <a href="category.html"><i
@@ -106,7 +110,9 @@
                                                     {{ \Illuminate\Support\Str::limit($product->description, 30) }}</p>
                                                 <div class="product-ratings mt-auto">
                                                     @for ($i = 1; $i <= 5; $i++)
-                                                        <span class="ratedStar {{ $i <= $product->star_count ? 'selected' : '' }}" data-value="{{ $i }}">★</span>
+                                                        <span
+                                                            class="ratedStar {{ $i <= $product->star_count ? 'selected' : '' }}"
+                                                            data-value="{{ $i }}">★</span>
                                                     @endfor
                                                 </div>
                                             </div>
@@ -123,8 +129,8 @@
 
 
         <!--==========================================
-            =            All Products Section            =
-            ===========================================-->
+                =            All Products Section            =
+                ===========================================-->
 
         <section class=" section">
             <!-- Container Start -->
@@ -140,7 +146,7 @@
                             @foreach ($products as $item)
                                 <div class="col-lg-4 offset-lg-0 col-md-5 offset-md-1 col-sm-6 mb-4">
                                     <div class="card h-100 border border-secondary">
-                                        <a href="{{route('user#productDetail',$item->id)}}">
+                                        <a href="{{ route('user#productDetail', $item->id) }}">
                                             <img src="{{ asset('productImage/' . $item->image) }}"
                                                 class="card-img-top img-fluid rounded-top"
                                                 style="height: 220px; object-fit: cover;" alt="">
@@ -151,25 +157,18 @@
                                         <div class="card-body d-flex flex-column">
                                             <h4 class="card-title">{{ $item->name }}</h4>
                                             <p class="card-text mb-1" style="max-height: 80px;">
-                                                {{Str::words($item->description, 15, '...')  }}
+                                                {{ Str::words($item->description, 15, '...') }}
                                             </p>
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <h5 class="text-primary mb-0">{{ $item->sale_price }} MMK</h5>
-                                                @if(Auth::user())
-                                                    <!-- <form action="{{ route('user#addToCart') }}" method="POST" class="d-inline">
+                                                @if (Auth::user())
+                                                    <form action="{{ route('user#addToCart') }}" method="POST"
+                                                        class="add-to-cart-form d-inline">
                                                         @csrf
                                                         <input type="hidden" name="productId" value="{{ $item->id }}">
                                                         <input type="hidden" name="quantity" value="1">
-                                                        <button type="submit" class="btn btn-primary rounded-pill btn-sm d-inline-flex align-items-center">
-                                                            <i class="fa-solid fa-cart-shopping me-2"></i>
-                                                            Add to Cart
-                                                        </button>
-                                                    </form> -->
-                                                    <form action="{{ route('user#addToCart') }}" method="POST" class="add-to-cart-form d-inline">
-                                                        @csrf
-                                                        <input type="hidden" name="productId" value="{{ $item->id }}">
-                                                        <input type="hidden" name="quantity" value="1">
-                                                        <button type="submit" class="btn btn-primary rounded-pill btn-sm d-inline-flex align-items-center">
+                                                        <button type="submit"
+                                                            class="btn btn-primary rounded-pill btn-sm d-inline-flex align-items-center">
                                                             <i class="fa-solid fa-cart-shopping me-2"></i>
                                                             Add to Cart
                                                         </button>
@@ -191,65 +190,67 @@
                 </div>
             </div>
             <!-- Container End -->
-            <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080; min-width: 300px;">
-            <div id="liveToast" class="toast shadow border-start border-4 border-primary rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
-                <div class="toast-header bg-primary text-white rounded-top">
-                <i class="bi bi-bell-fill me-2"></i>
-                <strong class="me-auto">Notification</strong>
-                <small class="text-white-50">Now</small>
-                <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+            <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3"
+                style="z-index: 1080; min-width: 300px;">
+                <div id="liveToast" class="toast shadow border-start border-4 border-primary rounded-3" role="alert"
+                    aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+                    <div class="toast-header bg-primary text-white rounded-top">
+                        <i class="bi bi-bell-fill me-2"></i>
+                        <strong class="me-auto">Notification</strong>
+                        <small class="text-white-50">Now</small>
+                        <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body fs-5 px-3 py-2">
+                        <!-- Your notification message here -->
+                    </div>
                 </div>
-                <div class="toast-body fs-5 px-3 py-2">
-                <!-- Your notification message here -->
-                </div>
-            </div>
             </div>
         </section>
     </div>
-
-
 @endsection
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const cartForms = document.querySelectorAll('.add-to-cart-form');
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartForms = document.querySelectorAll('.add-to-cart-form');
 
-    cartForms.forEach(form => {
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
+        cartForms.forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
 
-            const formData = new FormData(this);
+                const formData = new FormData(this);
 
-            try {
-                const response = await fetch(this.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute(
+                                'content'),
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
 
-                if (response.ok) {
-                    const data = await response.json();
+                    if (response.ok) {
+                        const data = await response.json();
 
-                    const toastLiveExample = document.getElementById('liveToast');
-                    const toastBody = toastLiveExample.querySelector('.toast-body');
+                        const toastLiveExample = document.getElementById('liveToast');
+                        const toastBody = toastLiveExample.querySelector('.toast-body');
 
-                    toastBody.textContent = data.message || 'Product added to cart';
+                        toastBody.textContent = data.message || 'Product added to cart';
 
-                    const toast = new bootstrap.Toast(toastLiveExample);
-                    toast.show();
+                        const toast = new bootstrap.Toast(toastLiveExample);
+                        toast.show();
 
-                } else {
-                    alert('Failed to add to cart');
+                    } else {
+                        alert('Failed to add to cart');
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Something went wrong.');
                 }
-
-            } catch (error) {
-                console.error(error);
-                alert('Something went wrong.');
-            }
+            });
         });
     });
-});
 </script>
-

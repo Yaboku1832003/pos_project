@@ -41,6 +41,17 @@ class UserController extends Controller
         return view('user.home.userHomePage', compact('products', 'categories','topRatedProducts'));
     }
 
+    public function aboutUs(){
+        return view('user.home.aboutUs');
+    }
+    public function contactUs(){
+        return view('user.home.contactUs');
+    }
+    public function policy(){
+        return view('user.home.policy');
+    }
+
+
     public function category(Request $request)
     {
         $categories = Category::all();
