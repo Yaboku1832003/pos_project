@@ -168,7 +168,7 @@
                                                         <li class="list-inline-item">
                                                             <a href="single.html"><i
                                                                     class="fa-solid fa-sack-dollar"></i>{{ $product->sale_price }}
-                                                                mmk</a>
+                                                                MMK</a>
                                                         </li>
                                                         <li class="list-inline-item">
                                                             <a href="category.html"><i
@@ -217,7 +217,7 @@
                                                         <ul class="list-inline mt-2 mb-3">
                                                             <li class="list-inline-item"><a href="category.html"> <i
                                                                         class="fa-solid fa-sack-dollar"></i>
-                                                                    {{ $product->sale_price }} mmk</a>
+                                                                    {{ $product->sale_price }} MMK</a>
                                                             </li>
                                                             <li class="list-inline-item"><a href="category.htm"><i
                                                                         class="fa fa-calendar"></i>{{ $product->updated_at->format('Y-m-d') }}</a>

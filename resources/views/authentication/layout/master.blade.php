@@ -84,7 +84,7 @@
         <div class="container">
             <!-- Logo & Brand -->
             <a class="navbar-brand" href="#">
-                <i class="fas fa-shopping-cart"></i> E-commerce
+                <i class="fas fa-shopping-cart"></i> IT Mart
             </a>
 
             <!-- Mobile Toggle -->

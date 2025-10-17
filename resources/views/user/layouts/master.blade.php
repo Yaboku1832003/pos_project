@@ -41,7 +41,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar start -->
     <div class="container-fluid fixed-top bg-white">
@@ -56,9 +56,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="" class="nav-item nav-link ">Policy</a>
-                        <a href="" class="nav-item nav-link">About us</a>
-                        <a href="#" class="nav-item nav-link">Contact us</a>
+                        <a href="{{route('user#policy')}}" class="nav-item nav-link ">Policy</a>
+                        <a href="{{route('user#aboutUs')}}" class="nav-item nav-link">About us</a>
+                        <a href="{{route('user#contactUs')}}" class="nav-item nav-link">Contact us</a>
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
 
@@ -104,8 +104,15 @@
                                     <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
+<<<<<<< Updated upstream
                                     <a href="#" class="dropdown-item py-2 text-muted">Edit Profile</a>
                                     <a href="#" class="dropdown-item py-2 text-muted">Change Password</a>
+=======
+                                    <a href="{{ route('userProfile#edit') }}"
+                                        class="dropdown-item py-2 text-muted">Edit Profile</a>
+                                    <a href="{{ route('userProfile#changePasswordPage') }}"
+                                        class="dropdown-item py-2 text-muted">Change Password</a>
+>>>>>>> Stashed changes
 
                                     <div class="dropdown-item py-2">
                                         <form action="{{ route('logout') }}" method="post" class="p-0">
@@ -126,8 +133,9 @@
     </div>
     <!-- Navbar End -->
 
-
+    <div class="flex-grow-1">
     @yield('content')
+    </div>
     <!-- Notification Modal -->
 
 
@@ -135,6 +143,7 @@
     @include('sweetalert::alert')
 
     <!-- Footer Start -->
+<<<<<<< Updated upstream
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer py-3">
         <div class="container py-3">
@@ -171,6 +180,65 @@
                 </div>
             </div>
         </div>
+=======
+     <footer class="container-fluid"
+            style="background: linear-gradient(135deg, #1c1c1c, #111111);
+                   color: #f1f1f1;
+                   padding: 15px 0;">
+        <div class="container">
+            <div class="row">
+
+                <!-- Social Media -->
+                <div class="col-md-4 mb-2 mb-md-0">
+                    <h6 class="fw-bold mb-2">Follow Us</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                           style="width:30px; height:30px; background-color:#1877F2; color:white; text-decoration:none;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                           style="width:30px; height:30px; background-color:#000000; color:white; text-decoration:none;">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                           style="width:30px; height:30px; background-color:#0088cc; color:white; text-decoration:none;">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="d-flex align-items-center justify-content-center rounded-circle"
+                           style="width:30px; height:30px; background-color:#C13584; color:white; text-decoration:none;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Useful Links -->
+                <div class="col-md-4 mb-2 mb-md-0">
+                    <h6 class="fw-bold mb-2">Quick Links</h6>
+                    <div class="d-flex flex-column gap-1">
+                        <a href="{{ route('user#policy') }}" style="color:#f1f1f1; text-decoration:none;">Our Policy</a>
+                        <a href="{{ route('user#contactUs') }}" style="color:#f1f1f1; text-decoration:none;">Contact Us</a>
+                        <a href="{{ route('user#aboutUs') }}" style="color:#f1f1f1; text-decoration:none;">About Us</a>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-2">Payments</h6>
+                    <div class="d-flex gap-2 align-items-center">
+                        <img src="{{ asset('paymentMethods/KBZpay.png') }}" alt="KPay" style="width:40px; height:40px; object-fit:contain; cursor:pointer;">
+                        <img src="{{ asset('paymentMethods/CBpay.png') }}" alt="WavePay" style="width:40px; height:40px; object-fit:contain; cursor:pointer;">
+                        <img src="{{ asset('paymentMethods/AYApay.png') }}" alt="CbPay" style="width:40px; height:40px; object-fit:contain; cursor:pointer;">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3 pt-2" style="border-top:1px solid #333;">
+                <small>&copy; 2025 YourCompany. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+>>>>>>> Stashed changes
 
     </div>
     <!-- Footer End -->

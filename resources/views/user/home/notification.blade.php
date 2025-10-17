@@ -18,7 +18,8 @@
 
                 {{-- Notifications List --}}
                 <div class="list-group list-group-flush">
-                    @foreach ($orders as $notification)
+                    @if($orders->count()>0)
+@foreach ($orders as $notification)
                         <a href="javascript:void(0);"
                             class="list-group-item list-group-item-action px-3 py-3 notification-item {{ $notification->readStatus == 0 ? 'bg-light' : 'bg-white' }}"
                             data-order="{{ $notification->order_code }}">
@@ -49,6 +50,13 @@
                             </div>
                         </a>
                     @endforeach
+                    @else
+                    <div class="text-center py-4 text-muted">
+    <i class="bi bi-bell-slash-fill" style="font-size: 2rem;"></i>
+    <h6 class="mt-2 mb-0" style="font-weight: 500;">No new notifications</h6>
+    <p class="small text-secondary mb-0">You’re all caught up! Check back later for updates.</p>
+</div>
+@endif
                 </div>
 
                 {{-- Pagination --}}
