@@ -3,9 +3,9 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="min-vh-100 d-flex">
+<div class="d-flex" style="height: 100vh; overflow: hidden;">
 
-        <!-- Left side with form -->
+    <!-- Left side with form -->
     <div class="d-flex flex-fill justify-content-center align-items-center bg-white p-5">
         <div style="width: 100%; max-width: 380px;">
             <h4 class="mb-4 text-center">Login to continue</h4>
@@ -28,13 +28,15 @@
                 </div>
 
                 <!-- Password -->
-                <div class="mb-3">
+                <div class="mb-3 position-relative">
                     <input type="password"
                            name="password"
                            id="password"
                            placeholder="Password"
                            required
                            class="form-control rounded-pill px-3 py-2 border-primary">
+                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password position-absolute"
+                          style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></span>
                     @error('password')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -78,9 +80,26 @@
     <!-- Right side with image -->
     <div class="d-none d-md-flex flex-fill bg-light justify-content-center align-items-center"
          style="background: url('{{ asset('loginImage/Big_phone_with_cart.jpg') }}') center/cover no-repeat;">
-        <!-- Optional overlay or branding -->
+        <!-- Optional overlay -->
     </div>
 
-
 </div>
+
+<!-- Password toggle script -->
+<script>
+    document.querySelectorAll('.toggle-password').forEach(function(el){
+        el.addEventListener('click', function(){
+            const input = document.querySelector(this.getAttribute('toggle'));
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
+</script>
 @endsection
