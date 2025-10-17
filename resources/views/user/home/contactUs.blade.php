@@ -21,7 +21,7 @@
                     </p>
                 </div>
                 <div class="col-md-6 text-center">
-                    <img src="{{ asset('images/contact-us.jpg') }}" alt="Contact Us"
+                    <img src="{{ asset('images/AboutUs/contactUs.jpg') }}" alt="Contact Us"
                          style="width:100%; height:auto; border-radius:12px; object-fit:cover; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
                 </div>
             </div>
@@ -38,7 +38,7 @@
                             <i class="fa-solid fa-phone fs-2 text-primary"></i>
                         </div>
                         <h5 class="fw-bold mb-2">Call Us</h5>
-                        <p class="text-muted mb-0">+1 (123) 456-7890</p>
+                        <p class="text-muted mb-0">(+95) 9758343191</p>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                             <i class="fa-solid fa-envelope fs-2 text-primary"></i>
                         </div>
                         <h5 class="fw-bold mb-2">Email Us</h5>
-                        <p class="text-muted mb-0">info@yourcompany.com</p>
+                        <p class="text-muted mb-0">toge7448@gmail.com</p>
                     </div>
                 </div>
             </div>

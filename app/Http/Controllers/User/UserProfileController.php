@@ -113,7 +113,7 @@ class UserProfileController extends Controller
         $rules = [
             'name'    => 'required',
             'email'   => 'required|unique:users,email,' . Auth::user()->id,
-            'phone'   => 'required',
+            // 'phone'   => 'required',
             'address' => 'max:200',
             'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];

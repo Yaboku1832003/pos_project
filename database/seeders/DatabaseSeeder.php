@@ -15,12 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Check if superadmin exists first
-        if (!User::where('email', 'superadmin@example.com')->exists()) {
+        if (!User::where('email', 'superadmin@gmail.com')->exists()) {
             User::create([
                 'name' => 'Super Admin Account',
-                'email' => 'superadmin@example.com',
+                'email' => 'superadmin@gmail.com',
                 'password' => Hash::make('admin12345'),
                 'role' => 'superadmin',
+                'profile' =>'superAdmin.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

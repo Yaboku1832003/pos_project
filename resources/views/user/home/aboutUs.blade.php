@@ -21,7 +21,7 @@
             {{-- Mission & Vision --}}
             <div class="row align-items-center mb-4">
                 <div class="col-md-6 mb-3 mb-md-0">
-                    <img src="{{ asset('images/mission.jpg') }}" alt="Mission"
+                    <img src="{{ asset('images/About us.png') }}" alt="Mission"
                          style="width:100%; height:auto; border-radius:12px; object-fit:cover; box-shadow:0 8px 20px rgba(0,0,0,0.1);">
                 </div>
                 <div class="col-md-6">
@@ -39,26 +39,26 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4 mb-3">
                         <div class="text-center">
-                            <img src="{{ asset('images/team1.jpg') }}" alt="Team Member"
+                            <img src="{{ asset('images/AboutUS/team1.jpg') }}" alt="Team Member"
                                  style="width:120px; height:120px; object-fit:cover; border-radius:50%; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-                            <h6 class="mt-2 fw-bold">Alice Johnson</h6>
-                            <p class="text-muted small">CEO & Founder</p>
+                            <h6 class="mt-2 fw-bold">Daw Zin Mar Htun</h6>
+                            <p class="text-muted small">Supervisor</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4 mb-3">
                         <div class="text-center">
-                            <img src="{{ asset('images/team2.jpg') }}" alt="Team Member"
+                            <img src="{{ asset('images/AboutUs/team2.jpg') }}" alt="Team Member"
                                  style="width:120px; height:120px; object-fit:cover; border-radius:50%; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-                            <h6 class="mt-2 fw-bold">Michael Lee</h6>
-                            <p class="text-muted small">CTO</p>
+                            <h6 class="mt-2 fw-bold">Mg Zwel Wai Yan</h6>
+                            <p class="text-muted small">Leader</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4 mb-3">
                         <div class="text-center">
-                            <img src="{{ asset('images/team3.jpg') }}" alt="Team Member"
+                            <img src="{{ asset('images/AboutUs/team3.jpg') }}" alt="Team Member"
                                  style="width:120px; height:120px; object-fit:cover; border-radius:50%; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-                            <h6 class="mt-2 fw-bold">Sophia Wang</h6>
-                            <p class="text-muted small">Marketing Head</p>
+                            <h6 class="mt-2 fw-bold">Nyan Soe Aung</h6>
+                            <p class="text-muted small">Member</p>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
             {{-- Call to Action --}}
             <div class="text-center mt-4">
                 <p style="color:#495057; font-size:1rem; line-height:1.6;">
-                    Have any questions or want to reach out? You can email us directly at <a href="mailto:info@yourcompany.com" style="color:#0d6efd; text-decoration:none;">info@yourcompany.com</a>.
+                    Have any questions or want to reach out? You can email us directly at <a href="mailto:info@yourcompany.com" style="color:#0d6efd; text-decoration:none;">toge7448@gmail.com</a>.
                 </p>
             </div>
 

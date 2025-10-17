@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\PaymentHistory;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\PaymentHistory;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminController extends Controller
@@ -254,6 +255,11 @@ class AdminController extends Controller
     {
         $user = User::find($id);
         if ($user) {
+                  // Delete the user's cart(s)
+        Cart::where('user_id', $id)->delete();
+
+        // Delete the user
+
             $user->delete();
         }
         return back();

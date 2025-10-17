@@ -42,7 +42,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar start -->
     <div class="container-fluid fixed-top bg-white">
@@ -57,9 +57,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="" class="nav-item nav-link ">Policy</a>
-                        <a href="" class="nav-item nav-link">About us</a>
-                        <a href="#" class="nav-item nav-link">Contact us</a>
+                        <a href="{{route('user#policy')}}" class="nav-item nav-link ">Policy</a>
+                        <a href="{{route('user#aboutUs')}}" class="nav-item nav-link">About us</a>
+                        <a href="{{route('user#contactUs')}}" class="nav-item nav-link">Contact us</a>
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
 
@@ -105,8 +105,10 @@
                                     <span>{{ Auth::user()->name != null ? Auth::user()->name : Auth::user()->nickname }}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0 rounded border">
-                                    <a href="{{route('userProfile#edit')}}" class="dropdown-item py-2 text-muted">Edit Profile</a>
-                                    <a href="{{ route('userProfile#changePasswordPage') }}" class="dropdown-item py-2 text-muted">Change Password</a>
+                                    <a href="{{ route('userProfile#edit') }}"
+                                        class="dropdown-item py-2 text-muted">Edit Profile</a>
+                                    <a href="{{ route('userProfile#changePasswordPage') }}"
+                                        class="dropdown-item py-2 text-muted">Change Password</a>
 
                                     <div class="dropdown-item py-2">
                                         <form action="{{ route('logout') }}" method="post" class="p-0">
@@ -127,8 +129,9 @@
     </div>
     <!-- Navbar End -->
 
-
+    <div class="flex-grow-1">
     @yield('content')
+    </div>
     <!-- Notification Modal -->
 
 
@@ -137,9 +140,9 @@
 
 
     <!-- Footer Start -->
-    <div class="container-fluid"
-        style="background: linear-gradient(135deg, #1c1c1c, #111111); color: #f1f1f1; padding: 50px 0;">
-        <div class="container">
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer py-3">
+        <div class="container py-3">
             <div class="row">
 
                 <!-- Social Media -->
@@ -194,10 +197,8 @@
                             onmouseout="this.style.transform='scale(1)'; this.style.filter='brightness(1)';">
                     </div>
                 </div>
-
-
-
             </div>
+        </div>
 
             <!-- Footer Bottom -->
             <div class="text-center mt-4 pt-3" style="border-top: 1px solid #333;">
