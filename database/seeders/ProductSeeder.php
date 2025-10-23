@@ -14,10 +14,10 @@ class ProductSeeder extends Seeder
             // 1. Microcontrollers & Development Boards
             [
                 'name'        => 'ESP32-C3-MINI-1U-N4 Module',
-                'cost_price'  => 3.25 * 3800,
-                'sale_price'  => 3.36 * 3800,
+                'cost_price'  => 5600,
+                'sale_price'  => 8500,
                 'description' => '2.4GHz WiFi+ BLE5.0 wireless module electronics components',
-                'category_id' => 1,
+                'category_id' => 6,
                 'stock'       => 10,
                 'image'       => 'ESP32.jpg',
                 'created_at'  => now(),
@@ -25,8 +25,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Arduino Uno TH244A001',
-                'cost_price'  => 1200,
-                'sale_price'  => 1500,
+                'cost_price'  => 50000,
+                'sale_price'  => 57000,
                 'description' => 'Arduino uno with 32 Bit ARM Cortex MCU',
                 'category_id' => 1,
                 'stock'       => 15,
@@ -36,8 +36,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Nano V3.0 Atmega328P Development Board',
-                'cost_price'  => 519,
-                'sale_price'  => 650,
+                'cost_price'  => 5200,
+                'sale_price'  => 6000,
                 'description' => 'High Quality Compatible with the Official Development Board',
                 'category_id' => 1,
                 'stock'       => 20,
@@ -47,8 +47,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Keyestudio MEGA 2560 R3 Development Board',
-                'cost_price'  => 1620,
-                'sale_price'  => 2000,
+                'cost_price'  => 46100,
+                'sale_price'  => 52000,
                 'description' => 'ATmega 2560 Compatible with Arduino Mega 2560',
                 'category_id' => 1,
                 'stock'       => 10,
@@ -58,8 +58,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Raspberry Pi Zero 2 W',
-                'cost_price'  => 1800,
-                'sale_price'  => 2200,
+                'cost_price'  => 31500,
+                'sale_price'  => 43500,
                 'description' => 'Raspberry Pi Zero 2 Development Board RPI PI0 2W',
                 'category_id' => 1,
                 'stock'       => 15,
@@ -69,8 +69,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Raspberry Pi 5 Full Desktop Starter Kit',
-                'cost_price'  => 7400,
-                'sale_price'  => 8500,
+                'cost_price'  => 355200,
+                'sale_price'  => 388000,
                 'description' => 'Newest Raspberry Pi 5 4GB 8GB RAM Mini Computer Kit',
                 'category_id' => 1,
                 'stock'       => 10,
@@ -78,11 +78,11 @@ class ProductSeeder extends Seeder
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
-            // 2. Sensors & Measurement Modules
+            //-------------------------------------------------------//
             [
                 'name'        => 'SHTC3 Temp & Humidity Sensor',
-                'cost_price'  => 121,
-                'sale_price'  => 160,
+                'cost_price'  => 5600,
+                'sale_price'  => 6600,
                 'description' => 'High-precision digital temperature and humidity sensor module I2C',
                 'category_id' => 2,
                 'stock'       => 50,
@@ -92,8 +92,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'MAX30100 Heart Rate & SpO2 Sensor',
-                'cost_price'  => 102,
-                'sale_price'  => 135,
+                'cost_price'  => 5800,
+                'sale_price'  => 6900,
                 'description' => 'Blood oxygen concentration sensor module heart rate pulse heartbeat',
                 'category_id' => 2,
                 'stock'       => 50,
@@ -103,8 +103,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'MQ-2 Smoke Sensor',
-                'cost_price'  => 503,
-                'sale_price'  => 545,
+                'cost_price'  => 3800,
+                'sale_price'  => 4200,
                 'description' => 'Smoke alarm module smoke detection switch controller',
                 'category_id' => 2,
                 'stock'       => 30,
@@ -114,8 +114,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'TPL0501 Digital Potentiometer',
-                'cost_price'  => 206,
-                'sale_price'  => 238,
+                'cost_price'  => 3950,
+                'sale_price'  => 4450,
                 'description' => '100K Adjustable SPI Port Digital Potentiometer Module',
                 'category_id' => 11,
                 'stock'       => 40,
@@ -125,8 +125,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'HX1838 IR Remote Control Module Kit',
-                'cost_price'  => 53,
-                'sale_price'  => 80,
+                'cost_price'  => 9930,
+                'sale_price'  => 10450,
                 'description' => 'Infrared IR wireless remote module kit for robotics kits',
                 'category_id' => 6,
                 'stock'       => 100,
@@ -136,8 +136,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'High-Precision GPS-RTK Module UM982',
-                'cost_price'  => 12000,
-                'sale_price'  => 16000,
+                'cost_price'  => 311000,
+                'sale_price'  => 336000,
                 'description' => 'Centimeter-Level Differential Relative Positioning and Orientation',
                 'category_id' => 6,
                 'stock'       => 5,
@@ -147,8 +147,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'GPS GPRS GNSS Module L80-R',
-                'cost_price'  => 450,
-                'sale_price'  => 550,
+                'cost_price'  => 8200,
+                'sale_price'  => 9500,
                 'description' => 'Integrated with patch Antenna SMD L80R L80-M39 L80RE-M37',
                 'category_id' => 6,
                 'stock'       => 20,
@@ -159,8 +159,8 @@ class ProductSeeder extends Seeder
             // 3. Robotics & STEM Kits
             [
                 'name'        => 'Keyestudio 4x4x4 RGB LED Cube Kit',
-                'cost_price'  => 2130,
-                'sale_price'  => 2460,
+                'cost_price'  => 65000,
+                'sale_price'  => 72000,
                 'description' => 'Arduino starter kit with voice control support C++/Scratch',
                 'category_id' => 3,
                 'stock'       => 20,
@@ -170,8 +170,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Kidsbits DIY Multi-purpose Coding Robot Car Kit',
-                'cost_price'  => 3490,
-                'sale_price'  => 3880,
+                'cost_price'  => 71000,
+                'sale_price'  => 84000,
                 'description' => 'STEM Education 7+ Years DIY Arduino Robot Car Kit',
                 'category_id' => 3,
                 'stock'       => 15,
@@ -181,8 +181,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Keyestudio Two Wheel Self Balancing Robot Car',
-                'cost_price'  => 3700,
-                'sale_price'  => 4500,
+                'cost_price'  => 30000,
+                'sale_price'  => 38000,
                 'description' => 'Self-Balancing Arduino Robot Car with Mobile Phone Remote Control',
                 'category_id' => 3,
                 'stock'       => 10,
@@ -192,8 +192,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Keyestudio CNC Drawing Machine Kit',
-                'cost_price'  => 9760,
-                'sale_price'  => 11000,
+                'cost_price'  => 76000,
+                'sale_price'  => 84000,
                 'description' => 'DIY Hand Writing Machine Pen Drawing Robot Plotter for Arduino',
                 'category_id' => 3,
                 'stock'       => 5,
@@ -203,8 +203,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Tscinbuny 2WD Mini Smart Car Robot Kit',
-                'cost_price'  => 1928,
-                'sale_price'  => 2200,
+                'cost_price'  => 47000,
+                'sale_price'  => 5400,
                 'description' => 'STEM Education Project for School Children',
                 'category_id' => 3,
                 'stock'       => 15,
@@ -215,10 +215,10 @@ class ProductSeeder extends Seeder
             // 4. Displays & Visual Modules
             [
                 'name'        => 'Starlight Low Light IMX662 Camera Module',
-                'cost_price'  => 850,
-                'sale_price'  => 1200,
+                'cost_price'  => 140000,
+                'sale_price'  => 163000,
                 'description' => '1080P low light camera module with MIPI interface.',
-                'category_id' => 4,
+                'category_id' => 6,
                 'stock'       => 15,
                 'image'       => 'IMX662.jpg',
                 'created_at'  => now(),
@@ -226,8 +226,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'LCD Digital Multimeter A830L',
-                'cost_price'  => 255,
-                'sale_price'  => 350,
+                'cost_price'  => 20200,
+                'sale_price'  => 24500,
                 'description' => 'Multitester for AC voltage, diode, frequency, and current.',
                 'category_id' => 8,
                 'stock'       => 30,
@@ -238,8 +238,8 @@ class ProductSeeder extends Seeder
             // 5. Motors & Actuators
             [
                 'name'        => 'Vibration Motor Module',
-                'cost_price'  => 35,
-                'sale_price'  => 60,
+                'cost_price'  => 1600,
+                'sale_price'  => 2000,
                 'description' => 'DC motor mobile phone vibrator, vibration motor alarm',
                 'category_id' => 5,
                 'stock'       => 50,
@@ -249,8 +249,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '12V 24V High Torque Worm Drive DC Motor',
-                'cost_price'  => 9900,
-                'sale_price'  => 12000,
+                'cost_price'  => 19800,
+                'sale_price'  => 25000,
                 'description' => '150W DC Motor with Worm Gear Reductor',
                 'category_id' => 5,
                 'stock'       => 10,
@@ -260,8 +260,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Custom 775 DC Motor 12V-36V',
-                'cost_price'  => 390,
-                'sale_price'  => 550,
+                'cost_price'  => 23100,
+                'sale_price'  => 31000,
                 'description' => '10000rpm Permanent Magnet DC Motor for Fan',
                 'category_id' => 5,
                 'stock'       => 20,
@@ -282,8 +282,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'SG90 Mini Servo Motor',
-                'cost_price'  => 120,
-                'sale_price'  => 200,
+                'cost_price'  => 1200,
+                'sale_price'  => 1900,
                 'description' => 'Steering servo for remote control aircraft 1.6kg',
                 'category_id' => 5,
                 'stock'       => 40,
@@ -294,10 +294,10 @@ class ProductSeeder extends Seeder
             // 6. Communication & IoT Modules
             [
                 'name'        => 'Tuya 8 Way Relay Switch Module',
-                'cost_price'  => 245,
-                'sale_price'  => 350,
+                'cost_price'  => 26200,
+                'sale_price'  => 36000,
                 'description' => '8 Channel DC 7-27V WiFi/Zigbee Wireless Smart Home Remote Control',
-                'category_id' => 9,
+                'category_id' => 6,
                 'stock'       => 20,
                 'image'       => 'Tuya_8Relay.jpg',
                 'created_at'  => now(),
@@ -305,8 +305,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '3000M Long Distance 2CH RF Wireless Remote Control',
-                'cost_price'  => 680,
-                'sale_price'  => 900,
+                'cost_price'  => 14300,
+                'sale_price'  => 18300,
                 'description' => 'DC 12V 24V transmitter + receiver 315/433 MHz',
                 'category_id' => 6,
                 'stock'       => 10,
@@ -316,10 +316,10 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'AISMARTLINK Smart Lora XBee Zigbee Sensor',
-                'cost_price'  => 55,
-                'sale_price'  => 80,
+                'cost_price'  => 880,
+                'sale_price'  => 1150,
                 'description' => '4pin Measuring Ranging Sensor 5V HC-SR04 Ultrasonic',
-                'category_id' => 6,
+                'category_id' => 2,
                 'stock'       => 25,
                 'image'       => 'XBee_Zigbee.jpg',
                 'created_at'  => now(),
@@ -328,8 +328,8 @@ class ProductSeeder extends Seeder
             // 7. Audio & Amplifier Modules
             [
                 'name'        => 'TDA7492P Power Amplifier Board',
-                'cost_price'  => 100,
-                'sale_price'  => 170,
+                'cost_price'  => 31400,
+                'sale_price'  => 36000,
                 'description' => 'Digital power amplifier CSR4.0 audio receiver board module',
                 'category_id' => 7,
                 'stock'       => 20,
@@ -339,8 +339,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Hybrid IGBT Gate Driver AF9591',
-                'cost_price'  => 5000,
-                'sale_price'  => 6000,
+                'cost_price'  => 7100,
+                'sale_price'  => 8200,
                 'description' => 'High quality IGBT gate driver module',
                 'category_id' => 7,
                 'stock'       => 10,
@@ -350,8 +350,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'High Quality 0.2F-5.0F Hybrid Capacitor',
-                'cost_price'  => 1600,
-                'sale_price'  => 2000,
+                'cost_price'  => 8600,
+                'sale_price'  => 11000,
                 'description' => 'Car audio capacitor 20-24V',
                 'category_id' => 7,
                 'stock'       => 15,
@@ -362,8 +362,8 @@ class ProductSeeder extends Seeder
             // 8. Tools & Accessories
             [
                 'name'        => 'Hot Melt Glue Gun',
-                'cost_price'  => 75,
-                'sale_price'  => 120,
+                'cost_price'  => 25100,
+                'sale_price'  => 31500,
                 'description' => 'Industrial/DIY Silicone Glue Gun',
                 'category_id' => 8,
                 'stock'       => 100,
@@ -373,8 +373,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '80W Digital Soldering Iron Kit 20 in 1',
-                'cost_price'  => 1300,
-                'sale_price'  => 1600,
+                'cost_price'  => 42000,
+                'sale_price'  => 56000,
                 'description' => 'Adjustable temperature soldering tool kit',
                 'category_id' => 8,
                 'stock'       => 30,
@@ -384,8 +384,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '60W Instant Electric Soldering Iron Kit',
-                'cost_price'  => 1630,
-                'sale_price'  => 2000,
+                'cost_price'  => 21000,
+                'sale_price'  => 31500,
                 'description' => 'Easy to use soldering iron kit',
                 'category_id' => 8,
                 'stock'       => 25,
@@ -395,8 +395,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Yocan Kodo Pro Compact Soldering Iron',
-                'cost_price'  => 500,
-                'sale_price'  => 700,
+                'cost_price'  => 46000,
+                'sale_price'  => 53000,
                 'description' => 'Battery powered mini handle pencil for DIY projects',
                 'category_id' => 8,
                 'stock'       => 40,
@@ -407,8 +407,8 @@ class ProductSeeder extends Seeder
             // 9. Power Supply & Conversion Modules
             [
                 'name'        => 'AC to DC Power Conversion Module 1N4007',
-                'cost_price'  => 28,
-                'sale_price'  => 45,
+                'cost_price'  => 1050,
+                'sale_price'  => 2000,
                 'description' => 'Full bridge rectifier filter 12V 1A AC to DC',
                 'category_id' => 9,
                 'stock'       => 50,
@@ -418,8 +418,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'LM2596 DC-DC Step Down Converter',
-                'cost_price'  => 98,
-                'sale_price'  => 150,
+                'cost_price'  => 7800,
+                'sale_price'  => 8500,
                 'description' => 'Power supply module XL6009 LM2596S',
                 'category_id' => 9,
                 'stock'       => 60,
@@ -429,8 +429,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'XL6005E1 Boost LED Constant Current Driver',
-                'cost_price'  => 99,
-                'sale_price'  => 140,
+                'cost_price'  => 9800,
+                'sale_price'  => 12000,
                 'description' => 'Boost LED driver chip TO252-5L',
                 'category_id' => 9,
                 'stock'       => 40,
@@ -440,8 +440,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Two-way Mobile Power Bank Module',
-                'cost_price'  => 170,
-                'sale_price'  => 250,
+                'cost_price'  => 10100,
+                'sale_price'  => 13000,
                 'description' => 'Fast charging assembly board electronics PCB',
                 'category_id' => 9,
                 'stock'       => 30,
@@ -451,8 +451,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '1000W Inverter Rear Stage Drive Board EGS003',
-                'cost_price'  => 375,
-                'sale_price'  => 550,
+                'cost_price'  => 12900,
+                'sale_price'  => 16800,
                 'description' => 'New upgraded version inverter drive board module',
                 'category_id' => 9,
                 'stock'       => 20,
@@ -463,8 +463,8 @@ class ProductSeeder extends Seeder
             // 10. Connectors & Passive Components
             [
                 'name'        => 'Single Mode SC to SC Fiber Optic Adapter',
-                'cost_price'  => 100,
-                'sale_price'  => 150,
+                'cost_price'  => 980,
+                'sale_price'  => 2200,
                 'description' => 'Metal simplex fiber optic connector adapter',
                 'category_id' => 10,
                 'stock'       => 50,
@@ -474,8 +474,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '50ohm Male N Type to Male SMA Connector',
-                'cost_price'  => 130,
-                'sale_price'  => 200,
+                'cost_price'  => 1900,
+                'sale_price'  => 2800,
                 'description' => 'Low loss coaxial cable N type to SMA adapter',
                 'category_id' => 10,
                 'stock'       => 40,
@@ -485,8 +485,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'LED Diodes 3mm Blinking RGB',
-                'cost_price'  => 5,
-                'sale_price'  => 10,
+                'cost_price'  => 400,
+                'sale_price'  => 800,
                 'description' => 'Pre-wired 3mm signal LED diodes for DIY electronics',
                 'category_id' => 10,
                 'stock'       => 100,
@@ -496,8 +496,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Electrolytic Capacitor Assorted Kit 24 Values',
-                'cost_price'  => 1645,
-                'sale_price'  => 2000,
+                'cost_price'  => 11000,
+                'sale_price'  => 18000,
                 'description' => '500pcs 0.1uF~1000uF with storage box',
                 'category_id' => 10,
                 'stock'       => 20,
@@ -507,8 +507,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'High Quality Transistor Tester Diode Triode Capacitance SCR Inductance LCR-T4 Graphical Multifunction Tester',
-                'cost_price'  => 151400, // 4.34 USD * 31000
-                'sale_price'  => 164000, // 4.64 USD * 31000
+                'cost_price'  => 15140, // 4.34 USD * 31000
+                'sale_price'  => 16400, // 4.64 USD * 31000
                 'description' => 'Graphical multifunction tester for transistor, diode, triode, capacitance, SCR, and inductance',
                 'category_id' => 11,
                 'stock'       => 10,
@@ -517,9 +517,9 @@ class ProductSeeder extends Seeder
                 'updated_at'  => now(),
             ],
             [
-                'name'        => '1pcs DC-AC FPGA Pure Sine Wave Inverter SPWM Board EGS002 EG8010 + IR2110 Driver Module FPGA',
-                'cost_price'  => 2170, // 0.07 USD * 31000
-                'sale_price'  => 2170,
+                'name'        => 'DC-AC FPGA Pure Sine Wave Inverter SPWM Board EGS002 EG8010 + IR2110 Driver Module FPGA',
+                'cost_price'  => 12000, // 0.07 USD * 31000
+                'sale_price'  => 16000,
                 'description' => 'FPGA-based pure sine wave inverter SPWM board with driver module',
                 'category_id' => 11,
                 'stock'       => 5,
@@ -529,8 +529,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => '6LEDs SMD5730 COB Chip Injection LED Module Lamp Waterproof IP65 DC12V Advertising Module Letter Lightbox Source',
-                'cost_price'  => 8060, // 0.26 USD * 31000
-                'sale_price'  => 8060,
+                'cost_price'  => 12800, // 0.26 USD * 31000
+                'sale_price'  => 19500,
                 'description' => 'Waterproof LED module for advertising letter lightboxes',
                 'category_id' => 11,
                 'stock'       => 50,
@@ -539,9 +539,9 @@ class ProductSeeder extends Seeder
                 'updated_at'  => now(),
             ],
             [
-                'name'        => 'New 5V 1 Relay Module Board Low Level Trigger Expansion for Relay Purpose High Quality ICs',
-                'cost_price'  => 17050, // 0.55 USD * 31000
-                'sale_price'  => 17050,
+                'name'        => '5V 1 Relay Module Board Low Level Trigger Expansion for Relay Purpose High Quality ICs',
+                'cost_price'  => 5500, // 0.55 USD * 31000
+                'sale_price'  => 8500,
                 'description' => '5V single relay module with low-level trigger for expansion projects',
                 'category_id' => 11,
                 'stock'       => 40,
@@ -550,9 +550,9 @@ class ProductSeeder extends Seeder
                 'updated_at'  => now(),
             ],
             [
-                'name'        => 'Best Sale LV3842XFDBVR TI 4-V to 36-V 600-mA Synchronous Step-Down Converter Product Category ICs',
-                'cost_price'  => 0.55,
-                'sale_price'  => 0.55,
+                'name'        => 'LV3842XFDBVR TI 4-V to 36-V 600-mA Synchronous Step-Down Converter Product Category ICs',
+                'cost_price'  => 2000,
+                'sale_price'  => 2500,
                 'description' => 'LV3842XFDBVR synchronous step-down converter IC 4-36V, 600mA',
                 'category_id' => 11,
                 'stock'       => 30,
@@ -563,8 +563,8 @@ class ProductSeeder extends Seeder
 // 12. Agriculture & Programming Modules
             [
                 'name'        => 'TSLJSLY Professional 8 in 1 Soil Tester Temperature Moisture EC PH NPK Soil Sensor Portable USB Type-C',
-                'cost_price'  => 151400, // MMK
-                'sale_price'  => 170000, // MMK, suggested sale price
+                'cost_price'  => 65000, // MMK
+                'sale_price'  => 75000, // MMK, suggested sale price
                 'description' => '8-in-1 soil tester for agriculture: temperature, moisture, EC, PH, NPK; portable USB Type-C',
                 'category_id' => 12,
                 'stock'       => 10,
@@ -574,8 +574,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'Soil Moisture Probe NPK PH Monitoring Station LoRa 4G Wireless Smart Farming Sensor',
-                'cost_price'  => 868000,
-                'sale_price'  => 950000,
+                'cost_price'  => 160000,
+                'sale_price'  => 200000,
                 'description' => 'High-accuracy soil moisture, NPK, PH monitoring with LoRa 4G wireless communication',
                 'category_id' => 12,
                 'stock'       => 5,
@@ -585,8 +585,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'TSLJSLY Temperature Sensor PT100 DS18B20 Stainless Steel Sleeve Protective Cover 6 x 50',
-                'cost_price'  => 217,
-                'sale_price'  => 300,
+                'cost_price'  => 600,
+                'sale_price'  => 900,
                 'description' => 'Temperature sensors PT100 DS18B20 with stainless steel sleeve protective cover, pack of 5',
                 'category_id' => 12,
                 'stock'       => 50,
@@ -596,8 +596,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'WGZX T48 TL866II Programmer Notebook EMMC LCD Motherboard BIOS Car Navigation NAND Burner',
-                'cost_price'  => 296000,
-                'sale_price'  => 330000,
+                'cost_price'  => 80000,
+                'sale_price'  => 95000,
                 'description' => 'TL866II programmer for notebook, EMMC, LCD, motherboard, BIOS, car navigation NAND burning',
                 'category_id' => 12,
                 'stock'       => 3,
@@ -607,8 +607,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name'        => 'BGE788 CATV Signal Amplifier Module',
-                'cost_price'  => 1390,
-                'sale_price'  => 2000,
+                'cost_price'  => 4800,
+                'sale_price'  => 6000,
                 'description' => 'CATV signal amplifier module',
                 'category_id' => 12,
                 'stock'       => 100,
@@ -617,50 +617,49 @@ class ProductSeeder extends Seeder
                 'updated_at'  => now(),
             ],
             [
-
-                    'name'        => 'Factory Price Electronic Components Potentiometer 7286-1K',
-                    'cost_price'  => 4.94 * 3100,
-                    'sale_price'  => 4.94 * 3100,
-                    'description' => 'High-quality potentiometer 7286-1K for electronic projects',
-                    'category_id' => 10, // Connectors & Passive Components
-                    'stock'       => 50,
-                    'image'       => 'Potentiometer_7286-1K.jpg',
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
-                    'name'        => 'TDA2030A Integrated Circuits Linear Amplifiers Audio TDA2030 Pentawatt-5 Original IC Chip',
-                    'cost_price'  => 0.80 * 3100,
-                    'sale_price'  => 0.80 * 3100,
-                    'description' => 'Audio amplifier IC TDA2030A Pentawatt-5 original chip for linear amplification',
-                    'category_id' => 7, // Audio & Amplifier Modules
-                    'stock'       => 100,
-                    'image'       => 'TDA2030A_IC.jpg',
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
-                    'name'        => 'KJ318 4X4 Membrane Switch 16 Key Matrix Keypad',
-                    'cost_price'  => 0.10 * 3100,
-                    'sale_price'  => 0.10 * 3100,
-                    'description' => '16-key 4x4 membrane switch matrix keypad for DIY electronics',
-                    'category_id' => 10, // Connectors & Passive Components
-                    'stock'       => 200,
-                    'image'       => 'KJ318_Keypad.jpg',
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
-                    'name'        => 'Water Coffee Flow Sensor Switch Meter Flowmeter Counter 0.3-6L/min',
-                    'cost_price'  => 2.48 * 3100,
-                    'sale_price'  => 2.48 * 3100,
-                    'description' => 'Flow sensor for water or coffee, measures 0.3-6L/min, with counter',
-                    'category_id' => 2, // Sensors & Measurement Modules
-                    'stock'       => 50,
-                    'image'       => 'Flow_Sensor_0-6L.jpg',
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-            ],);
+                'name'        => 'Electronic Components Potentiometer 7286-1K',
+                'cost_price'  => 3000,
+                'sale_price'  => 6500,
+                'description' => 'High-quality potentiometer 7286-1K for electronic projects',
+                'category_id' => 10, // Connectors & Passive Components
+                'stock'       => 50,
+                'image'       => 'Potentiometer_7286-1K.jpg',
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'name'        => 'TDA2030A Integrated Circuits Linear Amplifiers Audio TDA2030 Pentawatt-5 Original IC Chip',
+                'cost_price'  => 2600,
+                'sale_price'  => 3500,
+                'description' => 'Audio amplifier IC TDA2030A Pentawatt-5 original chip for linear amplification',
+                'category_id' => 11, // Audio & Amplifier Modules
+                'stock'       => 100,
+                'image'       => 'TDA2030A_IC.jpg',
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'name'        => 'KJ318 4X4 Membrane Switch 16 Key Matrix Keypad',
+                'cost_price'  => 3200,
+                'sale_price'  => 5000,
+                'description' => '16-key 4x4 membrane switch matrix keypad for DIY electronics',
+                'category_id' => 10, // Connectors & Passive Components
+                'stock'       => 200,
+                'image'       => 'KJ318_Keypad.jpg',
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'name'        => 'Water Coffee Flow Sensor Switch Meter Flowmeter Counter 0.3-6L/min',
+                'cost_price'  => 6000,
+                'sale_price'  => 8000,
+                'description' => 'Flow sensor for water or coffee, measures 0.3-6L/min, with counter',
+                'category_id' => 2, // Sensors & Measurement Modules
+                'stock'       => 50,
+                'image'       => 'Flow_Sensor_0-6L.jpg',
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+        ], );
     }
 }
